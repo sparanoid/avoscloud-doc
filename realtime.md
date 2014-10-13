@@ -72,7 +72,7 @@ app_id:peer_id:watch_peer_ids:timestamp:nonce
 * `timestamp` 是当前的UTC时间距离unix epoch的**秒数**
 * `nonce` 为随机字符串
 
-签名的key是应用的 **emaster key**
+签名的key是应用的 **master key**
 
 开发者可以实现自己的SignatureFactory，调用远程的服务器的签名接口获得签名。如果你没有自己的服务器，可以直接在我们的云代码上通过 Web Hosting 动态接口实现自己的签名接口。在移动应用中直接做签名是**非常危险**的，它可能导致你的**master key**泄漏。
 
