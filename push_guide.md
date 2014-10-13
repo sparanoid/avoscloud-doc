@@ -750,7 +750,7 @@ Windows Phone 8 的推送较为特殊，因为微软在设计的时候把推送�
   avPush.Data = new Dictionary<string, object>();
   avPush.Data.Add("title", "微信");
   avPush.Data.Add("alert", "您有一条聊天消息");
-  avPush.Data.Add("param", "/chat.xaml?NavigatedFrom=Toast Notification");
+  avPush.Data.Add("wp-param", "/chat.xaml?NavigatedFrom=Toast Notification");
   await avPush.SendAsync()；
 ```
 ### 推送给所有的设备
