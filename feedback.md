@@ -2,12 +2,14 @@
 
 AVOSCloud Feedback 是一个非常轻量的模块，可以用最少两行的代码来实现一个用户反馈系统，并且能够方便的在我们的移动App中查看用户的反馈。
 
+**您可以在应用的组件菜单里看到所有的用户反馈并回复。**
+
 ## AVOS Cloud移动App
 
 用户如果有新的反馈会主动推送通知到我们提供的移动App，建议您安装，并使用AVOS Cloud帐户登录：
 
-* [Android App](https://download.avoscloud.com/apk/)
-* iOS App(正在审核)
+* [Android App](http://download.avoscloud.com/apk/AVOSCloudMobileApp.apk)
+* [iOS App](https://itunes.apple.com/cn/app/avos-cloud-ying-yong-tong/id854896336?mt=8&uo=4)
 
 ## iOS 反馈组件
 
