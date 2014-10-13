@@ -298,6 +298,34 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
 * `group_peer_ids` 是`:`分隔的 peer id，即邀请和踢出的 peer_id，对加入群的情况，这里是空字符串
 * `action` 是此次行为的动作，三种行为分别对应常量 `join`, `invite` 和 `kick`
 
+###聊天记录查询
+聊天记录的查询的基本方法跟AVQuery类似但是略有不同。
+针对Session的聊天记录和聊天室Group的聊天记录查询略有不同，但是基本都是一样：
+```
+           SessionManager sm = SessionManager.getInstance(selfId);
+           AVHistroyMessageQuery sessionHistoryQuery = sm.getHistroyMessageQuery();
+           sessionHistoryQuery.setLimit(1000);//设置查询结果大小
+           sessionHistoryQuery.setTimestamp(1413184345686);//查询从时间片1413184345686以后开始的聊天记录
+           sessionHistoryQuery.findInBackground(new HistoryMessageCallback() {
+
+                 @Override
+                 public void done(List<AVHistoryMessage> messages, AVException error) {
+                      System.out.println(messages.size());
+                 }
+           });//查询session里的聊天记录
+           Group group = sm.getGroup("140a534fd092809500e6d651e73400c7");
+           AVHistroyMessageQuery groupHistoryQuery = group.getHistoryMessageQuery();//获取AVHistoryMessageQuery对象来查询聊天室的聊天记录
+           groupHistoryQuery.findInBackground(new HistoryMessageCallback(){
+                
+                @Override
+                public void done(List<AVHistoryMessage> messages,AVException error){
+                  for(AVHistoryMessage msg:messages){
+                     System.out.println(msg.getMessage());
+                  }
+                }
+           })
+```
+
 ## iOS 实时通信服务
 
 与 Android 不同，iOS 并没有提供类似于 `service` 这样的组件。当应用进入后台，聊天组件将会关闭连接，session 进入 `paused` 状态。而当应用转入前台，聊天组件将会重新建立连接，session 进入 `resume` 状态。你可以实现 `AVSessionDelegate`相关方法，以完成实时通信应用的开发。
