@@ -91,6 +91,17 @@ var monster = Monster.spawn(200);
 alert(monster.strength());  // Displays 200.
 ```
 
+创建对象还可以通过 `AV.Object.new` 方法，子类对象也可以：
+
+```
+//AV.Object
+var gameScore = AV.Object.new('GameScore');
+//子类
+var monster = Monster.new({strength: 20});
+```
+
+在使用 [uglify](https://github.com/mishoo/UglifyJS) 做代码压缩的时候，推荐采用上述方式创建对象，否则可能遇到压缩后语法错误。
+
 ### 保存对象
 
 假如你想要在LeanCloud上保存GameScore，方法和Backbone.Model差不多,就用
