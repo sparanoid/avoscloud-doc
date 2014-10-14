@@ -1,9 +1,9 @@
 
-# AVOS Cloud FAQ
+# LeanCloud FAQ
 
 ## 帐户和平台常见问题
 
-### AVOS Cloud 部署在哪个云平台上
+### LeanCloud 部署在哪个云平台上
 
 我们部署国内多个云计算平台提供商上，采用混合部署策略（虚拟机和实体机混合部署），并且都在双线机房内，保证您的应用的访问体验和可靠性。
 
@@ -24,7 +24,7 @@
 
 ### 如何付费
 
-请使用[支付宝](http://alipay.com)充值到 AVOS Cloud 账户，我们将每个月自动从您的账户余额里扣除账单费用。每次扣费优先使用充值金额，其次是赠送金额。
+请使用[支付宝](http://alipay.com)充值到 LeanCloud 账户，我们将每个月自动从您的账户余额里扣除账单费用。每次扣费优先使用充值金额，其次是赠送金额。
 
 ### 付费可以开发票吗
 
@@ -173,7 +173,7 @@ $ gem install cocoapods
 
  一般是由于 Framework 的链接找不到造成的。建议用 CocoaPods 更新一下, 没有用 CocoaPods 的项目可以删除对 Framework 的引用,然后再重新加进来。
 
-AVOS Cloud 依赖的 framework 包括：
+LeanCloud 依赖的 framework 包括：
 
 * SystemConfiguration.framework
 * MobileCoreServices.framework

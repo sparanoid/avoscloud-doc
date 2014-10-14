@@ -1,11 +1,11 @@
 
-# AVOS Cloud 开放平台
+# LeanCloud 开放平台
 
 我们提供了标准的 OAuth2 协议，允许第三方接入我们的平台，调用开放 API 获取用户信息、应用信息、创建应用等。
 
 我们的开发者平台仍然在开发中，因此目前您需要通过帮助菜单的技术支持提出接入申请，要求提供下列信息：
 
-* AVOS Cloud 帐户邮箱
+* LeanCloud 帐户邮箱
 * 申请者的详细信息：名称（个人或者公司）、地址、联系方式（手机或者电话）等。
 * 申请的第三方平台的详细信息： 名称、介绍描述、网站地址
 * 期望的接入方式： OAuth2 接入 或者 connect 方式接入，详情见下文。
@@ -15,14 +15,14 @@
 
 ## OAuth2 接入
 
-目前 AVOS Cloud 支持的 OAuth2 授权方式仅限 [authorization_code](http://tools.ietf.org/html/draft-ietf-oauth-v2-25#section-4.1)。简单概括为：
+目前 LeanCloud 支持的 OAuth2 授权方式仅限 [authorization_code](http://tools.ietf.org/html/draft-ietf-oauth-v2-25#section-4.1)。简单概括为：
 
-* 第三方应用向 AVOS Cloud 请求授权
-* AVOS Cloud 为用户展现一个授权页面（如果没有登录，则登录后显示授权页面，如果没有帐户，提供注册连接。），用户在此页面确认是否同意应用的请求
-* 如果用户同意授权，第三方应用首先拿到一个 `code`，通过 code 请求 AVOS Cloud 获取用户的访问令牌`access_token`。
-* 第三方应用使用 `access_token` 调用 AVOS Cloud 的开放 API。
+* 第三方应用向 LeanCloud 请求授权
+* LeanCloud 为用户展现一个授权页面（如果没有登录，则登录后显示授权页面，如果没有帐户，提供注册连接。），用户在此页面确认是否同意应用的请求
+* 如果用户同意授权，第三方应用首先拿到一个 `code`，通过 code 请求 LeanCloud 获取用户的访问令牌`access_token`。
+* 第三方应用使用 `access_token` 调用 LeanCloud 的开放 API。
 
-AVOS Cloud 目前只支持服务器的WEB应用的授权流程（server-side flow）。并且暂不支持 access_token 的刷新机制。
+LeanCloud 目前只支持服务器的WEB应用的授权流程（server-side flow）。并且暂不支持 access_token 的刷新机制。
 
 ### 第一步：申请授权
 
@@ -42,7 +42,7 @@ GET https://cn.avoscloud.com/1.1/authorize?client_id={{client_key}}&response_typ
 * redirect_uri   用户授权成功或者失败后，回掉第三方应用的 URL ，将会带上`code`值或者错误信息。
 * state          （可选）状态信息，建议加上，内部应包含随机并且唯一的值，当 redirect_uri 回掉的时候会带上这个state返回，可以用来防止 CSRF 攻击。
 
-调用这个 API 后， AVOS Cloud 会为用户展示一个授权页面：
+调用这个 API 后， LeanCloud 会为用户展示一个授权页面：
 
 ![image](images/authorize.png)
 
@@ -65,7 +65,7 @@ GET http://exmaple.com/oauth2/callback?state={{传入的state}}&code={{code随�
 
 #### 第二步：获取令牌
 
-用户授权后，您可以这回掉中拿到授权 code ，然后使用这个 code 去 AVOS Cloud 请求访问令牌(access_token)。服务端直接通过 http client 调用下列URL：
+用户授权后，您可以这回掉中拿到授权 code ，然后使用这个 code 去 LeanCloud 请求访问令牌(access_token)。服务端直接通过 http client 调用下列URL：
 
 ```
 GET  https://cn.avoscloud.com/1.1/token?grant_type=authorization_code&client_id={{client_key}}&client_secret={{client_secret}}&code={{第一步返回的code}}&redirect_uri={{第一步使用的redirect_uri}}
@@ -80,7 +80,7 @@ GET  https://cn.avoscloud.com/1.1/token?grant_type=authorization_code&client_id=
 * code 第一步 redirect_uri 返回的 `code`
 * redirect_uri 第一步使用的`redirect_uri`，必须完全一致。
 
-调用成功，AVOS Cloud 将返回JSON格式数据：
+调用成功，LeanCloud 将返回JSON格式数据：
 
 ```
 {
@@ -96,11 +96,11 @@ GET  https://cn.avoscloud.com/1.1/token?grant_type=authorization_code&client_id=
 * token_type:  目前只支持`bearer`类型。
 * access_token: 该用户授权给本应用的访问令牌
 * expires_in: 过期时间，暂时可忽略。
-* uid: 授权用户在 AVOS Cloud 上的唯一 ID。
+* uid: 授权用户在 LeanCloud 上的唯一 ID。
 
 ## Connect 接入
 
-对于部分合作伙伴，我们还提供了 `/1.1/connect` 的 API 用于快速接入。通过这个 API 可以直接创建或者获取用户帐号信息，用户不需要做授权，而是创建在该合作伙伴“namespace”下的帐号，跟 AVOS Cloud 平台上的帐号隔离。**也就是说，用户用同一个邮箱在 AVOS Cloud 上注册，第三方合作伙伴再拿这个邮箱到 AVOS Cloud 平台接入，两个帐号将是独立隔离的，前者在 AVOS Cloud 名下，而后者在第三方合作伙伴名下。**
+对于部分合作伙伴，我们还提供了 `/1.1/connect` 的 API 用于快速接入。通过这个 API 可以直接创建或者获取用户帐号信息，用户不需要做授权，而是创建在该合作伙伴“namespace”下的帐号，跟 LeanCloud 平台上的帐号隔离。**也就是说，用户用同一个邮箱在 LeanCloud 上注册，第三方合作伙伴再拿这个邮箱到 LeanCloud 平台接入，两个帐号将是独立隔离的，前者在 LeanCloud 名下，而后者在第三方合作伙伴名下。**
 
 `[GET | POST] /1.1/connect` API 接收下列参数：
 
@@ -111,9 +111,9 @@ GET  https://cn.avoscloud.com/1.1/token?grant_type=authorization_code&client_id=
 参数说明：
 
 * client_id（必须）： 第三方平台分配到的应用 client key。
-* email（必须）: 用户的帐户邮箱，AVOS Cloud 将使用该邮箱创建一个第三方平台名下的帐户，如果已经存在，则直接返回授权信息。
-* username（可选）：用户的用户名，可选，如果不提供，将使用一个随机用户名。该用户名必须在 AVOS Cloud 平台上唯一。
-* timestamp（必须）： Unix时间戳，精确到毫秒。这个时间戳不能跟 AVOS Cloud 服务端的时间间隔不能超过10秒。
+* email（必须）: 用户的帐户邮箱，LeanCloud 将使用该邮箱创建一个第三方平台名下的帐户，如果已经存在，则直接返回授权信息。
+* username（可选）：用户的用户名，可选，如果不提供，将使用一个随机用户名。该用户名必须在 LeanCloud 平台上唯一。
+* timestamp（必须）： Unix时间戳，精确到毫秒。这个时间戳不能跟 LeanCloud 服务端的时间间隔不能超过10秒。
 * scope（必须）： 授权范围，请看[OAuth2接入第一步：申请授权](#第一步：申请授权)
 * sign（必须）：请求签名，签名规则如下：
 
@@ -136,7 +136,7 @@ GET  https://cn.avoscloud.com/1.1/token?grant_type=authorization_code&client_id=
 假设 client secret 是`s84rvq98u8j3wnklkznguo38vsvys6vo`：那么 sign 签名就是：
 
 ```
-sha256_hmac("s84rvq98u8j3wnklkznguo38vsvys6vo", base_path) 
+sha256_hmac("s84rvq98u8j3wnklkznguo38vsvys6vo", base_path)
   =  0ed0e74ce6d4353e40fc3291747c7d1d2d9884b4c9a1e3c4da9d6bf8e4fe9b45
 ```
 
@@ -147,7 +147,7 @@ https://cn.avoscloud.com/1.1/connect?client_id=jl04l2081eczultsb7drrzxfxc5a30wh&
 ```
 
 SHA256 Hmac 签名要求都是采用 16 进制编码，而非 base64 等方式。Java 平台可以参考这篇[博客
-](http://www.supermind.org/blog/1102/generating-hmac-md5-sha1-sha256-etc-in-java) 或者使用 [commons-codec](http://commons.apache.org/codec/) 库。 
+](http://www.supermind.org/blog/1102/generating-hmac-md5-sha1-sha256-etc-in-java) 或者使用 [commons-codec](http://commons.apache.org/codec/) 库。
 
 下面给一段测试签名的 Ruby 代码：
 
@@ -164,7 +164,7 @@ SHA256 Hmac 签名要求都是采用 16 进制编码，而非 base64 等方式�
     base_url = "/1.1/connect?client_id=#{client_id}&email=#{email}&scope=#{scope}&timestamp=#{timestamp}&username=#{username}"
 
     sign = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('SHA256'), client_secret, base_url)
-    
+
     puts base_url
     puts sign
 ```
@@ -184,7 +184,7 @@ SHA256 Hmac 签名要求都是采用 16 进制编码，而非 base64 等方式�
 
 ## 开放 API
 
-获取令牌后，您可以使用令牌访问 AVOS Cloud 平台上的开放 API。
+获取令牌后，您可以使用令牌访问 LeanCloud 平台上的开放 API。
 
 ### 综述
 
@@ -192,7 +192,7 @@ SHA256 Hmac 签名要求都是采用 16 进制编码，而非 base64 等方式�
 
 * 在 API URL 中附加上 `access_token=xxx` 参数
 * 或者使用`Authorization: Bearer xxx`的 HTTP 头（更推荐的方式）
- 
+
 来传入访问令牌。
 
 所有开放 API 都以 `https://cn.avoscloud.com/1.1/open` 为前缀。

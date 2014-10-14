@@ -61,9 +61,9 @@
 https://cn.avoscloud.com/1.1/go/{your uri scheme}/
 ```
  查看到您的 App URL 应用设置信息。
- 
+
  例如我们的todo应用就是:
- 
+
  ```
  https://cn.avoscloud.com/1.1/go/com.avoscloud.todo
  ```
@@ -71,7 +71,7 @@ https://cn.avoscloud.com/1.1/go/{your uri scheme}/
 
 #### 为 Class 启用搜索
 
-在设置了应用内搜索，选择了适当的 URL Scheme 之后，您需要选择至少一个 Class 为它开启应用内搜索。开启后，该 Class 的数据将被 AVOS Cloud 自动建立索引，并且可以调用我们的搜索组件或者 API 搜索到内容。
+在设置了应用内搜索，选择了适当的 URL Scheme 之后，您需要选择至少一个 Class 为它开启应用内搜索。开启后，该 Class 的数据将被 LeanCloud 自动建立索引，并且可以调用我们的搜索组件或者 API 搜索到内容。
 
 ** 请注意，启用了搜索的 Class 数据，仍然只能被该应用的认证过的 API 搜索到，其次，搜索结果仍然遵循我们提供的 ACL 机制，如果您为 Class 里的Object设定了合理的ACL，那么搜搜结果也将遵循这些 ACL 值，保护您的数据安全。**
 
@@ -132,7 +132,7 @@ https://cn.avoscloud.com/1.1/go/{your uri scheme}/
   </div>
 ```
 
-在 AVOS Cloud 索引完成数据后，您应当可以通过下列URL访问到一条数据，如果在安装了 Todo Demo 应用的移动设备上访问下面这个URL，应该会打开应用展现这条 Todo 的内容:
+在 LeanCloud 索引完成数据后，您应当可以通过下列URL访问到一条数据，如果在安装了 Todo Demo 应用的移动设备上访问下面这个URL，应该会打开应用展现这条 Todo 的内容:
 
 ```
 https://cn.avoscloud.com/1.1/go/com.avoscloud.todo/classes/Todo/5371f3a9e4b02f7aee2c9a18
@@ -235,12 +235,12 @@ adb shell am start -W -a "android.intent.action.VIEW"  \
 注册完了 URL Scheme，你还需要实现 [application method openURL](http://developer.apple.com/library/ios/#DOCUMENTATION/UIKit/Reference/UIApplication_Class/Reference/Reference.html#jumpTo_37) 。对于 TodoDemo，应该按照如下方法实现。
 
 ```
-/* 
+/*
  * 与 Android 类似，这里的url.path 应该是 “com.avoscloud.todo://avoscloud/classes/Todo/5371f3a9e4b02f7aee2c9a18”
  */
 (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     NSString *objectId = [url.path lastPathComponent];
-    
+
     AVObject *todo = [AVObject objectWithClassName:@"Todo"];
     todo.objectId = objectId;
     [todo fetchInBackgroundWithBlock:^(AVObject *object, NSError *error) {
@@ -383,7 +383,7 @@ searchQuery.setSortBuilder(builder);
 你可以参照如下代码构造 AVSearchQuery 并获取搜索结果。
 
 ```
-    AVSearchQuery *searchQuery = [AVSearchQuery searchWithQueryString:@"test-query"]; 
+    AVSearchQuery *searchQuery = [AVSearchQuery searchWithQueryString:@"test-query"];
     searchQuery.className = @"className";
     searchQuery.highlights = @"field1,field2";
     searchQuery.limit = 10;

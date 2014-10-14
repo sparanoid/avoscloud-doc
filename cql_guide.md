@@ -1,7 +1,7 @@
 
 # Cloud Query Language 详细指南
 
-Cloud Query Language（简称 CQL） 是 AVOS Cloud 为查询 API 定制的一套类似 SQL 查询语法的子集和变种，主要目的是降低大家学习 AVOS Cloud 查询的 API 的成本，可以使用传统的 SQL 语法来查询 AVOS Cloud 应用内的数据。
+Cloud Query Language（简称 CQL） 是 LeanCloud 为查询 API 定制的一套类似 SQL 查询语法的子集和变种，主要目的是降低大家学习 LeanCloud 查询的 API 的成本，可以使用传统的 SQL 语法来查询 LeanCloud 应用内的数据。
 
 本文档将详细介绍 CQL 的语法和常见用法。
 
@@ -24,8 +24,8 @@ List<AVObject> avObjects = query.find()
 
 ```
 select [查询字段列表，逗号隔开] from [class 名称]
-   [where [条件列表] 
-   [limit [skip],limit 
+   [where [条件列表]
+   [limit [skip],limit
    [order by [排序字段列表] [asc |desc]]]]
 ```
 

@@ -4,9 +4,9 @@ AVOSCloud Feedback 是一个非常轻量的模块，可以用最少两行的代�
 
 **您可以在应用的组件菜单里看到所有的用户反馈并回复。**
 
-## AVOS Cloud移动App
+## LeanCloud移动App
 
-用户如果有新的反馈会主动推送通知到我们提供的移动App，建议您安装，并使用AVOS Cloud帐户登录：
+用户如果有新的反馈会主动推送通知到我们提供的移动App，建议您安装，并使用LeanCloud帐户登录：
 
 * [Android App](http://download.avoscloud.com/apk/AVOSCloudMobileApp.apk)
 * [iOS App](https://itunes.apple.com/cn/app/avos-cloud-ying-yong-tong/id854896336?mt=8&uo=4)
@@ -56,7 +56,7 @@ AVUserFeedbackAgent *agent = [AVUserFeedbackAgent sharedInstance];
 
 打开AndroidManifest.xml文件，在里面添加需要用到的activity和需要的权限:
 
-```       
+```
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -113,7 +113,7 @@ AVUserFeedbackAgent *agent = [AVUserFeedbackAgent sharedInstance];
 
 #### Feedback数据模型
 
-* Comment 
+* Comment
 Comment 代表了反馈系统中间，用户或者开发者的每一次回复。不同的类型可以通过CommentType属性来指定：
 
 ```
@@ -132,7 +132,7 @@ FeedbackThread代表了用户与开发者的整个交流过程。其中有两个
         thread.add(newComment);
         //或者也可以使用thread.getCommentsList().add(newComment);
         thread.sync(syncCallback);
-        
+
 ```
 
 更多的信息您可以参考我们的实现的Activity：

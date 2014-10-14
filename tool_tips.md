@@ -1,5 +1,5 @@
 
-# AVOS Cloud 使用功能提示
+# LeanCloud 使用功能提示
 
 ## 存储
 
@@ -7,10 +7,10 @@
 * 添加列的时候可以设置必选、默认值、隐藏等属性。
 * 列名旁边的下拉框，可以删除、重命名和编辑列属性。
 * 在不同应用之间可以共享 class 数据，例如共享 _User 表实现单点登录，参考[应用间数据共享文档](https://cn.avoscloud.com/docs/app_data_share.html)。
-* 数据菜单左下角有 数据导入 菜单，可以导入符合我们[预先定义格式](https://cn.avoscloud.com/docs/data_security.html#导入数据)的遗留系统的数据到 AVOS Cloud 平台。
+* 数据菜单左下角有 数据导入 菜单，可以导入符合我们[预先定义格式](https://cn.avoscloud.com/docs/data_security.html#导入数据)的遗留系统的数据到 LeanCloud 平台。
 * 查询的时候如果想将关联 Pointer 类型带入查询结果，请使用 AV.Query 的 includeKey 方法指定字段名称。
 * 查询可以指定 skip 和 limit 做分页查询。
-* 您可以使用类似 SQL 的语法来查询 AVOS Cloud 数据，参考 [CQL详细指南](https://cn.avoscloud.com/docs/cql_guide.html)。
+* 您可以使用类似 SQL 的语法来查询 LeanCloud 数据，参考 [CQL详细指南](https://cn.avoscloud.com/docs/cql_guide.html)。
 * 您可以在 [REST API 错误代码](https://cn.avoscloud.com/docs/error_code.html) 文档里找到所有的错误代码和信息解释。
 * 您可以使用 [API 在线测试工具](https://cn.avoscloud.com/apionline/) 在线测试我们提供的开放 [REST API](https://cn.avoscloud.com/docs/rest_api.html)。
 * 我们的用户帐户系统都自动做了密码加密存储，基于 SHA-512 加密算法，使用随机生成的 salt 加密。
@@ -19,8 +19,8 @@
 * 如果您想做一个形如微博的 Feed 系统，也许您可以尝试使用我们的 [事件流系统](https://cn.avoscloud.com/docs/status_system.html)。
 * 我们提供简易的 [SNS 组件](https://cn.avoscloud.com/docs/sns.html)，用于第三方登陆和分享。
 * [Android 应用代码混淆注意事项](https://cn.avoscloud.com/docs/android_guide.html#代码混淆)。
-* [基于 AVOS Cloud 的一对多、多对多关系数据建模](https://blog.avoscloud.com/1723/)。
-* [使用 AVOS Cloud JavaScript SDK 和 AngularJS 创建 一个 Todo Demo](https://blog.avoscloud.com/1541/)
+* [基于 LeanCloud 的一对多、多对多关系数据建模](https://blog.avoscloud.com/1723/)。
+* [使用 LeanCloud JavaScript SDK 和 AngularJS 创建 一个 Todo Demo](https://blog.avoscloud.com/1541/)
 * 我们的数据存储服务提供地理位置信息查询，参考 SDK 开发指南，或者这篇[教程](https://blog.avoscloud.com/537/)。
 * 在应用设置菜单里，可以找到**数据导出**功能，您可以完整导出您的应用数据。
 * 您可以在某个 class 的其他菜单里找到权限设置、Class 绑定等高级功能。
@@ -36,7 +36,7 @@
 * 您可以在数据管理平台的 `_File` 表的 `url` 列点击上传按钮，直接上传文件。
 * 文件 API 提供元数据存储和缩略图功能，请参考 SDK 开发指南。更多缩略图选项可以使用[七牛 API](http://docs.qiniu.com/api/v6/image-process.html) 做 URL 变换得到。
 * 文件如果存储为其他对象的数组属性，那么需要在 query 或者 fetch 的时候 includeKey 该字段。
-* [云代码命令行工具](https://cn.avoscloud.com/docs/cloud_code_commandline.html)提供文件批量上传命令 upload，可以用于上传现有资源文件到 AVOS Cloud 平台。
+* [云代码命令行工具](https://cn.avoscloud.com/docs/cloud_code_commandline.html)提供文件批量上传命令 upload，可以用于上传现有资源文件到 LeanCloud 平台。
 * 文件没有大小限制，文件在 SDK 下载成功后将自动缓存在本地。
 
 ## 统计
@@ -72,7 +72,7 @@
 * 如果您的 app 处于运行状态，iOS 系统将不会在系统的通知中心显示推送消息，您可以使用 UILocalNotification 展示一个通知给用户。
 * Android 可以通过[自定义 Receiver ](https://cn.avoscloud.com/docs/push_guide.html#自定义-receiver)来自定义消息推送接收逻辑。
 * AVPush 可以设置 AVQuery 条件，查询符合条件的 AVInstallation 设备推送消息。
-* AVOS Cloud 支持定时推送，您可以通过云代码定时任务做更复杂的定时推送。
+* LeanCloud 支持定时推送，您可以通过云代码定时任务做更复杂的定时推送。
 
 ## 安全
 
@@ -99,17 +99,17 @@
 
 ## 其他
 
-* [邀请朋友](https://cn.avoscloud.com/settings.html#/setting/invite)注册 AVOS Cloud，获取赠送金额。
+* [邀请朋友](https://cn.avoscloud.com/settings.html#/setting/invite)注册 LeanCloud，获取赠送金额。
 * 修改登录邮箱，请进入 [邮箱](https://cn.avoscloud.com/settings.html#/setting/mail) 菜单。
 * 查看[快速入门文档](https://cn.avoscloud.com/start.html)，开始应用开发之旅。
-* 通过[工单系统](https://ticket.avosapps.com/login)提交技术支持申请，获取 AVOS Cloud 工程师的帮助。
-* 在右上角用户名左侧的消息中心，可以看到 AVOS Cloud 最火热的新闻和教程。
-* 在工具栏的资源菜单里，可以找到 AVOS Cloud 移动客户端下载链接，在移动设备上查看应用分析数据。
+* 通过[工单系统](https://ticket.avosapps.com/login)提交技术支持申请，获取 LeanCloud 工程师的帮助。
+* 在右上角用户名左侧的消息中心，可以看到 LeanCloud 最火热的新闻和教程。
+* 在工具栏的资源菜单里，可以找到 LeanCloud 移动客户端下载链接，在移动设备上查看应用分析数据。
 * 使用 [drop](https://drop.avosapps.com/) 或者 [fir.im](http://fir.im/) 分发测试您的应用。
 * 我们提供[离线文档](https://cn.avoscloud.com/docs/avoscloud-docs.tar.gz)下载。
-* 不知道怎么使用 AVOS Cloud？各种 [demo](https://cn.avoscloud.com/docs/demo.html) 等你来拿。
+* 不知道怎么使用 LeanCloud？各种 [demo](https://cn.avoscloud.com/docs/demo.html) 等你来拿。
 * [文档搜索工具](https://cn.avoscloud.com/search.html)，查找问题或资料不用愁。
 * 所有 SDK 都提供 [API 文档](https://cn.avoscloud.com/docs/index.html)，开发指南没有覆盖的 API 介绍都可以在里面找到解释。
-* 关注我们的[博客](https://blog.avoscloud.com/)和[微博](http://weibo.com/avoscloud)，获取 AVOS Cloud 最新消息。
+* 关注我们的[博客](https://blog.avoscloud.com/)和[微博](http://weibo.com/avoscloud)，获取 LeanCloud 最新消息。
 * 在应用设置的基本设置菜单里，可以更改应用名称，提交应用图标，申请发布到[应用墙](https://cn.avoscloud.com/customers.html)。
 * 为您的应用添加用户反馈，请使用我们的[用户反馈组件](https://cn.avoscloud.com/docs/feedback.html)。

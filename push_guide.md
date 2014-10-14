@@ -32,9 +32,9 @@ Installation 表示一个允许推送的设备的唯一标示，对应[数据管
 
 ## iOS消息推送
 
-### 如何使用 AVOS Cloud 的 Push 功能
+### 如何使用 LeanCloud 的 Push 功能
 
-本节将向您简单介绍如何在iOS设备中使用AVOS cloud的推送功能。
+本节将向您简单介绍如何在iOS设备中使用LeanCloud的推送功能。
 
 ### 配置 iOS 推送证书
 
@@ -393,7 +393,7 @@ AVPush *push = [[AVPush alloc] init];
 
 ```
 - (void)application:(UIApplication *)application
-      didReceiveRemoteNotification:(NSDictionary *)userInfo 
+      didReceiveRemoteNotification:(NSDictionary *)userInfo
             fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {
   // Create empty photo object
   NSString *photoId = [userInfo objectForKey:@"p"];
@@ -509,7 +509,7 @@ Android 消息推送有专门的Demo，请见[AVOSCloud-Push](https://github.com
 
 ### Installation
 
-当您的app安装在用户设备后，如果要使用消息推送功能，AVOS Cloud SDK会自动生成一个Installation对象。Installation对象包含了推送所需要的所有信息。您可以使用Android SDK，通过installation对象进行消息推送。Installation对象本质上代表了设备安装您的App的一个安装信息。
+当您的app安装在用户设备后，如果要使用消息推送功能，LeanCloud SDK会自动生成一个Installation对象。Installation对象包含了推送所需要的所有信息。您可以使用Android SDK，通过installation对象进行消息推送。Installation对象本质上代表了设备安装您的App的一个安装信息。
 
 #### 保存 installation
 
@@ -646,7 +646,7 @@ curl -X POST \
         "channels":[ "public"],
         "data": {
           "action": "com.avos.UPDATE_STATUS"
-          "name": "avos cloud."
+          "name": "LeanCloud."
         }
       }' \
   https://cn.avoscloud.com/1.1/push
@@ -710,7 +710,7 @@ public class MyActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
+
 		Intent intent = getIntent();
 		AVAnalytics.trackAppOpened(intent);
 	}
@@ -731,7 +731,7 @@ public class MyActivity extends Activity {
 Windows Phone 8 的推送较为特殊，因为微软在设计的时候把推送消息定义为一个包含跳转页面信息的载体，比如微信推送：你单击微信发送的 Windows Phone 的 Toast 推送消息，单击进去之后，它不是打开微信的默认首页（假如叫做Main.xaml），而是进入某一个聊天的具体的页面（假如叫做chat.xaml）。这种场景微软是通过在推送消息里面包含了代码逻辑来实现的，比如要实现刚才这一套流程，微信服务端必须向微软的 MPNS 发送一个如下类似的消息（Http或者Https Post 请求）：
 
 ```
-<?xml version="1.0" encoding="utf-8"?> 
+<?xml version="1.0" encoding="utf-8"?>
     <wp:Notification xmlns:wp="WPNotification">
         <wp:Toast>
             <wp:Text1>微信</wp:Text1>
@@ -740,10 +740,10 @@ Windows Phone 8 的推送较为特殊，因为微软在设计的时候把推送�
         </wp:Toast>
     </wp:Notification>
 ```
-所以在使用 AVOS Cloud 推送服务向 Windows Phone 8 平台推送的时候一定要对微软官方的推送有所了解，如果想深入了解，可以点击详细查看微软官方关于 [Windows Phone 8 推送的官方教程](http://msdn.microsoft.com/en-us/library/windows/apps/hh202967\(v=vs.105\).aspx)。
+所以在使用 LeanCloud 推送服务向 Windows Phone 8 平台推送的时候一定要对微软官方的推送有所了解，如果想深入了解，可以点击详细查看微软官方关于 [Windows Phone 8 推送的官方教程](http://msdn.microsoft.com/en-us/library/windows/apps/hh202967\(v=vs.105\).aspx)。
 
-针对 Windows Phone 8 的特殊性，AVOS Cloud 采用了统一接口去处理，如下 C# 代码可以实现以上所说的功能：
-在 AVOS Cloud 所有 .NET 语言 SDK 均可如下进行操作。（注：Unity 暂时不支持.Wait（）方法 和 await 关键字，所以它需要使用任务的链式表达，详情请查看 Unity 的文档。）
+针对 Windows Phone 8 的特殊性，LeanCloud 采用了统一接口去处理，如下 C# 代码可以实现以上所说的功能：
+在 LeanCloud 所有 .NET 语言 SDK 均可如下进行操作。（注：Unity 暂时不支持.Wait（）方法 和 await 关键字，所以它需要使用任务的链式表达，详情请查看 Unity 的文档。）
 
 ```
   AVPush avPush = new AVPush();
@@ -780,7 +780,7 @@ await task;
 
 ### Installation
 
-当您的app安装在用户设备后，如果要使用消息推送功能，AVOS Cloud SDK会自动生成一个installation对象。installation对象包含了推送所需要的所有信息。您可以使用REST API，通过installation对象进行消息推送。
+当您的app安装在用户设备后，如果要使用消息推送功能，LeanCloud SDK会自动生成一个installation对象。installation对象包含了推送所需要的所有信息。您可以使用REST API，通过installation对象进行消息推送。
 
 #### 保存 installation
 
@@ -805,7 +805,7 @@ curl -X POST \
 
 ##### 保存 Android 设备的 installId
 
-对于Android设备，AVOS SDK会自动生成uuid作为installId保存到AVOS Cloud. 您可以使用以下REST API保存Android设备的installation ID.
+对于Android设备，AVOS SDK会自动生成uuid作为installId保存到LeanCloud. 您可以使用以下REST API保存Android设备的installation ID.
 
 ```
 curl -X POST \
@@ -847,7 +847,7 @@ curl -X POST \
   -H "Content-Type: application/json" \
   -d '{
         "data": {
-          "alert": "Hello From AVOS Cloud."
+          "alert": "Hello From LeanCloud."
         }
       }' \
   https://cn.avoscloud.com/1.1/push
@@ -869,7 +869,7 @@ curl -X POST \
             {"$regex":"\\Qpublic\\E"}
         }
         "data": {
-          "alert": "Hello From AVOS Cloud."
+          "alert": "Hello From LeanCloud."
         }
       }' \
   https://cn.avoscloud.com/1.1/push
@@ -886,7 +886,7 @@ curl -X POST \
   -d '{
         "channels":[ "public"],
         "data": {
-          "alert": "Hello From AVOS Cloud."
+          "alert": "Hello From LeanCloud."
         }
       }' \
   https://cn.avoscloud.com/1.1/push
@@ -905,7 +905,7 @@ curl -X POST \
             "installationId":"57234d4c-752f-4e78-81ad-a6d14048020d"
             }
         "data": {
-          "alert": "Hello From AVOS Cloud."
+          "alert": "Hello From LeanCloud."
         }
       }' \
   https://cn.avoscloud.com/1.1/push
@@ -925,7 +925,7 @@ curl -X POST \
               }
         }
         "data": {
-            "alert": "Hello From AVOS Cloud."
+            "alert": "Hello From LeanCloud."
         }
       }' \
   https://cn.avoscloud.com/1.1/push
@@ -1052,7 +1052,7 @@ curl -X POST \
         "channels":[ "public"],
         "data": {
           "action": "com.avos.UPDATE_STATUS"
-          "name": "avos cloud."
+          "name": "LeanCloud."
         }
       }' \
   https://cn.avoscloud.com/1.1/push

@@ -116,14 +116,14 @@ AV.Cloud.define("hello", function(request, response) {
 
 我们可以直接将这个初步的项目框架部署到Cloud Code上尝试运行一下。
 
-首先，你需要将这个项目提交到一个git仓库,AVOS Cloud并不提供源码的版本管理功能，而是借助于git这个优秀的分布式版本管理工具。我们推荐您使用[CSDN Code平台](https://code.csdn.net/)，[github](https://github.com/)或者[BitBucket](https://bitbucket.org/)这样第三方的源码
+首先，你需要将这个项目提交到一个git仓库,LeanCloud并不提供源码的版本管理功能，而是借助于git这个优秀的分布式版本管理工具。我们推荐您使用[CSDN Code平台](https://code.csdn.net/)，[github](https://github.com/)或者[BitBucket](https://bitbucket.org/)这样第三方的源码
 托管网站，也可以使用您自己搭建的git仓库(比如使用[gitlab.org](http://gitlab.org/))。下面我们详细描述下怎么使用。
 
 #### 使用 CSDN Code 托管源码
 
 CSDN CODE是国内非常优秀的源码托管平台，您可以使用CODE平台提供公有仓库和有限的私有仓库完成对代码的管理功能。
 
-以下是使用CODE平台与AVOS Cloud云代码结合的一个例子。
+以下是使用CODE平台与LeanCloud云代码结合的一个例子。
 首先在CODE上创建一个项目
 
 ![image](images/csdn_code1.png)
@@ -139,10 +139,10 @@ git remote add origin git@code.csdn.net:${yourname}/test.git
 git push -u origin master
 ```
 
-我们已经将源码成功推送到CODE平台，接下来到AVOS Cloud云代码的管理界面填写下你的git地址（请注意，一定要填写以`git@`开头的地址，我们暂不支持https协议clone源码）并点击save按钮保存：
+我们已经将源码成功推送到CODE平台，接下来到LeanCloud云代码的管理界面填写下你的git地址（请注意，一定要填写以`git@`开头的地址，我们暂不支持https协议clone源码）并点击save按钮保存：
 ![image](images/csdn_code2.png)
 
-添加deploy key到你的CODE平台项目上（deploy key是我们AVOS Cloud机器的ssh public key）
+添加deploy key到你的CODE平台项目上（deploy key是我们LeanCloud机器的ssh public key）
 保存到”项目设置””项目公钥”中，创建新的一项avoscloud:
 
 ![image](images/csdn_code3.png)
@@ -601,7 +601,7 @@ crontab的基本语法是
 
 云代码拥有超级权限，默认使用 master key 调用所有 API，因此会忽略 ACL 和 Class Permission 限制。
 
-如果在你的 node.js 环境里也想做到超级权限，请调用下列代码初始化 SDK: 
+如果在你的 node.js 环境里也想做到超级权限，请调用下列代码初始化 SDK:
 
 ```
 AV._initialize("app id", "app key", "master key");
@@ -852,7 +852,7 @@ app.use(avosExpressCookieSession({ cookie: { maxAge: 3600000 }}));
 `avos-express-cookie-session`支持的选项包括：
 
 * cookie  -- 可选参数，设置cookie属性，例如maxAge,secure等。我们会强制将httpOnly和signed设置为true。
-* fetchUser -- 是否自动fetch当前登录的AV.User对象。默认为false。如果设置为true，每个HTTP请求都将发起一次AVOS Cloud API调用来fetch用户对象。如果设置为false，默认只可以访问AV.User.current()当前用户的id属性，您可以在必要的时候fetch整个用户。通常保持默认的false就可以。
+* fetchUser -- 是否自动fetch当前登录的AV.User对象。默认为false。如果设置为true，每个HTTP请求都将发起一次LeanCloud API调用来fetch用户对象。如果设置为false，默认只可以访问AV.User.current()当前用户的id属性，您可以在必要的时候fetch整个用户。通常保持默认的false就可以。
 * key -- session在cookie中存储的key名称，默认为avos.sess。
 
 登录很简单：

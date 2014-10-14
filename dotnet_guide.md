@@ -1,31 +1,31 @@
 # .NET 指南
 
-如果您还没有安装 AVOS Cloud .NET SDK，请按照[快速入门引导](/start.html)来获得我们的 SDK，我们的 SDK 支持 .NET 4.5及更高版本。我们的 SDK 支持用.NET开发的 Windows Phone 8（已发布[正式版](https://www.nuget.org/packages/AVOSCloud.Phone/)），Windows Store（SDK开发中），Windows Desktop（已经在Nuget上发布了[公测版](https://www.nuget.org/packages/AVOSCloud.NetFx45/)）应用。
+如果您还没有安装 LeanCloud .NET SDK，请按照[快速入门引导](/start.html)来获得我们的 SDK，我们的 SDK 支持 .NET 4.5及更高版本。我们的 SDK 支持用.NET开发的 Windows Phone 8（已发布[正式版](https://www.nuget.org/packages/AVOSCloud.Phone/)），Windows Store（SDK开发中），Windows Desktop（已经在Nuget上发布了[公测版](https://www.nuget.org/packages/AVOSCloud.NetFx45/)）应用。
 
 ## 介绍
-AVOS Cloud的 .NET SDK依赖于微软提供的[基于任务的异步模式 (TAP)](http://msdn.microsoft.com/zh-cn/library/hh873175.aspx)的方式，所以您最好有.NET Framework 4.5的编程经验，或者对.NET Framework 4.5的新API有所了解。
+LeanCloud的 .NET SDK依赖于微软提供的[基于任务的异步模式 (TAP)](http://msdn.microsoft.com/zh-cn/library/hh873175.aspx)的方式，所以您最好有.NET Framework 4.5的编程经验，或者对.NET Framework 4.5的新API有所了解。
 
 ## 应用
-在 AVOS Cloud 的每个应用有自己的 ID 和客户端密钥，在客户端代码中应该用他们来初始化 SDK。
-AVOS Cloud 的每一个账户都可以创建多个应用。同一个应用可以分别在测试环境和生产环境部署不同的版本。
+在 LeanCloud 的每个应用有自己的 ID 和客户端密钥，在客户端代码中应该用他们来初始化 SDK。
+LeanCloud 的每一个账户都可以创建多个应用。同一个应用可以分别在测试环境和生产环境部署不同的版本。
 
 ### 初始化
-在 AVOS Cloud 中，几乎所有平台下的接口我们都尽量保持一致，目的就是为了降低开发者的开发成本，所以在初始化的时候我们几乎都是遵循在`AVClient`这个类下有一个叫做`Initialize`（不同平台的编程规范可能不一样，但是在 C# 语言风格中一般方法名的首字母都是大写）的方法，这个方法目前有2个重载：
+在 LeanCloud 中，几乎所有平台下的接口我们都尽量保持一致，目的就是为了降低开发者的开发成本，所以在初始化的时候我们几乎都是遵循在`AVClient`这个类下有一个叫做`Initialize`（不同平台的编程规范可能不一样，但是在 C# 语言风格中一般方法名的首字母都是大写）的方法，这个方法目前有2个重载：
 
 ```
   AVClient.Initialize(string applicationId, string appKey);
-  传入您的 `App ID` 以及 `App Key`，默认访问的是 AVOS Cloud 的中国节点。
+  传入您的 `App ID` 以及 `App Key`，默认访问的是 LeanCloud 的中国节点。
 ```
 
 ```
   AVClient.Initialize(string applicationId, string appKey, AVRegion region);
-  除了传入您的 `App ID` 以及 `App Key`之外，指定 AVOS Cloud 的服务节点，现在 AVRegion 仅支持 CN 以及 US 节点。
+  除了传入您的 `App ID` 以及 `App Key`之外，指定 LeanCloud 的服务节点，现在 AVRegion 仅支持 CN 以及 US 节点。
 ```
-注意，目前 AVOS Cloud 的节点上的数据是相互隔离的，换言之，您在中国节点上注册的应用无法访问美国节点，反之亦然。
+注意，目前 LeanCloud 的节点上的数据是相互隔离的，换言之，您在中国节点上注册的应用无法访问美国节点，反之亦然。
 
 ## 对象
 ### AVObject
-在 AVOS Cloud 上，数据存储是围绕 `AVObject` 进行的。每个 `AVObject` 都包含了与 JSON 兼容的 key-value 对应的数据。数据是 schema-free 的，你不需要在每个 AVObject 上提前指定存在哪些键，只要直接设定对应的 key-value 即可。
+在 LeanCloud 上，数据存储是围绕 `AVObject` 进行的。每个 `AVObject` 都包含了与 JSON 兼容的 key-value 对应的数据。数据是 schema-free 的，你不需要在每个 AVObject 上提前指定存在哪些键，只要直接设定对应的 key-value 即可。
 
 例如，您需要检测一个游戏中的分数对象。建立一个独立的 `AVObject` 即可 ：
 
@@ -35,7 +35,7 @@ score: 1337, playerName: "Steve", cheatMode: false
 key 必须是字母数字或下划线组成的字符串。值可以是字符串，数字，布尔值，甚至数组和字典。
 每个 `AVObject` 都必须有一个类（Class）名称，以便于您区分不同类型的数据。例如，我们可以将对应的分数称为 GameScore。我们建议的您将类和 key 按照 `NameYourClassesLikeThis` 以及 `nameYourKeysLikeThis` 这样的惯例命名。
 ### 保存对象
-接下来，你需要将上文中的 `GameScore` 存储到 AVOS Cloud 的服务。AVOS Cloud 的相关接口和 `IDictionary<string, object>` 类似，但只有调用 `SaveAsync` 方法时才会实际保存到服务器：
+接下来，你需要将上文中的 `GameScore` 存储到 LeanCloud 的服务。LeanCloud 的相关接口和 `IDictionary<string, object>` 类似，但只有调用 `SaveAsync` 方法时才会实际保存到服务器：
 
 ```
 AVObject gameScore =new AVObject("GameScore");
@@ -44,21 +44,21 @@ gameScore["playerName"] = "Neal Caffrey";
 Task saveTask = gameScore.SaveAsync();
 await saveTask;
 ```
-在运行此代码后，您应当了解保存动作是否已经生效 。为了确保数据被保存，您可以在 AVOS Cloud 上的[数据管理](/data.html?appid={{appid}})中查看您应用的数据。
+在运行此代码后，您应当了解保存动作是否已经生效 。为了确保数据被保存，您可以在 LeanCloud 上的[数据管理](/data.html?appid={{appid}})中查看您应用的数据。
 
 ```
 objectId: "53706cd1e4b0d4bef5eb32ab", score: 1337, playerName: "Neal Caffrey",
 createdAt:"2014-05-12T14:40:17.706Z", updatedAt:"2014-05-12T14:40:17.706Z"
 ```
 此处有两件事情需要特别注明。
-首先，在运行此代码之前，您不必配置或设置一个称为「GameScore」的新类。AVOS Cloud 会自动创建这个类。
+首先，在运行此代码之前，您不必配置或设置一个称为「GameScore」的新类。LeanCloud 会自动创建这个类。
 
-此外，为了更方便的使用 AVOS Cloud，还有其它几个字段您不需要事先指定。`objectId` 是为每个对象自动生成的唯一的标识符；`createdAt` 和 `updatedAt` 分别代表每个对象在 AVOS Cloud 中创建和最后修改的时间并会被自动填充。
+此外，为了更方便的使用 LeanCloud，还有其它几个字段您不需要事先指定。`objectId` 是为每个对象自动生成的唯一的标识符；`createdAt` 和 `updatedAt` 分别代表每个对象在 LeanCloud 中创建和最后修改的时间并会被自动填充。
 在您执行保存操作之前，这些字段不会被自动保存到 `AVObject` 中。
 ### 在后台工作
 关于异步编程，一直是每一种语言和平台上必须直面的问题，牵扯到线程，进程的问题大多数都是程序员很头疼的一个难点，但是在 .NET Framework 4 之后迎来了一种新的变革，那就是[基于任务的异步模式 (TAP)](http://msdn.microsoft.com/zh-cn/library/hh873175.aspx)。当然本篇指南的重点不是讲解TAP异步模式的好处，只是希望开发者能够足够的掌握TAP实现异步用法。
 
-AVOS Cloud .NET SDK 都采用了TAP的方式去实现把所有跟AVOS Cloud服务端交互的部分放在后台去进行，这样可以让开发者可以花更多时间去做客户端应该做的事情，而把跟服务端交互的各种进程管理放权给AVOS Cloud SDK 去做。
+LeanCloud .NET SDK 都采用了TAP的方式去实现把所有跟LeanCloud服务端交互的部分放在后台去进行，这样可以让开发者可以花更多时间去做客户端应该做的事情，而把跟服务端交互的各种进程管理放权给LeanCloud SDK 去做。
 ### 更新对象
 更新对象和保存对象有点相似，只是更新对象会覆盖同名属性的值，在调用`SaveAsync`之后会发送到服务端生效。
 
@@ -94,7 +94,7 @@ myObject.Remove("playerName");
 await myObject.SaveAsync();
 ```
 ### 关系
-软件程序就是抽象现实中的对象之间的的关系在计算机世界里面的解释和展现。有对象必然就会有对象之间的关系，在AVOS Cloud中也给出了传统关系型的解决方案，并且简化了代码，使得代码简洁易维护。
+软件程序就是抽象现实中的对象之间的的关系在计算机世界里面的解释和展现。有对象必然就会有对象之间的关系，在LeanCloud中也给出了传统关系型的解决方案，并且简化了代码，使得代码简洁易维护。
 假设这样一种场景，做一款时髦的相亲社交软件，男孩会在自己的资料里面标明自己喜欢的女生类型，于是有如下代码：
 
 ```
@@ -111,7 +111,7 @@ await beckham.SaveAsync ();//保存beckham的时候会自动将girlType也保存
 ```
 beckham["focusType"] = AVObject.CreateWithoutData("GirType", "5372d119e4b0d4bef5f036ae");
 ```
-值得注意的地方是，当需要从AVOS Cloud上读取数据的时候，默认的fetch方法是`不会加载关联数据类型的`，直到像如下代码执行之后，这些关联数据字段（如上实例中Boy的focusType字段）才会被实例化。
+值得注意的地方是，当需要从LeanCloud上读取数据的时候，默认的fetch方法是`不会加载关联数据类型的`，直到像如下代码执行之后，这些关联数据字段（如上实例中Boy的focusType字段）才会被实例化。
 
 ```
 AVObject focusType = beckham.Get<AVObject>("focusType");
@@ -254,7 +254,7 @@ await query.CountAsync().ContinueWith(t =>
 
 *查询数量限定的方法'Limit(int)'在CountAsync中不会生效。*
 ### 关系查询
-AVOS Cloud支持用关系`AVRelation`关联2个对象，当然也支持用关系查询来获取相关联的对象。
+LeanCloud支持用关系`AVRelation`关联2个对象，当然也支持用关系查询来获取相关联的对象。
 
 ```
 AVObject girlType = new AVObject ("GirType");
@@ -301,21 +301,21 @@ query = query.Include("focusType");
 query = query.Include("focusType.girls");
 ```
 ### CQL 查询
-Cloud Query Language（简称 CQL） 是 AVOS Cloud 为查询 API 定制的一套类似 SQL 查询语法的子集和变种，主要目的是降低大家学习 AVOS Cloud 查询的 API 的成本，可以使用传统的 SQL 语法来查询 AVOS Cloud 应用内的数据。
+Cloud Query Language（简称 CQL） 是 LeanCloud 为查询 API 定制的一套类似 SQL 查询语法的子集和变种，主要目的是降低大家学习 LeanCloud 查询的 API 的成本，可以使用传统的 SQL 语法来查询 LeanCloud 应用内的数据。
 
 在 .NET 中调用 CQL 查询很便捷，在 `AVQuery` 中有一个 `DoCloudQuery` 的静态方法，可以直接传入 sql 语句即可实现查询，如下：
 
 ```
 await AVQuery<AVObject>.DoCloudQuery("select * from GameScore where score=100");
 ```
-如此做即可，其后续的操作与以前习惯的 `AVQuery` 其他查询一样，只是我们提供了另一种方式便于长期累积关系型数据库知识的开发者可以迅速迁移到 AVOS Cloud 上，CQL 的语法和详细用法可以参照：[CQL 详细指南](https://cn.avoscloud.com/docs/cql_guide.html)
+如此做即可，其后续的操作与以前习惯的 `AVQuery` 其他查询一样，只是我们提供了另一种方式便于长期累积关系型数据库知识的开发者可以迅速迁移到 LeanCloud 上，CQL 的语法和详细用法可以参照：[CQL 详细指南](https://cn.avoscloud.com/docs/cql_guide.html)
 
 
 ## 用户
-移动互联时代，把握住用户是核心的价值，任何一款APP都或多或少需要了解用户并且可能为用户建立一定的关系。例如，在社交软件中最基本就是要求用户注册和登陆，哪怕是利用第三方（微博，QQ）API登陆，都应该为用户在当前系统中再注册一次。AVOS Cloud已经在SDK中内嵌了关于用户这个较为特殊的对象的一些最基本的操作和数据服务。
+移动互联时代，把握住用户是核心的价值，任何一款APP都或多或少需要了解用户并且可能为用户建立一定的关系。例如，在社交软件中最基本就是要求用户注册和登陆，哪怕是利用第三方（微博，QQ）API登陆，都应该为用户在当前系统中再注册一次。LeanCloud已经在SDK中内嵌了关于用户这个较为特殊的对象的一些最基本的操作和数据服务。
 
 ### 注册
-注册用户在AVOS Cloud SDK中极为简单，看如下实例代码：
+注册用户在LeanCloud SDK中极为简单，看如下实例代码：
 
 ```
 var userName = "demoUser";
@@ -384,7 +384,7 @@ await AVUser.LogInAsync(userName, pwd).ContinueWith(t =>
 });
 ```
 #### 手机号和密码登陆
-在短信服务上线之后，只要是`通过认证`的手机号可以当做用户名在 AVOS Cloud 服务端进行登陆，自然SDK里面也加入了相应的支持(WP SDK 自V1.1.0以及以后的版本都有支持)。它的调用与用户名登陆一样，只是方法名字不一样，代码如下:
+在短信服务上线之后，只要是`通过认证`的手机号可以当做用户名在 LeanCloud 服务端进行登陆，自然SDK里面也加入了相应的支持(WP SDK 自V1.1.0以及以后的版本都有支持)。它的调用与用户名登陆一样，只是方法名字不一样，代码如下:
 
 ```
 await AVUser.LogInByMobilePhoneNumberAsync (mobilePhone, password).ContinueWith (t =>
@@ -395,7 +395,7 @@ await AVUser.LogInByMobilePhoneNumberAsync (mobilePhone, password).ContinueWith 
 		});
 ```
 #### 手机号和短信验证码登陆
-在对客户端验证要求比较高的应用里面，也许有些应用要求支持短信随机的验证码作为临时的密码登陆，这个应用场景在现在已经被普遍的采用了，这种验证机制被认为是安全性高的一种机制，自然 AVOS Cloud 也给予了支持。它比前2种静态登陆的方法多了`发送短信验证码`这一步，具体代码如下：
+在对客户端验证要求比较高的应用里面，也许有些应用要求支持短信随机的验证码作为临时的密码登陆，这个应用场景在现在已经被普遍的采用了，这种验证机制被认为是安全性高的一种机制，自然 LeanCloud 也给予了支持。它比前2种静态登陆的方法多了`发送短信验证码`这一步，具体代码如下：
 
 ```
 //第一步，请求服务端发送6为数字的验证码到指定mobilePhoneNumber上。
@@ -433,12 +433,12 @@ catch(AVException avException)
 启用注册用户邮箱验证
 ```
 
-这样在注册用户的时候，AVOS Cloud默认就会发送一封邮件，进行验证，邮件的模板也可以在[邮件模板](/app.html?appid={{appid}}#/email)中进行设置。
+这样在注册用户的时候，LeanCloud默认就会发送一封邮件，进行验证，邮件的模板也可以在[邮件模板](/app.html?appid={{appid}}#/email)中进行设置。
 
 注意，验证过的用户，TA的`emailVerified`将会置成`true`，反之`false`，但是如果**未启用注册用户邮箱验证**，这个字段会为空。
 
 ### 手机号认证
-相对于邮箱认证，手机号认证的过程稍微需要多一点代码，如果当您的应用在注册的时候没有开启短信验证，伴随业务发展，发现需要验证用户的手机，AVOS Cloud正好提供了这一接口。
+相对于邮箱认证，手机号认证的过程稍微需要多一点代码，如果当您的应用在注册的时候没有开启短信验证，伴随业务发展，发现需要验证用户的手机，LeanCloud正好提供了这一接口。
 
 ```
 //调用的前提是，改手机号已经与已存在的用户有关联(_User表中的mobilePhoneNumber即可关联手机，至于如何关联取决于客户端的业务逻辑)
@@ -452,7 +452,7 @@ await AVUser.RequestMobilePhoneVerifyAsync ("18688888888").ContinueWith(t=>
 
 验证成功后，用户的`mobilePhoneVerified`属性变为true，并且调用云代码的`AV.Cloud.onVerifed('sms', function)`方法。
 
-**以上只是针对_User表的一个属性mobilePhoneNumber进行验证，但是存在另一种需求，类似于支付宝在进行交易的时候会要求进行实时的短信认证，这一机制现在已经普遍存在于各种应用中进行敏感操作的首选，并不局限于注册登录这种通用功能，AVOS Cloud 也提供了这一机制**
+**以上只是针对_User表的一个属性mobilePhoneNumber进行验证，但是存在另一种需求，类似于支付宝在进行交易的时候会要求进行实时的短信认证，这一机制现在已经普遍存在于各种应用中进行敏感操作的首选，并不局限于注册登录这种通用功能，LeanCloud 也提供了这一机制**
 
 
 #### 手机短信针对应用自定义操作的验证
@@ -512,7 +512,7 @@ public void VerifySMSCode(string code)
 }
 ```
 ### 当前用户
-诚如所有移动应用一样当前用户一直是被在客户端视作持久化存储处理，比如手机QQ等流行的App，AVOS Cloud必然也会如此为开发者解决持久化存储当前用户，只要调用了`登陆`相关的接口，当前用户就会被持久化存储在客户端。
+诚如所有移动应用一样当前用户一直是被在客户端视作持久化存储处理，比如手机QQ等流行的App，LeanCloud必然也会如此为开发者解决持久化存储当前用户，只要调用了`登陆`相关的接口，当前用户就会被持久化存储在客户端。
 
 ```
 var user = AVUser.CurrentUser;
@@ -525,7 +525,7 @@ var user = AVUser.CurrentUser;	//如此做就会抛出异常，因为登出之�
 
 ### 重置密码
 #### 邮箱重置
-密码管理一直是移动应用的比较通用又比较繁琐的事情，AVOS Cloud也为开发者提供了一套通用的解决方案，将开发者从繁琐中解脱出来。
+密码管理一直是移动应用的比较通用又比较繁琐的事情，LeanCloud也为开发者提供了一套通用的解决方案，将开发者从繁琐中解脱出来。
 当用户忘记密码的时候，开发者完全可以在客户端做一个简单的按钮，然后做一些友好的页面，但是真正实现重置密码的功能只需要如下一段代码：
 ```
 await AVUser.RequestPasswordResetAsync(user.Email);
@@ -561,7 +561,7 @@ await AVUser.Query.WhereEqualTo("gender", "female").FindAsync().ContinueWith(t =
 
 
 ### 用户安全数据的认证规则
-很多时候，就算是开发者也不要轻易修改用户的基本信息，比如用户的一些比较敏感的个人信息，例如手机号，社交账号等，这些都应该让用户在App中自行修改，所以为了用户数据的数据有且仅有自己在登陆的情况下得以修改，AVOS Cloud服务端对所有针对 `AVUser` 对象的数据做了验证。
+很多时候，就算是开发者也不要轻易修改用户的基本信息，比如用户的一些比较敏感的个人信息，例如手机号，社交账号等，这些都应该让用户在App中自行修改，所以为了用户数据的数据有且仅有自己在登陆的情况下得以修改，LeanCloud服务端对所有针对 `AVUser` 对象的数据做了验证。
 
 ```
 AVUser user = null;
@@ -599,10 +599,10 @@ await AVUser.LogInAsync("demoUser", "asvscloud").ContinueWith(t =>
 
 任何一个成熟的并且可控的系统中，必然会存在权限控制的问题，经典的案例就是论坛的斑竹可以删帖而普通游客只能看帖，如此一来，发展出来的[基于角色的访问控制](http://zh.wikipedia.org/wiki/%E4%BB%A5%E8%A7%92%E8%89%B2%E7%82%BA%E5%9F%BA%E7%A4%8E%E7%9A%84%E5%AD%98%E5%8F%96%E6%8E%A7%E5%88%B6)被普遍应用于各类传统的软件中，即便是互联网时代的今天，它依然是可以很简便地帮助开发者以及使用者理解和应用。
 
-基于以上这一点，AVOS Cloud在开发者创建一个应用的时候，默认地在服务端为该应用添加了一张`_Role`的表，开发者可以在[数据管理](/data.html?appid={{appid}})中看到这张表。
+基于以上这一点，LeanCloud在开发者创建一个应用的时候，默认地在服务端为该应用添加了一张`_Role`的表，开发者可以在[数据管理](/data.html?appid={{appid}})中看到这张表。
 
 ### 默认访问权限
-在没有显式指定的情况下，AVOS Cloud 中的每一个对象都会有一个默认的 ACL 值。这个值代表了，所有的用户，对这个对象都是可读可写的。此时你可以在数据管理的表中 ACL 属性中看到这样的值:
+在没有显式指定的情况下，LeanCloud 中的每一个对象都会有一个默认的 ACL 值。这个值代表了，所有的用户，对这个对象都是可读可写的。此时你可以在数据管理的表中 ACL 属性中看到这样的值:
 
 ```
   {"*":{"read":true,"write":true}}
@@ -823,7 +823,7 @@ AVFile构造函数的第一个参数指定文件名称，第二个构造函数�
 
 ### 本地文件
 
-在.NET SDK中，如果很清楚地知道某一个文件所存在的路径，比如在游戏中上传一张游戏截图到AVOS Cloud中，可以通过SDK直接获取指定的文件，上传到AVOS Cloud中。
+在.NET SDK中，如果很清楚地知道某一个文件所存在的路径，比如在游戏中上传一张游戏截图到LeanCloud中，可以通过SDK直接获取指定的文件，上传到LeanCloud中。
 
 ```
 AVFile localFile = AVFile.CreateFileWithLocalPath("screenshot.PNG", Path.Combine("<Local Folder Path>", "screenshot.PNG"));
@@ -875,7 +875,7 @@ await AVFile.GetFileWithObjectIdAsync("538ed669e4b0e335f6102809").ContinueWith(t
    });
 ```
 ## 调用云代码
-云代码是 AVOS Cloud 提供给开发者自定义服务端逻辑的解决方案，例如想在用户注册的时候，服务端统一给用户分配随机的昵称，这一操作就可以用云代码实现。具体关于云代码的一些相关概念和操作可以先查看[云代码指南](https://cn.avoscloud.com/docs/cloud_code_guide.html)。
+云代码是 LeanCloud 提供给开发者自定义服务端逻辑的解决方案，例如想在用户注册的时候，服务端统一给用户分配随机的昵称，这一操作就可以用云代码实现。具体关于云代码的一些相关概念和操作可以先查看[云代码指南](https://cn.avoscloud.com/docs/cloud_code_guide.html)。
 
 调用云代码在SDK中比较方便，它是`AVCloud`的静态方法，全局均可调用。
 

@@ -1,9 +1,9 @@
 # Unity 统计 SDK 开发指南
-AVOS Cloud Unity SDK 提供一套接口方便开发者可以对了解游戏在客户端运行时的一些参数或者是指标。
+LeanCloud Unity SDK 提供一套接口方便开发者可以对了解游戏在客户端运行时的一些参数或者是指标。
 
 ## 下载 SDK
 
-您可以从 [SDK 下载页面](https://cn.avoscloud.com/docs/sdk_down.html) 下载AVOS Cloud Unity SDK。
+您可以从 [SDK 下载页面](https://cn.avoscloud.com/docs/sdk_down.html) 下载LeanCloud Unity SDK。
 
 ## 使用统计功能
 在使用统计SDK之前需要初始化应用的参数，参数包括App ID以及App Key ，您可以在[设置](app.html?appid={{appid}}#/key)查询到这2个参数，如果在应用的其他地方已经进行初始化了，无需重复。
@@ -19,7 +19,7 @@ AVClient.Initialize("{{appid}}", "{{appkey}}");
 
 ##  游戏场景访问统计
 
-使用Unity开发游戏的时候必然会遇到需要统计玩家在各个游戏场景进入的时间，退出的时间等信息，以供开发者提高游戏体验以及优化游戏资源分配的参数，AVOS Cloud Unity SDK已经提供了这样的方法。
+使用Unity开发游戏的时候必然会遇到需要统计玩家在各个游戏场景进入的时间，退出的时间等信息，以供开发者提高游戏体验以及优化游戏资源分配的参数，LeanCloud Unity SDK已经提供了这样的方法。
 
 比如在主界面点击“进入副本”按钮，开始加载副本场景：
 
@@ -58,7 +58,7 @@ void OnGUI()//BT场景中的一个Behaviour中的OnGUI事件
 public static void TrackEvent(string name);
 ```
 
-除了基本统计分析功能外，AVOS Cloud Unity SDK 还支持您自定义的事件分析，例如您可以统计玩家在游戏中点击商店的动作，购买东西的动作。
+除了基本统计分析功能外，LeanCloud Unity SDK 还支持您自定义的事件分析，例如您可以统计玩家在游戏中点击商店的动作，购买东西的动作。
 
 
 ```

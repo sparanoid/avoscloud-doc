@@ -2,8 +2,8 @@
 
 <div class="home-full-width-content">
   <div class="doc-home-title">
-    <h1 class="font-logo">AVOS Cloud Documentation</h1>
-    <h4>AVOS Cloud 官方开发者文档</h4>
+    <h1 class="font-logo">LeanCloud Documentation</h1>
+    <h4>LeanCloud 官方开发者文档</h4>
   </div>
   <!-- .doc-home-title -->
 
@@ -146,7 +146,7 @@
           <li><a href="rest_api.html">REST API 详解</a></li>
           <li><a href="error_code.html">REST API 错误代码详解</a></li>
           <li><a href="cql_guide.html">CQL 查询语言详解</a></li>
-          <li><a href="oauth2_provider.html">AVOS Cloud 开放平台接入</a></li>
+          <li><a href="oauth2_provider.html">LeanCloud 开放平台接入</a></li>
         </ul>
       </div>
     </div>

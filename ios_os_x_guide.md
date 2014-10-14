@@ -1,15 +1,15 @@
 
 # iOS/OS X 指南
 
-如果您还没有安装 AVOS Cloud iOS SDK，请按照[快速入门引导](/start.html)来获得我们的 SDK，并在 Xcode 中熟悉和允许示例代码。我们的 SDK 支持 iOS 4.3 及更高版本。
+如果您还没有安装 LeanCloud iOS SDK，请按照[快速入门引导](/start.html)来获得我们的 SDK，并在 Xcode 中熟悉和允许示例代码。我们的 SDK 支持 iOS 4.3 及更高版本。
 
 如果您希望从项目中学习，请前往 [iOS-SDK-Demos](https://github.com/avoscloud/iOS-SDK-demos) 。
 
 ## 介绍
 
-AVOS Cloud 是一个完整的平台解决方案，为您的应用提供全方位的后端服务。我们的目标是让你不需要进行后端开发及服务器运维等工作就可以开发和发布成熟的应用。
+LeanCloud 是一个完整的平台解决方案，为您的应用提供全方位的后端服务。我们的目标是让你不需要进行后端开发及服务器运维等工作就可以开发和发布成熟的应用。
 
-如果你熟悉像 Ruby on Rails 这样的 Web 框架，AVOS Cloud 将会十分容易上手。我们在设计 AVOS Cloud 时应用了许多与之相同的原则。如果你之前使用过 Parse 或类似的后端服务，会发现我们在设计 API 时尽可能与之保持兼容，让应用非常容易从其他服务迁移到 AVOS Cloud，开发者在使用我们的 SDK 时也会得心应手。
+如果你熟悉像 Ruby on Rails 这样的 Web 框架，LeanCloud 将会十分容易上手。我们在设计 LeanCloud 时应用了许多与之相同的原则。如果你之前使用过 Parse 或类似的后端服务，会发现我们在设计 API 时尽可能与之保持兼容，让应用非常容易从其他服务迁移到 LeanCloud，开发者在使用我们的 SDK 时也会得心应手。
 
 ## 使用 Cocopods 安装SDK
 
@@ -55,15 +55,15 @@ pod 'AVOSCloudSNS'
 
 ## 应用
 
-在 AVOS Cloud 的每个应用有自己的 ID 和客户端密钥，在客户端代码中应该用他们来初始化 SDK。
+在 LeanCloud 的每个应用有自己的 ID 和客户端密钥，在客户端代码中应该用他们来初始化 SDK。
 
-AVOS Cloud 的每一个账户都可以创建多个应用。同一个应用可以分别在测试环境和生产环境部署不同的版本。
+LeanCloud 的每一个账户都可以创建多个应用。同一个应用可以分别在测试环境和生产环境部署不同的版本。
 
 ## 对象
 
 ### AVObject
 
-在 AVOS Cloud 上，数据存储是围绕 `AVObject` 进行的。每个 `AVObject` 都包含了与 JSON 兼容的 key-value 对应的数据。数据是 schema-free 的，你不需要在每个 AVObject 上提前指定存在哪些键，只要直接设定对应的 key-value 即可。
+在 LeanCloud 上，数据存储是围绕 `AVObject` 进行的。每个 `AVObject` 都包含了与 JSON 兼容的 key-value 对应的数据。数据是 schema-free 的，你不需要在每个 AVObject 上提前指定存在哪些键，只要直接设定对应的 key-value 即可。
 
 例如，您需要检测一个游戏中的分数对象。建立一个独立的 `AVObject` 即可 ：
 
@@ -79,7 +79,7 @@ key 必须是字母数字或下划线组成的字符串，自定义的键不能�
 
 ### 保存对象
 
-接下来，你需要将上文中的 `GameScore` 存储到 AVOS Cloud 的服务。AVOS Cloud 的相关接口和 `NSMutableDictionary` 类似，但只有调用 `save` 方法时才会实际保存到服务器：
+接下来，你需要将上文中的 `GameScore` 存储到 LeanCloud 的服务。LeanCloud 的相关接口和 `NSMutableDictionary` 类似，但只有调用 `save` 方法时才会实际保存到服务器：
 
 ```
 AVObject *gameScore = [AVObject objectWithClassName:@"GameScore"];
@@ -89,7 +89,7 @@ AVObject *gameScore = [AVObject objectWithClassName:@"GameScore"];
 [gameScore save];
 ```
 
-在运行此代码后，您应当了解保存动作是否已经生效 。为了确保数据被保存，您可以在 AVOS Cloud 上的[数据管理](/data.html?appid={{appid}})中查看您应用的数据。
+在运行此代码后，您应当了解保存动作是否已经生效 。为了确保数据被保存，您可以在 LeanCloud 上的[数据管理](/data.html?appid={{appid}})中查看您应用的数据。
 
 您应该可以在 `GameScore` 数据列表中看到下面的对象：
 
@@ -99,15 +99,15 @@ createdAt:"2013-06-01T04:07:30.32Z", updatedAt:"2013-06-01T04:07:30.32Z"
 ```
 
 此处有两件事情需要特别注明。
-首先，在运行此代码之前，您不必配置或设置一个称为「GameScore」的新类。AVOS Cloud 会自动创建这个类。
+首先，在运行此代码之前，您不必配置或设置一个称为「GameScore」的新类。LeanCloud 会自动创建这个类。
 
-此外，为了更方便的使用 AVOS Cloud，还有其它几个字段您不需要事先指定。`objectId` 是为每个对象自动生成的唯一的标识符；`createdAt` 和 `updatedAt` 分别代表每个对象在 AVOS Cloud 中创建和最后修改的时间并会被自动填充。
+此外，为了更方便的使用 LeanCloud，还有其它几个字段您不需要事先指定。`objectId` 是为每个对象自动生成的唯一的标识符；`createdAt` 和 `updatedAt` 分别代表每个对象在 LeanCloud 中创建和最后修改的时间并会被自动填充。
 在您执行保存操作之前，这些字段不会被自动保存到 `AVObject` 中。
 
 
 ### 检索对象
 
-如果你觉得将数据保存到 AVOS Cloud 是简洁而优雅的，获取数据更是如此。如果已知 `objectId`，就可以使用 `AVQuery` 得到对应的 `AVObject`：
+如果你觉得将数据保存到 LeanCloud 是简洁而优雅的，获取数据更是如此。如果已知 `objectId`，就可以使用 `AVQuery` 得到对应的 `AVObject`：
 
 ```
 AVQuery *query = [AVQuery queryWithClassName:@"GameScore"];
@@ -140,7 +140,7 @@ NSDate *createdAt = gameScore.createdAt;
 
 在 iOS 或 OS X 中，大部分代码是在主线程中运行的。不过，在主线程中访问网络时，您的应用程序可能会常常遇到卡顿或者崩溃的现象。
 
-由于 save 和 getObjectWithId 这两个方法会访问网络，所以不应当在主线程上运行。处理这种情况是件十分麻烦的事情。为此，AVOS Cloud 提供了辅助功能，能够覆盖绝大多数应用场景。
+由于 save 和 getObjectWithId 这两个方法会访问网络，所以不应当在主线程上运行。处理这种情况是件十分麻烦的事情。为此，LeanCloud 提供了辅助功能，能够覆盖绝大多数应用场景。
 
 例如， 只需使用 saveInBackground，即可在后台线程中保存我们以前的 `AVObject`：
 
@@ -179,7 +179,7 @@ NSDate *createdAt = gameScore.createdAt;
                              selector:@selector(saveCallback:error:)];
 ```
 
-AVOS Cloud 在网络接入时将不会阻塞调用线程，同时在主线程上块或回调将维持正常。这意味着，网络访问不会对 UI 产生不良影响，并且您仍然可以在回调中对 UI 进行操作。
+LeanCloud 在网络接入时将不会阻塞调用线程，同时在主线程上块或回调将维持正常。这意味着，网络访问不会对 UI 产生不良影响，并且您仍然可以在回调中对 UI 进行操作。
 
 AVQuery也遵循相同的模式。如果您想要从 GameScoreobject 获取并记录得分，同时确保不阻塞主线程：
 
@@ -222,7 +222,7 @@ AVQuery *query = [AVQuery queryWithClassName:@"GameScore"];
 
 大多数保存功能可以立刻执行，并告知您的应用程序「保存完毕」。不过假设您不需要知道保存完成的时间，可以使用 saveEventually 作为替代品。
 
-它的优点在于，如果用户目前尚未接入网络，saveEventually 将存储设备中的数据，并将在网络连接恢复后上传。如果您的应用在网络恢复之前就被关闭了，下一次打开应用程序 AVOS Cloud 会再次尝试连接。所有 saveEventually（deleteEventually）的相关调用将按照调用的顺序依次执行。因此，调用 saveEventually 的对象多次是安全的。
+它的优点在于，如果用户目前尚未接入网络，saveEventually 将存储设备中的数据，并将在网络连接恢复后上传。如果您的应用在网络恢复之前就被关闭了，下一次打开应用程序 LeanCloud 会再次尝试连接。所有 saveEventually（deleteEventually）的相关调用将按照调用的顺序依次执行。因此，调用 saveEventually 的对象多次是安全的。
 
 ```
 // Create the object.
@@ -262,12 +262,12 @@ AVObject *gameScore = [AVObject objectWithClassName:@"GameScore"];
 }];
 ```
 
-客户端会自动计算出哪些数据已经改变，并且将修改过的的字段发送到 AVOS Cloud。您不必担心未更新的数据产生变动。
+客户端会自动计算出哪些数据已经改变，并且将修改过的的字段发送到 LeanCloud。您不必担心未更新的数据产生变动。
 
 ### 计数器
 
 上面是一个常见的使用案例。在这个例子中 `score` 字段是一个计数器，我们需要不断更新玩家的最新得分。使用上述方法之后，这个计数器运行良好，但如果有多个客户端试图更新同一个计数器，上面的方法就十分繁琐并且容易出现问题。
-为了帮助计数器类的数据存储，AVOS Cloud 在任何数字字段中提供原子递增（或递减）的方法。故相同的更新可以改写为：
+为了帮助计数器类的数据存储，LeanCloud 在任何数字字段中提供原子递增（或递减）的方法。故相同的更新可以改写为：
 
 ```
 [gameScore incrementKey:@"score"];
@@ -276,12 +276,12 @@ AVObject *gameScore = [AVObject objectWithClassName:@"GameScore"];
 
 您也可以使用 incrementKey: byAmount 来增加字段中的数字。
 
-对于计数器，在某些时候，您可能希望马上知道目前后端最新的数据，而不再使用一次fetch操作，AVOS Cloud为您提供了一个fetchWhenSave属性，您可以设置此属性为true，当您进行保存操作时，AVOS Cloud会自动返回目前最新的数值。
+对于计数器，在某些时候，您可能希望马上知道目前后端最新的数据，而不再使用一次fetch操作，LeanCloud为您提供了一个fetchWhenSave属性，您可以设置此属性为true，当您进行保存操作时，LeanCloud会自动返回目前最新的数值。
 
 
 ### 数组
 
-为了更好的存储数组数据，AVOS Cloud 提供了三种不同的操作来自动变更一个数组字段：
+为了更好的存储数组数据，LeanCloud 提供了三种不同的操作来自动变更一个数组字段：
 
 * addObject：forKey： 和 addObjectsFromArray：forKey 将指定的对象附加到数组的末尾。
 * addUniqueObject：forKey 和 addUniqueObjectsFromArray：forKey：如果您不确定某个对象是否已经包含在一个数组字段中，您可以使用此操作将对象添加到对应字段。插入的位置是随机的。
@@ -296,7 +296,7 @@ AVObject *gameScore = [AVObject objectWithClassName:@"GameScore"];
 
 ###删除对象
 
-从 AVOS Cloud 中删除一个对象：
+从 LeanCloud 中删除一个对象：
 
 ```
 [myObject deleteInBackground];
@@ -310,7 +310,7 @@ AVObject *gameScore = [AVObject objectWithClassName:@"GameScore"];
 // After this, the playerName field will be empty
 [myObject removeObjectForKey:@"playerName"];
 
-// Saves the field deletion to AVOS Cloud
+// Saves the field deletion to LeanCloud
 [myObject saveInBackground];
 ```
 
@@ -318,7 +318,7 @@ AVObject *gameScore = [AVObject objectWithClassName:@"GameScore"];
 
 ### 关系型数据
 
-对象可以与其他对象的产生关系。为了模拟这种行为，任何 AVObject 均可以作为另一个 `AVObject` 的属性，在其他AVObjects中使用。在内部，AVOS Cloud 框架会将引用到的对象储存到同一个地方，以保持一致性。
+对象可以与其他对象的产生关系。为了模拟这种行为，任何 AVObject 均可以作为另一个 `AVObject` 的属性，在其他AVObjects中使用。在内部，LeanCloud 框架会将引用到的对象储存到同一个地方，以保持一致性。
 
 关系最主要的特性在于它可以非常容易动态扩展（对于数组而言），同时它具备很好的查询能力，数组在查询上的功能比较有限，而且使用起来不容易。数组和关系都可以用来存储一对多的映射。
 
@@ -419,7 +419,7 @@ AVQuery * query = [AVRelation revreseQuery:user.className relationKey:@"myLikes"
 
 ### 数据类型
 
-到目前为止，我们已经用过数据类型有 `NSString`，`NSNumber`， 以及 `AVObject`。AVOS Cloud 还支持  `NSDate`，`NSData`，和 `NSNull`。
+到目前为止，我们已经用过数据类型有 `NSString`，`NSNumber`， 以及 `AVObject`。LeanCloud 还支持  `NSDate`，`NSData`，和 `NSNull`。
 你可以嵌套 `NSDictionary` 和 `NSArray` 这两类对象，这样就可在一个单独的 `AVObject` 中储存更多的结构化数据。
 
 以下是一些例子：
@@ -448,11 +448,11 @@ AVObject *bigObject = [AVObject objectWithClassName:@"BigObject"];
 
 我们不推荐在 `AVObject` 中使用 `NSData` 字段来储存大块的二进制数据，比如图片或者整个文件。每个 `AVObject` 的大小都不应超过128KB。如果你需要储存更多的数据，我们建议你使用 `AVFile`。更多细节可以查看相关指南。
 
-如果你希望了解更多 AVOS Cloud 如何解析处理数据的信息，请查看我们的文档「数据与安全」一节。
+如果你希望了解更多 LeanCloud 如何解析处理数据的信息，请查看我们的文档「数据与安全」一节。
 
 ## 查询
 
-我们已经看到了，一个 `AVQuery` 如何通过 `getObjectWithId:` 从 AVOS Cloud 中检索单个 `AVObject`。 此外，还有许多种检索 `AVQuery` 数据的方法 —— 你可以一次检索许多对象，在你希望检索的对象上设定条件，自动缓存查询结果来避免你亲自写这部分的代码。当然除此之外，还有更多方法。
+我们已经看到了，一个 `AVQuery` 如何通过 `getObjectWithId:` 从 LeanCloud 中检索单个 `AVObject`。 此外，还有许多种检索 `AVQuery` 数据的方法 —— 你可以一次检索许多对象，在你希望检索的对象上设定条件，自动缓存查询结果来避免你亲自写这部分的代码。当然除此之外，还有更多方法。
 
 ### 基本查询
 
@@ -790,7 +790,7 @@ AVObject * result = [query getFirstObject];
 它将只返回指定 key 对应的 value，而不会返回所有数据，这样有助于节省网络带宽和计算资源。
 
 ### 缓存查询
-在磁盘上缓存请求结果通常是很有用的，这允许你在设备离线时、应用刚刚开始时、网络请求尚未完成时显示数据。当它占用太多空间时，AVOS Cloud会自动刷新缓存。
+在磁盘上缓存请求结果通常是很有用的，这允许你在设备离线时、应用刚刚开始时、网络请求尚未完成时显示数据。当它占用太多空间时，LeanCloud会自动刷新缓存。
 
 默认的查询行为不使用缓存,但是您可以通过设置 `query.cachePolicy` 启用缓存。例如，当网络不可用时，尝试网络连接并同时取回缓存的数据:
 
@@ -818,7 +818,7 @@ query.cachePolicy = kPFCachePolicyNetworkElseCache;
 [query findObjectsInBackgroundWithTarget:self
                                 selector:@selector(findCallback:error:)];
 ```
-AVOS Cloud 提供了几个不同的缓存策略：
+LeanCloud 提供了几个不同的缓存策略：
 
 * `kPFCachePolicyIgnoreCache`
 
@@ -905,7 +905,7 @@ AVQuery *query = [AVQuery orQueryWithSubqueries:[NSArray arrayWithObjects:fewWin
     NSString *cql = [NSString stringWithFormat:@"select * from %@", @"ATestClass"];
     AVCloudQueryResult *result = [AVQuery doCloudQueryWithCQL:cql];
     NSLog(@"results:%@", result.results);
-    
+
     cql = [NSString stringWithFormat:@"select count(*) from %@", @"ATestClass"];
     result = [AVQuery doCloudQueryWithCQL:cql];
     NSLog(@"count:%lu", (unsigned long)result.count);
@@ -914,7 +914,7 @@ AVQuery *query = [AVQuery orQueryWithSubqueries:[NSArray arrayWithObjects:fewWin
 
 ## 子类化
 
-AVOS Cloud 设计的目标是让你的应用尽快的运行起来. 你可以通过`AVObject`访问到所有的数据还可以通过`objectForKey:`来获取任意字段. 在成熟的代码中,子类化有很多优势,包括减少代码,扩展性和支持自动补全. 子类化是可选的, 可以参照下面的例子:
+LeanCloud 设计的目标是让你的应用尽快的运行起来. 你可以通过`AVObject`访问到所有的数据还可以通过`objectForKey:`来获取任意字段. 在成熟的代码中,子类化有很多优势,包括减少代码,扩展性和支持自动补全. 子类化是可选的, 可以参照下面的例子:
 
     AVObject *student=[AVObject objectWithClassName:@"Student"];
     [student setObject:@"小明" forKey:@"name"];
@@ -1007,7 +1007,7 @@ AVOS Cloud 设计的目标是让你的应用尽快的运行起来. 你可以通�
 
   ......
 ```
-  
+
 
 这样就可以通过 `student.age=19` 这样的方式来读写age这个字段了, 当然也可以这样 `[student setAge:19]`.
 
@@ -1091,11 +1091,11 @@ AVOS Cloud 设计的目标是让你的应用尽快的运行起来. 你可以通�
 ```
 
 ## ACL权限控制
-ACL(Access Control List)是最灵活和简单的应用数据安全管理方法。通俗的解释就是为每一个数据创建一个访问的白名单列表，只有在名单上的用户(AVUser)或者具有某种角色(AVRole)的用户才能被允许访问。为了更好地保证用户数据安全性，AVOS Cloud表中每一张都有一个ACL列。当然，AVOS Cloud还提供了进一步的读写权限控制。一个 User 必须拥有读权限（或者属于一个拥有读权限的 Role）才可以获取一个对象的数据，同时，一个 User 需要写权限（或者属于一个拥有写权限的 Role）才可以更改或者删除一个对象。
-以下列举了几种在AVOS Cloud常见的ACL使用范例：
+ACL(Access Control List)是最灵活和简单的应用数据安全管理方法。通俗的解释就是为每一个数据创建一个访问的白名单列表，只有在名单上的用户(AVUser)或者具有某种角色(AVRole)的用户才能被允许访问。为了更好地保证用户数据安全性，LeanCloud表中每一张都有一个ACL列。当然，LeanCloud还提供了进一步的读写权限控制。一个 User 必须拥有读权限（或者属于一个拥有读权限的 Role）才可以获取一个对象的数据，同时，一个 User 需要写权限（或者属于一个拥有写权限的 Role）才可以更改或者删除一个对象。
+以下列举了几种在LeanCloud常见的ACL使用范例：
 
 ### 默认访问权限
-在没有显式指定的情况下，AVOS Cloud中的每一个对象都会有一个默认的ACL值。这个值代表了，所有的用户，对这个对象都是可读可写的。此时你可以在数据管理的表中ACL属性中看到这样的值:
+在没有显式指定的情况下，LeanCloud中的每一个对象都会有一个默认的ACL值。这个值代表了，所有的用户，对这个对象都是可读可写的。此时你可以在数据管理的表中ACL属性中看到这样的值:
 
 ```
     {"*":{"read":true,"write":true}}
@@ -1108,7 +1108,7 @@ ACL(Access Control List)是最灵活和简单的应用数据安全管理方法�
     AVACL *acl = [AVACL ACL];
     [acl setPublicReadAccess:YES];
     [acl setPublicWriteAccess:YES];
-    
+
 ```
 当然正如上文提到的，默认的ACL并不需要显式的指定。
 
@@ -1123,10 +1123,10 @@ ACL(Access Control List)是最灵活和简单的应用数据安全管理方法�
     [acl setWriteAccess:YES forUser:[AVUser currentUser]]; //而这里设置了文件创建者的写权限
 
     AVObject * object = [AVObject objectWithClassName:@"iOSAclTest"];
-    
+
     object.ACL=acl;
     [object save];
-    
+
 ```
 
 当然用户也会上传一些隐私文件,只有这些文件的创建者才对这些文件拥有读写权限
@@ -1145,29 +1145,29 @@ ACL(Access Control List)是最灵活和简单的应用数据安全管理方法�
 ```
     AVObect *salary = [AVObject objectWithClassName:@"Salary"];
     [salary setObject:@(2000000) forKey:@"value"];
-    
+
     //这里为了方便说明, 直接声明了变量, 但没有实现
     AVUser *boss;//假设此处为老板
     AVUser *hrWang;  //人事小王
     AVUser *me; //我们就在文档里爽一爽吧
     AVUser *cashierZhou; //出纳老周
-    
-    
+
+
     AVACL *acl = [AVACL ACL];
-    
+
     //4个人都有可读权限
     [acl setReadAccess:YES forUser:boss];
     [acl setReadAccess:YES forUser:hrWang];
     [acl setReadAccess:YES forUser:cashierZhou];
     [acl setReadAccess:YES forUser:me];
-    
+
     //只有2个人可写
     [acl setWriteAccess:YES forUser:boss];
     [acl setWriteAccess:YES forUser:hrWang];
-    
+
     [salary setACL:acl];
     [salary save];
-    
+
 
 ```
 
@@ -1178,35 +1178,35 @@ ACL(Access Control List)是最灵活和简单的应用数据安全管理方法�
 ```
     AVObect *salary = [AVObject objectWithClassName:@"Salary"];
     [salary setObject:@(2000000) forKey:@"value"];
-    
+
     //这里为了方便说明, 直接声明了变量, 但没有实现
     AVUser *boss;//假设此处为老板
     AVUser *hrWang;  //人事小王
     AVUser *me; //我们就在文档里爽一爽吧
     AVUser *cashierZhou; //出纳老周
     AVUser *cashierGe;//出纳小葛
-    
+
     //这段代码可能放在员工管理界面更恰当，但是为了示意，我们就放在这里
     AVRole *hr =[AVRole roleWithName:@"hr"];
     AVRole *cashier = [AVRole roleWithName:@"cashier"];
-    
+
     [[hr users] addObject:hrWang];
     [hr save];
-    
+
     [[cashier users] addObject:cashierZhou];//此处对应的是AVRole里面有一个叫做users的Relation字段
     [[cashier users] addObject:cashierGe];
     [cashier save];
-    
+
     AVACL *acl = [AVACL ACL];
     [acl setReadAccess:YES forUser:boss];//老板假设只有一个
     [acl setReadAccess:YES forUser:me];
-    
+
     [acl setReadAccess:YES forRole:hr];
     [acl setReadAccess:YES forRole:cashier];
-    
+
     [acl setWriteAccess:YES forUser:boss];
     [acl setWriteAccess:YES forRole:hr];
-    
+
     [salary setACL:acl];
     [salary save];
 ```
@@ -1223,34 +1223,34 @@ ACL(Access Control List)是最灵活和简单的应用数据安全管理方法�
     AVRole *androidTeam = [AVRole roleWithName:@"AndroidTeam"];
     AVRole *iOSTeam = [AVRole roleWithName:@"IOSTeam"];
     AVRole *mobileDep = [AVRole roleWithName:@"MobileDep"];
-    
+
     [androidTeam save];
     [iOSTeam save];
-    
+
     [[mobileDep roles] addObject:androidTeam];
     [[mobileDep roles] addObject:iOSTeam];
-    
+
     [mobileDep save];
-    
+
     AVObject *androidCode = [AVObject objectWithClassName:@"Code"];
     AVObject *iOSCode = [AVObject objectWithClassName:@"Code"];
     AVObject *coreCode = [AVObject objectWithClassName:@"Code"];
     //.....此处省略一些具体的值设定
-    
+
     AVACL *acl1=[AVACL ACL];
     [acl1 setReadAccess:YES forRole:androidTeam];
     [acl1 setWriteAccess:YES forRole:androidTeam];
     [androidCode setACL:acl1];
-    
+
     AVACL *acl2=[AVACL ACL];
     [acl2 setReadAccess:YES forRole:iOSTeam];
     [acl2 setWriteAccess:YES forRole:iOSTeam];
     [iOSCode setACL:acl2];
-    
+
     AVACL *acl3=[AVACL ACL];
     [acl3 setReadAccess:YES forRole:mobileDep];
     [coreCode setACL:acl3];
-    
+
     [androidCode save];
     [iOSTeam save];
     [coreCode save];
@@ -1266,16 +1266,16 @@ ACL(Access Control List)是最灵活和简单的应用数据安全管理方法�
 使用 `AVFile` 非常容易，首先你可以将文件数据存在 `NSData` 中，然后由 `NSData` 创建一个 `AVFile` 对象。 在下面的例子中，我们会使用一个字符串：
 
 ```
-NSData *data = [@"Working with AVOS Cloud is great!" dataUsingEncoding:NSUTF8StringEncoding];
+NSData *data = [@"Working with LeanCloud is great!" dataUsingEncoding:NSUTF8StringEncoding];
 AVFile *file = [AVFile fileWithName:@"resume.txt" data:data];
 ```
 
 请注意，在本例中，我们将文件名定为 `resume.txt`。这里有两件事情值得注意:
 
 * 你不需要担心文件名的冲突。每一个上传的文件有惟一的ID，所即使上传多个文件名为 `resume.txt` 的文件也不会有问题。
-* 给文件添加扩展名非常重要，通过扩展名，AVOS Cloud 可以获取文件类型以便可以正确处理文件。所以如果你将一个 `PNG` 图象存在 `AVFile` 中，要确保使用 `.png` 扩展名。
+* 给文件添加扩展名非常重要，通过扩展名，LeanCloud 可以获取文件类型以便可以正确处理文件。所以如果你将一个 `PNG` 图象存在 `AVFile` 中，要确保使用 `.png` 扩展名。
 
-然后你会需要将文件存在AVOS Cloud中，你可以根据需要调用不同版本的save方法。
+然后你会需要将文件存在LeanCloud中，你可以根据需要调用不同版本的save方法。
 
 ```
 [file saveInBackground];
@@ -1304,7 +1304,7 @@ NSData *resumeData = [applicantResume getData];
 
 ### 图象
 
-你可以通过将图象转成 `NSData`，然后使用 `AVFile`，这样可以很容易地将图象存到AVOS Cloud上。比如你有一个叫"image"的 `UIImage` 对象，你希望将它存到 `AVFile` 中。
+你可以通过将图象转成 `NSData`，然后使用 `AVFile`，这样可以很容易地将图象存到LeanCloud上。比如你有一个叫"image"的 `UIImage` 对象，你希望将它存到 `AVFile` 中。
 
 ```
 NSData *imageData = UIImagePNGRepresentation(image);
@@ -1350,14 +1350,14 @@ AVFile * file = [AVFile fileWithURL:@"the-file-remote-url"];
 AVFile * file = [AVFile fileWithName:@"test.jpg" contentsAtPath:@"file-local-path"];
 [file.metadata setObject:@(100) forKey:@"width"];
 [file.metadata setObject:@(100) forKey:@"height"];
-[file.metadata setObject:@”AVOS Cloud" forKey:@"author"];
+[file.metadata setObject:@”LeanCloud" forKey:@"author"];
 NSError * error = nil;
 [file save:&error];
 ```
 
 ### 删除
 
-当您的文件比较多时，您可能希望将一些不需要的文件从AVOS Cloud上删除，您可以使用
+当您的文件比较多时，您可能希望将一些不需要的文件从LeanCloud上删除，您可以使用
 ```
 [file deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
 }];
@@ -1382,7 +1382,7 @@ AVFile也提供了清除缓存的方法
 
 ## 用户
 
-用户是一个应用程序的核心。对于个人开发者来说，能够让自己的应用程序积累到多的用户，就能给自己带来更多的创作动力。因此AVOS Cloud提供了一个专门的用户类，AVUser来自动处理用户账户管理所需的功能。
+用户是一个应用程序的核心。对于个人开发者来说，能够让自己的应用程序积累到多的用户，就能给自己带来更多的创作动力。因此LeanCloud提供了一个专门的用户类，AVUser来自动处理用户账户管理所需的功能。
 有了这个类，你就可以在您的应用程序中添加用户账户功能。
 AVUser是一个AVObject的子类，它继承了AVObject所有的方法具有AVObject相同的功能。不同的是，AVUser增加了一些特定的关于用户账户相关的功能。
 
@@ -1416,7 +1416,7 @@ user.email = @"steve@company.com";
 
 在注册过程中，服务器会进行注册用户信息的检查，以确保注册的用户名和电子邮件地址是惟一的。**服务端还会对用户密码进行不可逆的加密处理，不会明文保存任何密码，应用切勿再次在客户端加密密码，这会导致重置密码等功能不可用**。请注意，我们使用的是signUpInBackgroundWithBlock方法，而不是saveInBackground方法。另外还有各种不同的signUp方法。像往常一样，我们建议在可能的情况下尽量使用异步版本的signUp方法，这样就不会影响到应用程序主UI线程的响应。你可以阅读API中更多的有关这些具体方法的使用。
 如果注册不成功，你可以查看返回的错误对象。最有可能的情况是，用户名或电子邮件已经被另一个用户注册。这种情况您可以提示用户，要求他们尝试使用不同的用户名进行注册。
-你也可以要求用户使用Email做为用户名注册，这样做的好处是，你在提交信息的时候可以将输入的“用户名“默认设置为用户的Email地址，以后在用户忘记密码的情况下可以使用AVOS Cloud提供重置密码功能。
+你也可以要求用户使用Email做为用户名注册，这样做的好处是，你在提交信息的时候可以将输入的“用户名“默认设置为用户的Email地址，以后在用户忘记密码的情况下可以使用LeanCloud提供重置密码功能。
 
 关于自定义邮件模板和验证链接请看这篇[博客](http://blog.avoscloud.com/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
 
@@ -1473,7 +1473,7 @@ AVUser * currentUser = [AVUser currentUser]; // 现在的currentUser是nil了
 密码重置流程如下：
 
  * 用户输入他们的电子邮件，请求重置自己的密码。
- * AVOS Cloud向他们的邮箱发送一封包含特殊的密码重置连接的电子邮件。
+ * LeanCloud向他们的邮箱发送一封包含特殊的密码重置连接的电子邮件。
  * 用户根据向导点击重置密码连接，打开一个特殊的页面，让他们输入一个新的密码。
  * 用户的密码已被重置为新输入的密码。
 
@@ -1491,7 +1491,7 @@ AVUser * currentUser = [AVUser currentUser]; // 现在的currentUser是nil了
 
 ###  手机号码验证
 
-在应用设置中打开`注册手机号码验证`选项后。当你在注册用户时，填写用户手机字段后，AVOS Cloud 会自动向该手机号码发送一个验证短信，用户在输入验证码以后，该用户就被表示为已经验证过手机。
+在应用设置中打开`注册手机号码验证`选项后。当你在注册用户时，填写用户手机字段后，LeanCloud 会自动向该手机号码发送一个验证短信，用户在输入验证码以后，该用户就被表示为已经验证过手机。
 
 以下代码就可发送注册验证码到用户手机:
 
@@ -1530,7 +1530,7 @@ AVUser * currentUser = [AVUser currentUser]; // 现在的currentUser是nil了
 
 ```
     [AVUser requestLoginSmsCode:@"123456" withBlock:^(BOOL succeeded, NSError *error) {
-       
+
     }];
 ```
 
@@ -1567,7 +1567,7 @@ AVUser * currentUser = [AVUser currentUser]; // 现在的currentUser是nil了
     }
 }];
 ```
- 
+
 ### 查询
 
 查询用户，你需要使用特殊的用户查询对象来完成：
@@ -1595,15 +1595,15 @@ User表是一个特殊的表，专门存储AVUser对象。在浏览器端，你�
 ```
     [AVAnonymousUtils logInWithBlock:^(AVUser *user, NSError *error) {
         if (user) {
-            
+
         } else {
-            
+
         }
     }];
 ```
 
 ## 地理位置
-AVOS Cloud允许用户根据地球的经度和纬度坐标进行基于地理位置的信息查询。你可以在AVObject的查询中添加一个AVGeoPoint的对象查询。您可以实现轻松查找出离当前用户最接近的信息或地点的功能。
+LeanCloud允许用户根据地球的经度和纬度坐标进行基于地理位置的信息查询。你可以在AVObject的查询中添加一个AVGeoPoint的对象查询。您可以实现轻松查找出离当前用户最接近的信息或地点的功能。
 
 ### 地理位置对象
 首先需要创建一个AVGeoPoint对象。例如，创建一个北纬40.0度-东经-30.0度的AVGeoPoint对象：
@@ -1674,8 +1674,8 @@ NSArray<AVObject *> * pizzaPlacesInSF = [query findObjects];
 其中`NO`表示测试环境. 默认是调用生产环境云代码.
 
 ## 短信验证码服务
-除了用户相关的包括注册，登录等操作以外，AVOS Cloud还支持额外的短信验证码服务。
-在实际的应用中，假如有一些相对比较敏感的操作，比如付费、删除重要资源等操作，您希望能够通过短信验证的方式来与用户进行确认，您就可以在用户验证过手机号码，应用管理平台打开了`启用手机号码短信认证`选项的前提下，使用AVOS Cloud提供的短信验证码服务。
+除了用户相关的包括注册，登录等操作以外，LeanCloud还支持额外的短信验证码服务。
+在实际的应用中，假如有一些相对比较敏感的操作，比如付费、删除重要资源等操作，您希望能够通过短信验证的方式来与用户进行确认，您就可以在用户验证过手机号码，应用管理平台打开了`启用手机号码短信认证`选项的前提下，使用LeanCloud提供的短信验证码服务。
 
 ### 请求短信验证码
 以下操作为给某个操作发送验证短信
@@ -1690,7 +1690,7 @@ NSArray<AVObject *> * pizzaPlacesInSF = [query findObjects];
     }];
    //短信格式类似于：
    //您正在{某应用}中进行{具体操作名称}，您的验证码是:{123456}，请输入完整验证，有效期为:{10}分钟
-   
+
 ```
 
 ### 验证短信验证码
