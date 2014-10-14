@@ -1849,7 +1849,85 @@ curl -X PUT \
 
 ##文件
 
-文件上传，我们推荐使用各个客户端的SDK进行上传。REST API暂不开放。
+文件上传，我们推荐使用各个客户端的SDK进行上传，或者使用[命令行工具](./cloud_code_commandline.html)。
+
+**通过 REST API 上传文件受到三个限制，而使用 sdk 或者命令行上传没有这些限制**：
+
+* 上传最大文件大小有 10M 的限制
+* 每个应用每秒最多上传 1 个文件
+* 每个应用每分钟最多上传 30 个文件。
+
+
+### 上传文件
+
+上传文件到 AVOS Cloud 通过 POST 请求，注意必须指定文件的 `content-type`，例如上传一个文本文件 `hello.txt` 包含一行字符串:
+
+```
+curl -X POST \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  -H "Content-Type: text/plain" \
+  -d 'Hello, World!' \
+  https://cn.avoscloud.com/1.1/files/hello.txt
+```
+
+文件上传成功后，返回 `201 Created` 的应答和创建的文件对象（可以在 `_File` 表看到）：
+
+```
+{  "size":13,
+   "bucket":"1qdney6b",
+   "url":"http://ac-1qdney6b.qiniudn.com/3zLG4o0d27MsCQ0qHGRg4JUKbaXU2fiE35HdhC8j.txt",
+   "name":"hello.txt",
+   "createdAt":"2014-10-14T05:55:57.455Z",
+   "objectId":"543cbaede4b07db196f50f3c"
+}
+```
+
+其中 `url` 就是文件下载链接, `objectId` 是文件的对象 id。`name`就是上传的文件名称。
+
+也可以尝试上传一张图片，假设当前目录有一个文件 `test.png`：
+
+```
+curl -X POST \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  -H "Content-Type: image/png" \
+  --data-binary '@test.png'  \
+  https://cn.avoscloud.com/1.1/files/test.png
+```
+
+### 关联文件到对象
+
+一个文件上传后，您可以关联该文件到某个 AVObject 对象上：
+
+```
+curl -X POST \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+   -H "Content-Type: application/json" \
+  -d '{
+        "name": "Andrew",
+        "picture": {
+          "id": "543cbaede4b07db196f50f3c",
+          "__type": "File"
+        }
+      }' \
+  https://cn.avoscloud.com/1.1/classes/Player     
+```
+
+其中 `id` 就是文件对象的 objectId。
+
+
+### 删除文件
+
+知道文件对象 ObjectId 的情况下，可以通过 DELETE 删除文件：
+
+```
+curl -X DELETE \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  https://cn.avoscloud.com/1.1/files/543cbaede4b07db196f50f3c
+```
 
 ##Push 通知
 
