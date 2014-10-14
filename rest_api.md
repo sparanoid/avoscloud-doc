@@ -1464,6 +1464,20 @@ AVOSCloud允许你连接你的用户到其他服务，比如新浪微博和腾�
 }
 ```
 
+[微信](http://open.weixin.qq.com/)的authData内容:
+
+```
+{
+  "authData": {
+    "weixin": {
+      "openid": "0395BA18A5CD6255E5BA185E7BEBA242",
+      "access_token": "12345678-SaMpLeTuo3m2avZxh5cjJmIrAfx4ZYyamdofM7IjU",
+      "expires_in": 1382686496
+    }
+  }
+}
+```
+
 匿名用户(Anonymous user)的authData内容:
 
 ```
