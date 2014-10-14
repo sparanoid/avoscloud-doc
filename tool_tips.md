@@ -96,6 +96,7 @@
 * 想建立一个应用网站？我们提供 [Web 主机托管](https://cn.avoscloud.com/docs/cloud_code_guide.html#web-hosting)。
 * 想用好云代码，请先熟悉 [JavaScript SDK 开发指南](https://cn.avoscloud.com/docs/js_guide.html)。
 * 云代码 Web 主机托管，可以绑定备案过的独立域名，请在[工单系统](https://ticket.avosapps.com)提出技术申请。
+* 云代码 Web 主机托管，我们可以协助您完成域名的备案，请参考[文档](https://cn.avoscloud.com/docs/cloud_code_guide.html#域名备案流程)
 
 ## 其他
 

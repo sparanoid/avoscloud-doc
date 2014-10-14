@@ -279,6 +279,11 @@ JavaScript SDK 由于平台的特殊性（运行在单线程运行的浏览器�
 
 参考[博客](http://blog.avoscloud.com/blog/2013/12/20/wei-yun-dai-ma-tuo-guan-wang-zhan-qi-yong-https/)。
 
+### 云代码Web Hosting备案
+
+只有网站类的才需要备案，并且在主域名已备案的情况下，二级子域名不需要备案。
+如果主站需要托管在我们这边，如果主站还没有备案过，我们可以协助您完成备案，请参考[文档](https://cn.avoscloud.com/docs/cloud_code_guide.html#域名备案流程)
+
 ## 文件
 
 ### 文件存储有 CDN 加速吗？
