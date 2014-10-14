@@ -62,7 +62,7 @@ query.find().then(function(followers){
 });
 ```
 
-followerQuery和followerQuery方法返回的AV.Query对象可以像普通的[AV.Query](https://cn.avoscloud.com/docs/api/javascript/symbols/AV.Query.html)对象那样使用，他们本质上都是查询数据管理平台中的`_Follower`和`_Followee`表，你可以添加order,skip,limit以及其他where条件等信息。
+followerQuery和followerQuery方法返回的AV.Query对象可以像普通的[AV.Query](https://leancloud.cn/docs/api/javascript/symbols/AV.Query.html)对象那样使用，他们本质上都是查询数据管理平台中的`_Follower`和`_Followee`表，你可以添加order,skip,limit以及其他where条件等信息。
 
 
 ### 状态
@@ -170,7 +170,7 @@ query.find().then(function(statuses){
 ```
 
 * 查询本次查询的前一页（也就是更老的status，向前翻页）:
- 
+
 ```
 //假设messageId是上次查询返回的status的最大messageId编号
 var messageId = ...
@@ -196,7 +196,7 @@ AV.Status.countUnreadStatuses(AV.User.current()).then(function(result){
 	var unread  = result.unread;
 }, function(err){
     //查询失败
-});				
+});
 ```
 
 #### 查询发件箱
@@ -274,16 +274,16 @@ query.find().then(function(statuses){
 下面代码会获取用户时间线上的50条状态
 
     AVStatusQuery *query=[AVStatus inboxQuery:kAVStatusTypeTimeline];
-    
+
     //限制50条
-    query.limit=50; 
-    
+    query.limit=50;
+
     //限制1397这个messageId上次查询的最大messageId, 如果不设置,默认为最新的
-    query.maxId=1397;  
-       
+    query.maxId=1397;
+
     //需要同时附带发送者的数据
     [query includeKey:@"source"];
-    
+
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         //获得AVStatus数组
     }];
@@ -302,16 +302,16 @@ query.find().then(function(statuses){
 下面的代码是某个用户发送出去的状态,**请注意,查询发送出去的状态,是无法用messageId(sinceId,maxId)来做分片查询的,因为messageId只是相对于某个用户的Inbox才有意义, 同时返回的状态中也没有messageId的数据**
 
 	AVStatusQuery *query=[AVStatus statusQuery];
-	
+
 	//设置查询某个用户, 默认是查询当前用户
     [query whereKey:@"source" equalTo:<AVUser>];
-    
+
     //限制条数
     query.limit=20;
-    
+
     //设置消息类型
     query.inboxType=kAVStatusTypeTimeline;
-    
+
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         //获得AVStatus数组
     }];
@@ -342,11 +342,11 @@ query.find().then(function(statuses){
 
 	//粉丝列表查询
 	AVQuery *query= [AVUser followerQuery:@"USER_OBJECT_ID"];
-	
+
 	//关注列表查询
 	AVQuery *query= [AVUser followeeQuery:@"USER_OBJECT_ID"];
-    
-    
+
+
 是分别获得某个用户的粉丝和关注, 我们也可以同时取得这这两种:
 
     [[AVUser currentUser] getFollowersAndFollowees:^(NSDictionary *dict, NSError *error) {
@@ -356,7 +356,7 @@ query.find().then(function(statuses){
 
 
 ## Android SDK中的使用方法
- 
+
  Android的事件流已经正式发布，欢迎尝试！
 
 ### 状态
@@ -407,7 +407,7 @@ query.find().then(function(statuses){
     data.put("text", "we have new website, take a look!");
     data.put("link", "http://avoscloud.com");
     AVStatus status = AVStatus.createStatusWithData(data);
-    status.setInboxType("system"); 
+    status.setInboxType("system");
 
         status.sendInBackgroundWithBlock(new SaveCallback() {
             @Override
@@ -476,7 +476,7 @@ AVStatus.getUnreadStatusesCountInBackground(AVStatus.INBOX_TYPE.TIMELINE.toStrin
 
         }
       });
-    
+
 
 
 ### 好友关系

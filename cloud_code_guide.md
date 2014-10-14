@@ -237,7 +237,7 @@ curl -X POST -H "Content-Type: application/json; charset=utf-8"   \
        -H "X-AVOSCloud-Application-Id: {{appid}}"          \
        -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
        -H "X-AVOSCloud-Application-Production: 0"  -d '{}' \
-https://cn.avoscloud.com/1.1/functions/hello
+https://leancloud.cn/1.1/functions/hello
 ```
 
 返回结果：
@@ -309,7 +309,7 @@ curl -X POST -H "Content-Type: application/json; charset=utf-8"   \
        -H "X-AVOSCloud-Application-Id: {{appid}}"          \
        -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
        -H "X-AVOSCloud-Application-Production: 1"  -d '{}' \
-https://cn.avoscloud.com/1.1/functions/hello
+https://leancloud.cn/1.1/functions/hello
 ```
 
 服务端返回告诉你production还没有部署：
@@ -375,7 +375,7 @@ curl -X POST -H "Content-Type: application/json; charset=utf-8"   \
        -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
        -H "X-AVOSCloud-Application-Production: 0"  -d '{}' \
        -d '{"movie":"The Matrix"}' \
-https://cn.avoscloud.com/1.1/functions/averageStars
+https://leancloud.cn/1.1/functions/averageStars
 ```
 
 有两个参数会被传入到Cloud函数：
@@ -419,7 +419,7 @@ AV.Cloud.run("hello", {name: 'dennis'}, {
 });
 ```
 
-API参数详解参见[AV.Cloud.run](https://cn.avoscloud.com/docs/api/javascript/symbols/AV.Cloud.html#.run)。
+API参数详解参见[AV.Cloud.run](https://leancloud.cn/docs/api/javascript/symbols/AV.Cloud.html#.run)。
 
 ### 在 save 前修改对象
 

@@ -58,14 +58,14 @@
 设置保存之后，您应该可以通过下列链接访问到您的应用信息：
 
 ```
-https://cn.avoscloud.com/1.1/go/{your uri scheme}/
+https://leancloud.cn/1.1/go/{your uri scheme}/
 ```
  查看到您的 App URL 应用设置信息。
 
  例如我们的todo应用就是:
 
  ```
- https://cn.avoscloud.com/1.1/go/com.avoscloud.todo
+ https://leancloud.cn/1.1/go/com.avoscloud.todo
  ```
 
 
@@ -135,11 +135,11 @@ https://cn.avoscloud.com/1.1/go/{your uri scheme}/
 在 LeanCloud 索引完成数据后，您应当可以通过下列URL访问到一条数据，如果在安装了 Todo Demo 应用的移动设备上访问下面这个URL，应该会打开应用展现这条 Todo 的内容:
 
 ```
-https://cn.avoscloud.com/1.1/go/com.avoscloud.todo/classes/Todo/5371f3a9e4b02f7aee2c9a18
+https://leancloud.cn/1.1/go/com.avoscloud.todo/classes/Todo/5371f3a9e4b02f7aee2c9a18
 
 ```
 
-如果直接在 PC 浏览器[打开](https://cn.avoscloud.com/1.1/go/com.avoscloud.todo/classes/Todo/5371f3a9e4b02f7aee2c9a18?render=true)，看到的应该是数据渲染页面，如图：
+如果直接在 PC 浏览器[打开](https://leancloud.cn/1.1/go/com.avoscloud.todo/classes/Todo/5371f3a9e4b02f7aee2c9a18?render=true)，看到的应该是数据渲染页面，如图：
 
 
 ![image](images/todo_render.png)
@@ -257,7 +257,7 @@ adb shell am start -W -a "android.intent.action.VIEW"  \
 #### Android 集成
 
 ##### 导入SDK
-您可以从 https://cn.avoscloud.com/docs/sdk_down.html 页面下载`应用内搜索`模块,解压缩avossearch.zip压缩包，将libs下的`avossearch-v{version}.jar`包加入您的libs下面。
+您可以从 https://leancloud.cn/docs/sdk_down.html 页面下载`应用内搜索`模块,解压缩avossearch.zip压缩包，将libs下的`avossearch-v{version}.jar`包加入您的libs下面。
 
 之后，您需要将res下的资源文件夹拷贝并且合并到您工程的res目录下，更改资源文件的内容并不影响SDK工作，但是请不要改动资源的文件名和文件内资源ID。
 

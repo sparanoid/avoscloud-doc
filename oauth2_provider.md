@@ -31,7 +31,7 @@ LeanCloud 目前只支持服务器的WEB应用的授权流程（server-side flow
 第一步授权，将用户从浏览器内重定向到下列URL：
 
 ```
-GET https://cn.avoscloud.com/1.1/authorize?client_id={{client_key}}&response_type=code&redirect_uri={{第三方应用的回掉URL}}&scope={{权限范围}}&state={{uuid}}
+GET https://leancloud.cn/1.1/authorize?client_id={{client_key}}&response_type=code&redirect_uri={{第三方应用的回掉URL}}&scope={{权限范围}}&state={{uuid}}
 ```
 
 其中:
@@ -68,7 +68,7 @@ GET http://exmaple.com/oauth2/callback?state={{传入的state}}&code={{code随�
 用户授权后，您可以这回掉中拿到授权 code ，然后使用这个 code 去 LeanCloud 请求访问令牌(access_token)。服务端直接通过 http client 调用下列URL：
 
 ```
-GET  https://cn.avoscloud.com/1.1/token?grant_type=authorization_code&client_id={{client_key}}&client_secret={{client_secret}}&code={{第一步返回的code}}&redirect_uri={{第一步使用的redirect_uri}}
+GET  https://leancloud.cn/1.1/token?grant_type=authorization_code&client_id={{client_key}}&client_secret={{client_secret}}&code={{第一步返回的code}}&redirect_uri={{第一步使用的redirect_uri}}
 ```
 
 其中`client_id`和`client_key`也可以作为 http basic 认证的用户名和密码传入。
@@ -143,7 +143,7 @@ sha256_hmac("s84rvq98u8j3wnklkznguo38vsvys6vo", base_path)
 最终调用的 URL 就是：
 
 ```
-https://cn.avoscloud.com/1.1/connect?client_id=jl04l2081eczultsb7drrzxfxc5a30wh&email=test@example.com&scope=client:info app:info&timestamp=1405222829000&username=dennis&sign=0ed0e74ce6d4353e40fc3291747c7d1d2d9884b4c9a1e3c4da9d6bf8e4fe9b45
+https://leancloud.cn/1.1/connect?client_id=jl04l2081eczultsb7drrzxfxc5a30wh&email=test@example.com&scope=client:info app:info&timestamp=1405222829000&username=dennis&sign=0ed0e74ce6d4353e40fc3291747c7d1d2d9884b4c9a1e3c4da9d6bf8e4fe9b45
 ```
 
 SHA256 Hmac 签名要求都是采用 16 进制编码，而非 base64 等方式。Java 平台可以参考这篇[博客
@@ -195,7 +195,7 @@ SHA256 Hmac 签名要求都是采用 16 进制编码，而非 base64 等方式�
 
 来传入访问令牌。
 
-所有开放 API 都以 `https://cn.avoscloud.com/1.1/open` 为前缀。
+所有开放 API 都以 `https://leancloud.cn/1.1/open` 为前缀。
 所有日期格式都为`YYYY-MM-DDTHH:MM:SS.MMMMZ`。
 
 请求和应答都以 JSON 格式传输，请求请设置 `Content-Type: applicaiton/json;charset=utf-8` 的 HTTP 头。字符串编码为`UTF-8`。

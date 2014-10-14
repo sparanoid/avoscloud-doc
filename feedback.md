@@ -43,7 +43,7 @@ AVUserFeedbackAgent *agent = [AVUserFeedbackAgent sharedInstance];
 ## Android Feedback组件
 
 ### 导入SDK
- 您可以从 https://cn.avoscloud.com/docs/sdk_down.html 页面下载`用户反馈模块`，解压缩avoscloudfeedback.zip压缩包后，将libs下得的`avosfeedback-v{version}.jar`包（需要包括下载的其他基础jar包）加入您工程的libs下面。
+ 您可以从 https://leancloud.cn/docs/sdk_down.html 页面下载`用户反馈模块`，解压缩avoscloudfeedback.zip压缩包后，将libs下得的`avosfeedback-v{version}.jar`包（需要包括下载的其他基础jar包）加入您工程的libs下面。
 
 之后，您需要将res下的资源文件夹拷贝并且合并到您工程的res目录下。更改资源文件的内容并不影响SDK，但是请不要改变资源的文件名和文件内资源ID。
 

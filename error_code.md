@@ -2,8 +2,8 @@
 
 本文档尝试为所有服务端和SDK返回的错误码给出相对详细的解释，具体到各个SDK的错误码，请参考下列文档链接：
 
-* iOS的[AVConstants](https://cn.avoscloud.com/docs/api/iOS/docs/AVConstants.html)。
-* Android的[AVException](https://cn.avoscloud.com/docs/api/android/doc/index.html)。
+* iOS的[AVConstants](https://leancloud.cn/docs/api/iOS/docs/AVConstants.html)。
+* Android的[AVException](https://leancloud.cn/docs/api/android/doc/index.html)。
 
 ## 1
 * 信息 - `Internal server error. No information available.`
@@ -63,7 +63,7 @@
 ## 114
 
 * 信息 - `Invalid device token.`
-* 含义 - iOS推送存储的deviceToken无效，如何存储installation请阅读[消息推送开发指南](https://cn.avoscloud.com/docs/push_guide.html#ios%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81)。
+* 含义 - iOS推送存储的deviceToken无效，如何存储installation请阅读[消息推送开发指南](https://leancloud.cn/docs/push_guide.html#ios%E6%B6%88%E6%81%AF%E6%8E%A8%E9%80%81)。
 
 ## 116
 
@@ -93,7 +93,7 @@
 ## 123
 
 * 信息 - `Invalid ACL. An ACL with an invalid format was saved. This should not happen if you use AVACL.`
-* 含义 - ACL格式错误，如果您是使用SDK提供的AVACL类，理论上这不应该发生，正确的ACL格式请参考[REST API](https://cn.avoscloud.com/docs/rest_api.html#%E5%AE%89%E5%85%A8%E6%80%A7)。
+* 含义 - ACL格式错误，如果您是使用SDK提供的AVACL类，理论上这不应该发生，正确的ACL格式请参考[REST API](https://leancloud.cn/docs/rest_api.html#%E5%AE%89%E5%85%A8%E6%80%A7)。
 
 ## 124
 
@@ -248,7 +248,7 @@
 ## 403
 
 * 信息 - `Forbidden to xxx by class permissions`
-* 含义 - 操作被禁止，因为[class权限限制](https://cn.avoscloud.com/docs/data_security.html#class-%E7%BA%A7%E5%88%AB%E7%9A%84%E6%9D%83%E9%99%90)。
+* 含义 - 操作被禁止，因为[class权限限制](https://leancloud.cn/docs/data_security.html#class-%E7%BA%A7%E5%88%AB%E7%9A%84%E6%9D%83%E9%99%90)。
 
 ## 503
 

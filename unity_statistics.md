@@ -3,7 +3,7 @@ LeanCloud Unity SDK 提供一套接口方便开发者可以对了解游戏在客
 
 ## 下载 SDK
 
-您可以从 [SDK 下载页面](https://cn.avoscloud.com/docs/sdk_down.html) 下载LeanCloud Unity SDK。
+您可以从 [SDK 下载页面](https://leancloud.cn/docs/sdk_down.html) 下载LeanCloud Unity SDK。
 
 ## 使用统计功能
 在使用统计SDK之前需要初始化应用的参数，参数包括App ID以及App Key ，您可以在[设置](app.html?appid={{appid}}#/key)查询到这2个参数，如果在应用的其他地方已经进行初始化了，无需重复。

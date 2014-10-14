@@ -649,7 +649,7 @@ curl -X POST \
           "name": "LeanCloud."
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 请注意：**如果您使用自定义的Receiver，发送的消息必须带action，并且其值在receiver配置的<intent-filter>列表里存在，比如这里的'com.avos.UPDATE_STATUS'**
@@ -800,7 +800,7 @@ curl -X POST \
           "public", "protected", "private"
         ]
       }' \
-  https://cn.avoscloud.com/1.1/installations
+  https://leancloud.cn/1.1/installations
 ```
 
 ##### 保存 Android 设备的 installId
@@ -819,7 +819,7 @@ curl -X POST \
           "public", "protected", "private"
         ]
       }' \
-  https://cn.avoscloud.com/1.1/installations
+  https://leancloud.cn/1.1/installations
 ```
 
 ##### 订阅频道
@@ -834,7 +834,7 @@ curl -X PUT \
           "Giants"
         ]
       }' \
-  https://cn.avoscloud.com/1.1/installations/mrmBZvsErB
+  https://leancloud.cn/1.1/installations/mrmBZvsErB
 ```
 
 ### 推送消息
@@ -850,7 +850,7 @@ curl -X POST \
           "alert": "Hello From LeanCloud."
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 #### 发送给特定的用户
@@ -872,7 +872,7 @@ curl -X POST \
           "alert": "Hello From LeanCloud."
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 
 ```
 
@@ -889,7 +889,7 @@ curl -X POST \
           "alert": "Hello From LeanCloud."
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 
 ```
 
@@ -908,7 +908,7 @@ curl -X POST \
           "alert": "Hello From LeanCloud."
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 * 推送给不活跃的用户
@@ -928,7 +928,7 @@ curl -X POST \
             "alert": "Hello From LeanCloud."
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 * 根据查询条件做推送：
@@ -946,7 +946,7 @@ curl -X POST \
           "alert": "Willie Hayes injured by own pop fly."
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 **请注意，where条件查询的都是installations表。这里是假设installations表存储了injuryReports的布尔属性**
@@ -977,7 +977,7 @@ curl -X POST \
           "alert": "Free hotdogs at the avoscloud concession stand!"
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 上面的例子假设installation有个owner属性指向_User表的记录，并且用户有个location属性是GeoPoint类型，我们就可以根据地理信息位置做推送。
@@ -998,7 +998,7 @@ curl -X POST \
           "alert": "Season tickets on sale until December  4, 2013"
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 也可以是相对时间（从推送API调用开始算起，结合push_time做定期推送）:
@@ -1014,7 +1014,7 @@ curl -X POST \
           "alert": "Season tickets on sale until December  4, 2013"
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 ##### 定制消息属性：
@@ -1035,7 +1035,7 @@ curl -X POST \
           "title": "Mets Score!"
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 
@@ -1055,7 +1055,7 @@ curl -X POST \
           "name": "LeanCloud."
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 请注意：**如果您使用自定义的Receiver，发送的消息必须带action，并且值为'com.avos.UPDATE_STATUS'**

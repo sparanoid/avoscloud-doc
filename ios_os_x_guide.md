@@ -13,7 +13,7 @@ LeanCloud 是一个完整的平台解决方案，为您的应用提供全方位�
 
 ## 使用 Cocopods 安装SDK
 
-在[快速入门](https://cn.avoscloud.com/start.html)里可以看到怎么在你的项目里安装SDK。
+在[快速入门](https://leancloud.cn/start.html)里可以看到怎么在你的项目里安装SDK。
 
 [Cocopods](http://beta.cocoapods.org/)是一个很好的依赖管理工具，下面我们大概介绍下怎么安装：
 

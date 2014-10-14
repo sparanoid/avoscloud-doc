@@ -95,7 +95,7 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
 
 从一个聊天应用的开发角度，最核心的问题是消息的收发功能实现。只要能够完成一次最简单的消息收发流程，整个实时通信服务就基本上能够理解了。您可以通过下载我们的聊天Demo来了解如何使用实时通信服务来搭建一个[聊天应用](https://github.com/avoscloud/Android-SDK-demos/tree/master/keepalive)。
 
-**注:如果您是第一次阅读LeanCloud的文档，您可能还需要知道如何去[初始化 LeanCloud SDK](https://cn.avoscloud.com/docs/android_guide.html#应用程序) **
+**注:如果您是第一次阅读LeanCloud的文档，您可能还需要知道如何去[初始化 LeanCloud SDK](https://leancloud.cn/docs/android_guide.html#应用程序) **
 
 在Android的SDK中，你只需要运用两个类及其相关的方法，就可以轻松完成这些工作。
 

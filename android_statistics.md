@@ -3,12 +3,12 @@
 
 ## 建立 LeanCloud app，下载 SDK
 
-您可以在cn.avoscloud.com上创建新的应用，然后下载LeanCloud Android SDK以及相应的demo。
+您可以在leancloud.cn上创建新的应用，然后下载LeanCloud Android SDK以及相应的demo。
 
 
 ## 创建 Android 工程，使用 LeanCloud 基本的统计功能
 
-您可以从 [SDK下载页面](https://cn.avoscloud.com/docs/sdk_down.html) 下载android的SDK。
+您可以从 [SDK下载页面](https://leancloud.cn/docs/sdk_down.html) 下载android的SDK。
 
 
 ## 导入 SDK

@@ -107,7 +107,7 @@ AVOSCloud Android SNS为开发人员提供了一个非常轻量的模块, 使用
 
 ### 导入 SDK
 
-您可以从 [本地下载](https://cn.avoscloud.com/docs/sdk_down.html) Android SNS SDK（从1.4.4版本开始包括avossns的jar包），将下载的jar包加入您工程的libs目录。如果您还不知道如何安装SDK，请查看[快速入门指南](/start.html)。
+您可以从 [本地下载](https://leancloud.cn/docs/sdk_down.html) Android SNS SDK（从1.4.4版本开始包括avossns的jar包），将下载的jar包加入您工程的libs目录。如果您还不知道如何安装SDK，请查看[快速入门指南](/start.html)。
 
 ### 添加代码，使用 SSO 登录
 

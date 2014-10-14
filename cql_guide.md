@@ -359,7 +359,7 @@ CQL 提供了一些内置函数来方便地创建 pointer、geopoint 等类型�
   <tr><td>current_timestamp()</td><td>创建当前日期</td></tr>
 </table>
 
-如果不使用这些函数，你也使用 [REST API 文档](https://cn.avoscloud.com/docs/rest_api.html#数据类型) 定义的 JSON 对象来创建特定类型，例如 Pointer:
+如果不使用这些函数，你也使用 [REST API 文档](https://leancloud.cn/docs/rest_api.html#数据类型) 定义的 JSON 对象来创建特定类型，例如 Pointer:
 
 ```
 select * from Comment where post=

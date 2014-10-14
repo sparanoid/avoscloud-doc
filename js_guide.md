@@ -1195,7 +1195,7 @@ var file = new AV.File('test.txt', new Buffer('hello world'));
 从`0.3.2`版本开始，我们还支持保存一个现有存储在其他服务上的URL的文件对象：
 
 ```
-var file = AV.File.withURL('test.jpg', 'https://cn.avoscloud.com/docs/images/permission.png');
+var file = AV.File.withURL('test.jpg', 'https://leancloud.cn/docs/images/permission.png');
 file.save();
 ```
 
@@ -1869,7 +1869,7 @@ AV.Push.send({
 });
 ```
 
-`AV.Push` 的更多使用信息参考 API 文档[AV.Push](https://cn.avoscloud.com/docs/api/javascript/symbols/AV.Push.html)。
+`AV.Push` 的更多使用信息参考 API 文档[AV.Push](https://leancloud.cn/docs/api/javascript/symbols/AV.Push.html)。
 
 更多推送的查询条件和格式，请查阅我们的[Push Notification指南](./push_guide.html)来获取更详细的信息
 

@@ -308,7 +308,7 @@ Cloud Query Language（简称 CQL） 是 LeanCloud 为查询 API 定制的一套
 ```
 await AVQuery<AVObject>.DoCloudQuery("select * from GameScore where score=100");
 ```
-如此做即可，其后续的操作与以前习惯的 `AVQuery` 其他查询一样，只是我们提供了另一种方式便于长期累积关系型数据库知识的开发者可以迅速迁移到 LeanCloud 上，CQL 的语法和详细用法可以参照：[CQL 详细指南](https://cn.avoscloud.com/docs/cql_guide.html)
+如此做即可，其后续的操作与以前习惯的 `AVQuery` 其他查询一样，只是我们提供了另一种方式便于长期累积关系型数据库知识的开发者可以迅速迁移到 LeanCloud 上，CQL 的语法和详细用法可以参照：[CQL 详细指南](https://leancloud.cn/docs/cql_guide.html)
 
 
 ## 用户
@@ -875,7 +875,7 @@ await AVFile.GetFileWithObjectIdAsync("538ed669e4b0e335f6102809").ContinueWith(t
    });
 ```
 ## 调用云代码
-云代码是 LeanCloud 提供给开发者自定义服务端逻辑的解决方案，例如想在用户注册的时候，服务端统一给用户分配随机的昵称，这一操作就可以用云代码实现。具体关于云代码的一些相关概念和操作可以先查看[云代码指南](https://cn.avoscloud.com/docs/cloud_code_guide.html)。
+云代码是 LeanCloud 提供给开发者自定义服务端逻辑的解决方案，例如想在用户注册的时候，服务端统一给用户分配随机的昵称，这一操作就可以用云代码实现。具体关于云代码的一些相关概念和操作可以先查看[云代码指南](https://leancloud.cn/docs/cloud_code_guide.html)。
 
 调用云代码在SDK中比较方便，它是`AVCloud`的静态方法，全局均可调用。
 

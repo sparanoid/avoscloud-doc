@@ -148,7 +148,7 @@ Project created!
 
 avoscloud 命令还支持代码的热加载，修改代码后无需重新启动，就可以看到代码的最新结果（包括 web 功能）。
 
-更多关于云代码开发，请参考 [云代码开发指南](https://cn.avoscloud.com/docs/cloud_code_guide.html) 。
+更多关于云代码开发，请参考 [云代码开发指南](https://leancloud.cn/docs/cloud_code_guide.html) 。
 
 
 ## 部署
@@ -407,7 +407,7 @@ avoscloud upload images/
 $ avoscloud search AVObject
 ```
 
-这将打开浏览器，显示[搜索结果](https://cn.avoscloud.com/search.html?q=AVObject)。
+这将打开浏览器，显示[搜索结果](https://leancloud.cn/search.html?q=AVObject)。
 
 也可以查询多个关键字，空格隔开即可：
 
