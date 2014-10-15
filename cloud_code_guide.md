@@ -474,7 +474,7 @@ AV.Cloud.afterUpdate("Article", function(request) {
 
 ```
 AV.Cloud.beforeDelete("Album", function(request, response) {
-  //查询Photot中还有没有属于这个相册的照片
+  //查询Photo中还有没有属于这个相册的照片
   query = new AV.Query("Photo");
   var album = AV.Object.createWithoutData('Album', request.object.id);
   query.equalTo("album", album);
