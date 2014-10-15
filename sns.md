@@ -24,7 +24,7 @@ pod 'AVOSCloudSNS'
 就这么简单, 现在你已经拥有了用户登录功能!
 
 ### SSO
-利用SSO, 可以使用户不用输入用户名密码等复杂操作, 一键登录. **目前AVOSCloudSNS 已经支持新浪微博和手机QQ, 并且不需要使用各个平台官方的SDK, 保证您的app体积最小化**. 而你需要做的也很简单,以新浪微博为例:
+利用SSO, 可以使用户不用输入用户名密码等复杂操作, 一键登录. **目前 LeanCloudSNS 已经支持新浪微博和手机QQ, 并且不需要使用各个平台官方的SDK, 保证您的app体积最小化**. 而你需要做的也很简单,以新浪微博为例:
 
 ```
 [AVOSCloudSNS setupPlatform:AVOSCloudSNSSinaWeibo withAppKey:@"Weibo APP ID" andAppSecret:@"Weibo APP KEY" andRedirectURI:@""];

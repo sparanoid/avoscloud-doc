@@ -47,7 +47,7 @@ AVUserFeedbackAgent *agent = [AVUserFeedbackAgent sharedInstance];
 
 之后，您需要将res下的资源文件夹拷贝并且合并到您工程的res目录下。更改资源文件的内容并不影响SDK，但是请不要改变资源的文件名和文件内资源ID。
 
-*　注：AVOSCloud Feedback Android SDK的资源文件都是以avoscloud_feedback打头。*
+*　注： LeanCloud Feedback Android SDK的资源文件都是以avoscloud_feedback打头。*
 
 
 ### 添加代码，使用基础功能

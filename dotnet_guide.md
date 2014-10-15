@@ -800,7 +800,7 @@ AVFile可以让你的应用程序将文件存储到服务器中，比如常见�
 在这个例子中，我们将一段文本保存到服务器端：
 
 ```
-byte[] data = System.Text.Encoding.UTF8.GetBytes(“AVOSCloud is a great cloud service!”);
+byte[] data = System.Text.Encoding.UTF8.GetBytes(“ LeanCloud is a great cloud service!”);
 AVFile file = new AVFile("mytxtFile.txt", data, new Dictionary<string, object>()
 {
 {"author","AVOSCloud"}

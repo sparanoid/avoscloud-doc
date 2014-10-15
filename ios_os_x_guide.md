@@ -1704,7 +1704,7 @@ NSArray<AVObject *> * pizzaPlacesInSF = [query findObjects];
 
 ## FAQ 常见问题和解答
 
-### 怎么使用AVOSCloud iOS SDK
+### 怎么使用 LeanCloud iOS SDK
 最简单的方式，使用CocoaPods，如以下的PodFile
 
 ```
