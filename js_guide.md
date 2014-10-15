@@ -1146,7 +1146,7 @@ collection.reset([
 
 ###新建一个 AV.File
 
-AV.File让你可以在AVOSCloud中保存应用的文件,这样可以解决用一个
+AV.File让你可以在LeanCloud 中保存应用的文件,这样可以解决用一个
 AV.Object存太大或者太难处理的问题.最常见的用例就是存储图片,但是你可
 以随意用来存储文档,视频,音乐或者任何二进制数据。
 
@@ -1210,7 +1210,7 @@ var file = AV.File.withURL('test.jpg', 'https://leancloud.cn/docs/images/permiss
 file.save();
 ```
 
-下面你应该向AVOSCloud上传你的文件了.就像AV.Object一样,有很多不同的
+下面你应该向LeanCloud 上传你的文件了.就像AV.Object一样,有很多不同的
 save方法,你可以按你想用的callback和error处理的方式来使用它们.
 
 ```
@@ -1354,7 +1354,7 @@ user.signUp(null, {
 
 这个调用会异步地在在你的应用中创建一个新的用户.在它这样做之前,它同
 样会确认用户名和email在应用内都是唯一的.同样,为了安全我们会将密码散列
-过后存储在AVOSCloud中.我们从不会将用户密码以明文存储,我们也不会用明文
+过后存储在LeanCloud 中.我们从不会将用户密码以明文存储,我们也不会用明文
 向任何客户端发送密码.
 
 注意我们使用了signUp方法而不是save方法.新的AV.User永远应该使用

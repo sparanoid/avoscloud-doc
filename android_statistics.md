@@ -23,7 +23,7 @@
 
 请务必确保您的应用拥有如下权限
 
-* 添加权限`android.permission.INTERNET`, 向AVOSCloud的统计服务器发送用户分析数据。
+* 添加权限`android.permission.INTERNET`, 向LeanCloud 的统计服务器发送用户分析数据。
 * 添加权限`android.permission.READ_PHONE_STATE`和`android.permission.ACCESS_WIFI_STATE`, 这两个权限是为了获取用户手机的IMEI以及WiFi的Mac地址，用来唯一的标识用户。
 * `android.permission.ACCESS_NETWORK_STATE` ,用以检测网络状态。
 * `android.permission.READ_LOGS`, 用于获取客户端crash log。通过将crash log汇报到服务器上，您可以了解您的应用crash的原因以及次数。

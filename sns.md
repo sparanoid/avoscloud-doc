@@ -181,7 +181,7 @@ public class MyActivity extends Activity {
 
 ### 绑定 LeanCloud User
 
-您也可以将SSO登录后的帐号信息与AVOSCloud的User绑定，通过绑定，您可以在两种用户体系间建立联系，方便信息的共享和使用。
+您也可以将SSO登录后的帐号信息与LeanCloud 的User绑定，通过绑定，您可以在两种用户体系间建立联系，方便信息的共享和使用。
 
 如果您还未安装LeanCloud Android SDK，请参阅[快速入门指南](/start.html)。
 

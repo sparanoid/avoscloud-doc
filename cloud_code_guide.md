@@ -204,13 +204,13 @@ git push -u origin master
 
 ##### Gitlab 无法部署问题
 
-很多用户自己使用[Gitlab](http://gitlab.org/)搭建了自己的源码仓库，有朋友会遇到无法部署到AVOSCloud的问题，即使设置了Deploy Key，却仍然要求输入密码。
+很多用户自己使用[Gitlab](http://gitlab.org/)搭建了自己的源码仓库，有朋友会遇到无法部署到LeanCloud 的问题，即使设置了Deploy Key，却仍然要求输入密码。
 
 可能的原因和解决办法如下：
 
 * 确保您gitlab运行所在服务器的/etc/shadow文件里的git（或者gitlab）用户一行的`!`修改为`*`，原因参考[这里](http://stackoverflow.com/questions/15664561/ssh-key-asks-for-password)，并重启SSH服务`sudo service ssh restart`。
 * 在拷贝deploy key时，确保没有多余的换行符号。
-* Gitlab目前不支持有comment的deploy key。早期AVOSCloud用户生成的deploy key可能带comment，这个comment是在deploy key的末尾76个字符长度的字符串，例如下面这个deploy key:
+* Gitlab目前不支持有comment的deploy key。早期LeanCloud 用户生成的deploy key可能带comment，这个comment是在deploy key的末尾76个字符长度的字符串，例如下面这个deploy key:
 
 ```
 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA5EZmrZZjbKb07yipeSkL+Hm+9mZAqyMfPu6BTAib+RVy57jAP/lZXuosyPwtLolTwdyCXjuaDw9zNwHdweHfqOX0TlTQQSDBwsHL+ead/p6zBjn7VBL0YytyYIQDXbLUM5d1f+wUYwB+Cav6nM9PPdBckT9Nc1slVQ9ITBAqKZhNegUYehVRqxa+CtH7XjN7w7/UZ3oYAvqx3t6si5TuZObWoH/poRYJJ+GxTZFBY+BXaREWmFLbGW4O1jGW9olIZJ5/l9GkTgl7BCUWJE7kLK5m7+DYnkBrOiqMsyj+ChAm+o3gJZWr++AFZj/pToS6Vdwg1SD0FFjUTHPaxkUlNw== App dxzag3zdjuxbbfufuy58x1mvjq93udpblx7qoq0g27z51cx3's cloud code deploy key
@@ -673,44 +673,46 @@ AV.Cloud.define("Logger", function(request, response) {
 
 #### 域名备案流程
 
-对于企业用户，如果您的域名没有在国内备案过，我们可以协助您与我们的备案接入商一起完成备案，大概分为3个步骤  
+对于企业用户，如果您的域名没有在国内备案过，我们可以协助您与我们的备案接入商一起完成备案，大概分为3个步骤
 
-1. 您提供相应资料，我们来录入  
-2. 我们的备案接入商给您邮寄幕布，进行拍照验证，并将其它资料签字盖章后一起邮寄给备案提供商  
-3. 提交备案到（公司所在地）管局（通信管理局）审核  
+1. 您提供相应资料，我们来录入
+2. 我们的备案接入商给您邮寄幕布，进行拍照验证，并将其它资料签字盖章后一起邮寄给备案提供商
+3. 提交备案到（公司所在地）管局（通信管理局）审核
 
-请注意：**国内各地管局对备案的政策有差别，具体请查询当地管局**  
+请注意：**国内各地管局对备案的政策有差别，具体请查询当地管局**
 
-#####第一步： 
- 
-请提交以下资料，我们来帮您录入到系统：  
+#####第一步：
 
-1. 单位名称、单位通信地址、营业执照号码  
-2. 企业法人姓名、身份证号码、身份证扫描件电子档（正反面）、邮箱、手机号、电话（归属地为公司所在地）、QQ号码  
-3. 如果网站负责人和法人不为同一人话，还需要提供网站负责人的姓名、身份证号码、身份证扫描件电子档（正反面）、邮箱、手机号、电话（归属地为公司所在地）、QQ号码  
+请提交以下资料，我们来帮您录入到系统：
+
+1. 单位名称、单位通信地址、营业执照号码
+2. 企业法人姓名、身份证号码、身份证扫描件电子档（正反面）、邮箱、手机号、电话（归属地为公司所在地）、QQ号码
+3. 如果网站负责人和法人不为同一人话，还需要提供网站负责人的姓名、身份证号码、身份证扫描件电子档（正反面）、邮箱、手机号、电话（归属地为公司所在地）、QQ号码
 4. 网站名称（4个汉字以上）、首页地址、域名（可多个）、域名证书（可多个），还有网站服务内容类别，可在以下列表中选择一项
    * 综合门户
    * 搜索引擎
    * 单位门户网站
    * 网络游戏
-   * 网络广告  
+   * 网络广告
 
-#####第二步：  
+#####第二步：
 
-请提供您的地址，我们的备案接入商来给您邮寄幕布，因为幕布数量的关系，这里可能需要排队。  
-以下资料是需要您准备好邮寄给接入商  
+请提供您的地址，我们的备案接入商来给您邮寄幕布，因为幕布数量的关系，这里可能需要排队。
+以下资料是需要您准备好邮寄给接入商
 
-1.  企业营业执照副本复印件，盖公章  
-2.  企业法人身份证复印件，盖公章  
-3.  网站负责人身份证复印件，盖公章（如果和企业法人是同一人的话，此条可忽略）  
-4. 《网站备案信息真实性核验单》在最下面一栏，请网站负责人签字并盖公章。上面主办者名称和域名都需打印出来手写  
+1.  企业营业执照副本复印件，盖公章
+2.  企业法人身份证复印件，盖公章
+3.  网站负责人身份证复印件，盖公章（如果和企业法人是同一人的话，此条可忽略）
+4. 《网站备案信息真实性核验单》在最下面一栏，请网站负责人签字并盖公章。上面主办者名称和域名都需打印出来手写
 
-备案接入商地址：  
->地址：北京市东城区和平里东街15号航天物资大厦209房间   备案专员：赵进涛女士   联系电话：010-84222290转8001；18101125570
+备案接入商地址：
+>地址：北京市东城区和平里东街15号航天物资大厦209房间
+ 备案专员：赵进涛女士
+ 联系电话：010-84222290转8001；18101125570
 
 #####第三步：
-  
-由我们和备案接入商来完成。  
+
+由我们和备案接入商来完成。
 
 备案完成后，我们再执行绑定操作。
 
@@ -770,7 +772,7 @@ app.listen({"static": {maxAge: 604800000}});
 
 ### 动态请求
 
-如果只是展现静态资源，您可能使用Github Pages类似的免费服务也能做到，但是AVOSCloud提供的Web Hosting功能同时支持动态请求。这是通过编写[Node.js](http://nodejs.org)代码，基于[express.js](http://expressjs.com/)这个web MVC框架做到的。
+如果只是展现静态资源，您可能使用Github Pages类似的免费服务也能做到，但是LeanCloud 提供的Web Hosting功能同时支持动态请求。这是通过编写[Node.js](http://nodejs.org)代码，基于[express.js](http://expressjs.com/)这个web MVC框架做到的。
 
 关于[express.js](http://expressjs.com/)框架，请参考官方文档来学习。
 

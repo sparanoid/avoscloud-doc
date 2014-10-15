@@ -12,7 +12,7 @@ Installation 表示一个允许推送的设备的唯一标示，对应[数据管
 
 * deviceType  设备类型，目前只支持"ios"和"android"
 * deviceToken iOS设备才有的用于 APNS 推送的唯一标识符，只对 iOS 有效。
-* installationId AVOSCloud为每个Android设备产生的唯一标识符，只对android有效。
+* installationId LeanCloud 为每个Android设备产生的唯一标识符，只对android有效。
 * badge iOS设备呈现在应用程序图标右上角的红色圆形数字提示,用于提示一些无需即时处置的音讯,比方程序更新数、未读数等。
 * timeZone 设备设定的时区
 * channels 设备订阅的频道
@@ -152,7 +152,7 @@ AVPush *push = [[AVPush alloc] init];
 
 ### 高级定向发送
 
-频道对于大多数应用来说可能就足够了。但是某些情况下，你可能需要更高精度的定向推送。AVOSCloud允许你通过AVQuery API查询Installation列表，并向指定条件的query推送消息。
+频道对于大多数应用来说可能就足够了。但是某些情况下，你可能需要更高精度的定向推送。LeanCloud 允许你通过AVQuery API查询Installation列表，并向指定条件的query推送消息。
 
 因为AVInstallation同时是AVObject的子类，因此你可以保存任何数据类型到AVInstallation，并将它和你的其他应用数据对象关联起来，这样以来，你可以非常灵活地向你用户群做定制化、动态的推送。
 
@@ -282,7 +282,7 @@ AVPush *push = [[AVPush alloc] init];
 
 当设备关闭或者无法连接到网络的时候，推送通知就无法被送达。如果你有一条时间敏感的推送通知，不希望在太长时间后被用户读到，那么可以设置一个过期时间来避免打扰用户。
 
-AVPush提供了两个方法来设置通知的过期日期，首先是expireAtDate：接收NSDate来告诉AVOSCloud不要再去发送通知。
+AVPush提供了两个方法来设置通知的过期日期，首先是expireAtDate：接收NSDate来告诉LeanCloud 不要再去发送通知。
 
 ```
 NSDateComponents *comps = [[NSDateComponents alloc] init];

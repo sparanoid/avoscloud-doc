@@ -647,7 +647,7 @@ AVQuery的include方法可以被多次调用，每次调用的字段可以不一
 
 ### 缓存查询
 
-经常需要缓存一些查询的结果到磁盘上，这可以让你在离线的时候，或者当App刚启动，网络请求还没有足够时间完成的时候可以展现一些数据给用户。AVOSCloud会自动清空缓存，当缓存占用了太多空间的时候。
+经常需要缓存一些查询的结果到磁盘上，这可以让你在离线的时候，或者当App刚启动，网络请求还没有足够时间完成的时候可以展现一些数据给用户。LeanCloud 会自动清空缓存，当缓存占用了太多空间的时候。
 
 默认情况下的查询不会使用缓存，除非你使用`setCachePolicy`方法明确设置启用。例如，尝试从网络请求，如果网络不可用则从缓存数据中获取，可以这样设置：
 
@@ -665,7 +665,7 @@ public void done(List<AVObject> scoreList, AVException e) {
 });
 ```
 
-AVOSCloud提供了几种不同的缓存策略：
+LeanCloud 提供了几种不同的缓存策略：
 
 * IGNORE_CACHE ： 默认的缓存策略，查询不走缓存，查询结果也不存储在缓存。
 * CACHE_ONLY ： 查询只从缓存获取，不走网络。如果缓存中没有结果，引发一个AVException
@@ -702,7 +702,7 @@ query.setMaxCacheAge(TimeUnit.DAYS.toMillis(1));
 查询缓存也同时可以用在AVQuery的getFirst()和getInBackground()方法上。
 
 #### Last-Modified选项
-在网络请求中间Last-Modified一般是标注在http响应中，用来表示该资源在服务器端的最后修改时间。在AVOSCloud中间，我们也提供了这个选项来提升缓存的准确性、提高网络效率。
+在网络请求中间Last-Modified一般是标注在http响应中，用来表示该资源在服务器端的最后修改时间。在LeanCloud 中间，我们也提供了这个选项来提升缓存的准确性、提高网络效率。
 当你通过`AVOSCloud.setLastModifyEnabled(boolean enable)`来激活这个选项时，所有的对象和它们所对应的Last-Modified时间都会被缓存起来。
 当某个AVObject对象再次被发起一个get请求时，请求中就会带着Last-Modified信息，服务器端则会校验双方的Last-Modified信息。如果双方的Last-Modified时间一致，则说明自上次get请求之后，服务器端的数据并没有被修改，所以服务器不再需要将对象重新返回，客户端直接取缓存内对象返回即可，从而节省了网络资源。反之，则与平时一样，服务器返回该对象数据和对应的Last-Modified信息，由客户端更新缓存内容并返回，从而保证了缓存的正确性。
 ** 注：该功能现在正处于beta阶段，请谨慎使用 **
@@ -775,7 +775,7 @@ AVQuery.doCloudQueryInBackground("select count(*) from ObjectTest",new CloudQuer
 
 ## 子类化
 
-AVOSCloud希望设计成能让人尽快上手并使用。你可以通过AVObject.get方法访问所有的数据。但是在很多现有成熟的代码中，子类化能带来更多优点，诸如简洁、可扩展性以及IDE提供的代码自动完成的支持等等。子类化不是必须的，你可以将下列代码转化：
+LeanCloud 希望设计成能让人尽快上手并使用。你可以通过AVObject.get方法访问所有的数据。但是在很多现有成熟的代码中，子类化能带来更多优点，诸如简洁、可扩展性以及IDE提供的代码自动完成的支持等等。子类化不是必须的，你可以将下列代码转化：
 
 ```
 AVObject shield = new AVObject("Armor");
@@ -1344,7 +1344,7 @@ AVUser.requestPasswordResetInBackground("myemail@example.com", new RequestPasswo
 
 ### 发送验证邮件
 
-验证邮件对于很多应用来说并非是必须的，然而一旦遭遇到恶劣的强注事件时，通过验证邮件来阻拦spam用户的攻击就成为最直接和简便的方法。AVOSCloud同样也提供了这样的方法，让用户免去这方面的担忧。
+验证邮件对于很多应用来说并非是必须的，然而一旦遭遇到恶劣的强注事件时，通过验证邮件来阻拦spam用户的攻击就成为最直接和简便的方法。LeanCloud 同样也提供了这样的方法，让用户免去这方面的担忧。
 发送验证邮件的流程也很简单，在开发者获得用户的邮箱之后就可以发送验证邮件：
 
 ```

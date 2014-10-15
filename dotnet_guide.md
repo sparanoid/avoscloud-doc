@@ -73,7 +73,7 @@ var gameScore = new AVObject("GameScore")
 await gameScore.SaveAsync().ContinueWith(t =>
 {
 	// 保存成功之后，修改一个已经在服务端生效的数据，这里我们修改cheatMode和score
-	// AVOSCloud只会针对指定的属性进行覆盖操作，本例中的playerName不会被修改
+	// LeanCloud 只会针对指定的属性进行覆盖操作，本例中的playerName不会被修改
 	gameScore["cheatMode"] = true;
 	gameScore["score"] = 9999;
 	gameScore.SaveAsync();
@@ -819,7 +819,7 @@ await file.SaveAsync().ContinueWith(
 }, CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.FromCurrentSynchronizationContext());
 ```
 
-AVFile构造函数的第一个参数指定文件名称，第二个构造函数接收一个byte数组，也就是将要上传文件的二进制，第三个参数是自定义元数据的字典，比如你可以把文件的作者的名字当做元数据存入这个字典，AVOSCloud的服务端会把它保留起来，这样在以后获取的时候，这种类似的自定义元数据都会被获取。
+AVFile构造函数的第一个参数指定文件名称，第二个构造函数接收一个byte数组，也就是将要上传文件的二进制，第三个参数是自定义元数据的字典，比如你可以把文件的作者的名字当做元数据存入这个字典，LeanCloud 的服务端会把它保留起来，这样在以后获取的时候，这种类似的自定义元数据都会被获取。
 
 ### 本地文件
 
