@@ -19,7 +19,7 @@
     <div class="col-sm-3">
       <div class="doc-hero-links">
         <a href="/start.html" class="doc-quick-start-btn">
-          <i class="avc-icon avc-bulb"></i>
+          <i class="icon icon-bulb"></i>
           快速上手
         </a>
       </div>
@@ -29,7 +29,7 @@
     <div class="col-sm-3">
       <div class="doc-hero-links">
         <a href="sdk_down.html" class="doc-quick-start-btn">
-          <i class="avc-icon avc-download"></i>
+          <i class="icon icon-download"></i>
           SDK 下载
         </a>
       </div>
@@ -39,7 +39,7 @@
     <div class="col-sm-3">
       <div class="doc-hero-links">
         <a href="demo.html" class="doc-quick-start-btn">
-          <i class="avc-icon avc-devices"></i>
+          <i class="icon icon-devices"></i>
           Demo
         </a>
       </div>
@@ -49,7 +49,7 @@
     <div class="col-sm-3">
       <div class="doc-hero-links">
         <a href="avoscloud-docs.tar.gz" class="doc-quick-start-btn">
-          <i class="avc-icon avc-package"></i>
+          <i class="icon icon-package"></i>
           离线文档
         </a>
       </div>
