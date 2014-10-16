@@ -19,9 +19,9 @@
 * 如果您想做一个形如微博的 Feed 系统，也许您可以尝试使用我们的 [事件流系统](https://leancloud.cn/docs/status_system.html)。
 * 我们提供简易的 [SNS 组件](https://leancloud.cn/docs/sns.html)，用于第三方登陆和分享。
 * [Android 应用代码混淆注意事项](https://leancloud.cn/docs/android_guide.html#代码混淆)。
-* [基于 LeanCloud 的一对多、多对多关系数据建模](https://blog.avoscloud.com/1723/)。
-* [使用 LeanCloud JavaScript SDK 和 AngularJS 创建 一个 Todo Demo](https://blog.avoscloud.com/1541/)
-* 我们的数据存储服务提供地理位置信息查询，参考 SDK 开发指南，或者这篇[教程](https://blog.avoscloud.com/537/)。
+* [基于 LeanCloud 的一对多、多对多关系数据建模](https://blog.leancloud.cn/1723/)。
+* [使用 LeanCloud JavaScript SDK 和 AngularJS 创建 一个 Todo Demo](https://blog.leancloud.cn/1541/)
+* 我们的数据存储服务提供地理位置信息查询，参考 SDK 开发指南，或者这篇[教程](https://blog.leancloud.cn/537/)。
 * 在应用设置菜单里，可以找到**数据导出**功能，您可以完整导出您的应用数据。
 * 您可以在某个 class 的其他菜单里找到权限设置、Class 绑定等高级功能。
 * 在应用设置的**邮件模板**菜单，您可以编辑并保存发送给注册用户的邮箱验证邮件模板等。
@@ -96,7 +96,7 @@
 * 想建立一个应用网站？我们提供 [Web 主机托管](https://leancloud.cn/docs/cloud_code_guide.html#web-hosting)。
 * 想用好云代码，请先熟悉 [JavaScript SDK 开发指南](https://leancloud.cn/docs/js_guide.html)。
 * 云代码 Web 主机托管，可以绑定备案过的独立域名，请在[工单系统](https://ticket.avosapps.com)提出技术申请。
-* 云代码 Web 主机托管，我们可以协助您完成域名的备案，请参考[文档](https://cn.avoscloud.com/docs/cloud_code_guide.html#域名备案流程)
+* 云代码 Web 主机托管，我们可以协助您完成域名的备案，请参考[文档](https://leancloud.cn/docs/cloud_code_guide.html#域名备案流程)
 
 ## 其他
 
@@ -111,6 +111,6 @@
 * 不知道怎么使用 LeanCloud？各种 [demo](https://leancloud.cn/docs/demo.html) 等你来拿。
 * [文档搜索工具](https://leancloud.cn/search.html)，查找问题或资料不用愁。
 * 所有 SDK 都提供 [API 文档](https://leancloud.cn/docs/index.html)，开发指南没有覆盖的 API 介绍都可以在里面找到解释。
-* 关注我们的[博客](https://blog.avoscloud.com/)和[微博](http://weibo.com/avoscloud)，获取 LeanCloud 最新消息。
+* 关注我们的[博客](https://blog.leancloud.cn/)和[微博](http://weibo.com/avoscloud)，获取 LeanCloud 最新消息。
 * 在应用设置的基本设置菜单里，可以更改应用名称，提交应用图标，申请发布到[应用墙](https://leancloud.cn/customers.html)。
 * 为您的应用添加用户反馈，请使用我们的[用户反馈组件](https://leancloud.cn/docs/feedback.html)。

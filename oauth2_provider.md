@@ -250,7 +250,7 @@ client_name: "xzhuang",
 client_type: 1,
 phone: "18xxxxxxxxxxx",
 company_size: 2,
-company_site: "https://avoscloud.com",
+company_site: "https://leancloud.cn",
 oicq: "xxxxxx"
 ……
 }

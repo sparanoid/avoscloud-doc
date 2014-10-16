@@ -255,7 +255,7 @@ query.find().then(function(statuses){
 除了上面常见两种场景, 自定义状态可以通过设置**受众群体和发送者** 来实现更加灵活的功能
 
     AVStatus *status=[[AVStatus alloc] init];
-    [status setData:@{@"text":@"we have new website, take a look!",@"link":@"http://avoscloud.com"}];
+    [status setData:@{@"text":@"we have new website, take a look!",@"link":@"http://leancloud.cn"}];
 
     status.type=@"system";
 
@@ -405,7 +405,7 @@ query.find().then(function(statuses){
 
     Map<String, Object> data = new HashMap<String, Object>();
     data.put("text", "we have new website, take a look!");
-    data.put("link", "http://avoscloud.com");
+    data.put("link", "http://leancloud.cn");
     AVStatus status = AVStatus.createStatusWithData(data);
     status.setInboxType("system");
 

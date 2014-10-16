@@ -745,7 +745,7 @@ query.deleteAll();
 
 ### CQL查询
 Cloud Query Language（简称 CQL） 是 LeanCloud 为查询 API 定制的一套类似 SQL 查询语法的子集和变种，主要目的是降低大家学习 LeanCloud 查询的 API 的成本，可以使用传统的 SQL 语法来查询 LeanCloud 应用内的数据。
-这里只是示范在Android中的调用方法，具体的CQL语法，请参考[Cloud Query Language 详细指南](https://avoscloud.com/docs/cql_guide.html).
+这里只是示范在Android中的调用方法，具体的CQL语法，请参考[Cloud Query Language 详细指南](https://leancloud.cn/docs/cql_guide.html).
 你可以通过一下方法来进行调用
 ```
 AVQuery.doCloudQueryInBackground("select * from ObjectTest",new CloudQueryCallback<AVCloudQueryResult>(){
@@ -1255,7 +1255,7 @@ user.signUpInBackground(new SignUpCallback() {
 
 你也可以要求用户使用Email做为用户名注册，这样做的好处是，你在提交信息的时候可以将输入的“用户名“默认设置为用户的Email地址，以后在用户忘记密码的情况下可以使用LeanCloud提供的重置密码功能。
 
-关于自定义邮件模板和验证链接请看这篇[博客](http://blog.avoscloud.com/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
+关于自定义邮件模板和验证链接请看这篇[博客](http://blog.leancloud.cn/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
 
 用户邮箱验证后，会调用`AV.Cloud.onVerified('email',function)`的云代码回调函数，方便你做一些后处理。
 
@@ -1322,7 +1322,7 @@ AVUser.requestPasswordResetInBackground("myemail@example.com", new RequestPasswo
  * 用户根据向导点击重置密码连接，打开一个特殊的页面，让他们输入一个新的密码。
  * 用户的密码已被重置为新输入的密码。
 
-关于自定义邮件模板和验证链接请看这篇[博客](http://blog.avoscloud.com/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
+关于自定义邮件模板和验证链接请看这篇[博客](http://blog.leancloud.cn/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
 
 用户邮箱验证后，会调用`AV.Cloud.onVerified('email',function)`的云代码回调函数，方便你做一些后处理。
 
@@ -1357,7 +1357,7 @@ AVUser.requestPasswordResetInBackground("myemail@example.com", new RequestPasswo
         });
 ```
 
-关于自定义邮件模板和验证链接请看这篇[博客](http://blog.avoscloud.com/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
+关于自定义邮件模板和验证链接请看这篇[博客](http://blog.leancloud.cn/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
 
 ###  手机号码验证
 

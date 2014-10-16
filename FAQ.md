@@ -40,7 +40,7 @@
 
 通常情况下，我们以一到两周的周期发布新版本更新，获取更新信息可以通过：
 
-* 我们的[博客](http://blog.avoscloud.com/)，每次更新的详细信息都会发布在那里。
+* 我们的[博客](http://blog.leancloud.cn/)，每次更新的详细信息都会发布在那里。
 * [官方微博](http://weibo.com/avoscloud)
 * 每个月初我们还会发送一个每月的更新摘要邮件到您的注册邮箱。
 * 控制台右上方有一个`消息中心`功能，请注意查看新通知。
@@ -71,7 +71,7 @@
 
 ### Unity 3D支持如何
 
-请在我们的 [SDK 下载页面](https://avoscloud.com/docs/sdk_down.html) 下载 Unity SDK。
+请在我们的 [SDK 下载页面](https://leancloud.cn/docs/sdk_down.html) 下载 Unity SDK。
 
 ### 开发文档有提供搜索功能吗
 
@@ -133,7 +133,7 @@ REST API 文档使用 curl 作为示范，其中 `--data-urlencode` 表示要对
 
 ### 如何在App邮件内完全使用自己的品牌
 
-请参考博客文章[自定义应用内用户重设密码和邮箱验证页面](http://blog.avoscloud.com/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
+请参考博客文章[自定义应用内用户重设密码和邮箱验证页面](http://blog.leancloud.cn/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
 
 ### 创建唯一索引失败
 
@@ -145,7 +145,7 @@ REST API 文档使用 curl 作为示范，其中 `--data-urlencode` 表示要对
 
 ### 如何在应用之间共享数据
 
-参见这篇[博客](http://blog.avoscloud.com/blog/2014/03/31/2014nian-3yue-di-4zhou-avos-cloud-geng-xin/)。
+参见这篇[博客](http://blog.leancloud.cn/blog/2014/03/31/2014nian-3yue-di-4zhou-avos-cloud-geng-xin/)。
 
 ## iOS/OS X SDK
 
@@ -264,11 +264,11 @@ JavaScript SDK 由于平台的特殊性（运行在单线程运行的浏览器�
 
 ### 云代码如何上传文件
 
-参考这篇[博客](http://blog.avoscloud.com/blog/2013/11/23/zai-yun-dai-ma-zhong-chu-li-shang-chuan-wen-jian/)，或者[云代码开发指南这部分](https://leancloud.cn/docs/cloud_code_guide.html#%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6)。
+参考这篇[博客](http://blog.leancloud.cn/blog/2013/11/23/zai-yun-dai-ma-zhong-chu-li-shang-chuan-wen-jian/)，或者[云代码开发指南这部分](https://leancloud.cn/docs/cloud_code_guide.html#%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6)。
 
 ### 云代码中如何处理用户登录和 Cookie
 
-参考这篇[博客](http://blog.avoscloud.com/blog/2013/12/16/zai-yun-dai-ma-zhong-chu-li-yong-hu-deng-lu/)，或者[云代码指南这部分内容](https://leancloud.cn/docs/cloud_code_guide.html#%E5%A4%84%E7%90%86%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E5%92%8C%E7%99%BB%E5%87%BA)。
+参考这篇[博客](http://blog.leancloud.cn/blog/2013/12/16/zai-yun-dai-ma-zhong-chu-li-yong-hu-deng-lu/)，或者[云代码指南这部分内容](https://leancloud.cn/docs/cloud_code_guide.html#%E5%A4%84%E7%90%86%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E5%92%8C%E7%99%BB%E5%87%BA)。
 
 
 ### 云代码的二级域名多久生效
@@ -277,12 +277,12 @@ JavaScript SDK 由于平台的特殊性（运行在单线程运行的浏览器�
 
 ### 云代码二级域名可以启用 HTTPS 吗
 
-参考[博客](http://blog.avoscloud.com/blog/2013/12/20/wei-yun-dai-ma-tuo-guan-wang-zhan-qi-yong-https/)。
+参考[博客](http://blog.leancloud.cn/blog/2013/12/20/wei-yun-dai-ma-tuo-guan-wang-zhan-qi-yong-https/)。
 
 ### 云代码Web Hosting备案
 
 只有网站类的才需要备案，并且在主域名已备案的情况下，二级子域名不需要备案。
-如果主站需要托管在我们这边，如果主站还没有备案过，我们可以协助您完成备案，请参考[文档](https://cn.avoscloud.com/docs/cloud_code_guide.html#域名备案流程)
+如果主站需要托管在我们这边，如果主站还没有备案过，我们可以协助您完成备案，请参考[文档](https://leancloud.cn/docs/cloud_code_guide.html#域名备案流程)
 
 ## 文件
 
