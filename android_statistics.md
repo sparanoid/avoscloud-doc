@@ -55,8 +55,7 @@
     </application>
 ```
 
-您可以根据您的实际发布渠道，修改上述的Channel ID对应的值，比如将LeanCloud改为Your Channel，重新打包后发布。
-
+您可以根据您的实际发布渠道，修改上述的android:value中对应的值，比如将LeanCloud改为Your Channel，重新打包后发布。(请不要修改android:name="Channel ID"字段，以免影响使用)
 
 ## 添加使用代码
 
