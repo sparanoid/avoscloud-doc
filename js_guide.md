@@ -1268,7 +1268,7 @@ var size = file.size();
 var ownerId = file.ownerId();
 ```
 
-`0.3.1`版本开始，我们增强了metaData方法，它同时是gettter和setter方法:
+`0.3.1`版本开始，我们增强了metaData方法，它同时是getter和setter方法:
 
 ```
 //获取所有元信息组成的JSON对象
