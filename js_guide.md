@@ -5,19 +5,19 @@
 
 ## 简介
 
-AVOS Cloud平台提供了一个移动App的完整后端解决方案,我们的目标是完全消除写
+LeanCloud平台提供了一个移动App的完整后端解决方案,我们的目标是完全消除写
 后端代码和维护服务器的必要性.
 
 我们的JavaScript SDK基于流行的Backbone.js框架.它与已经存在的
 Backbone程序是兼容的,只需要在你的代码中做出一点点改变,我们的最小化
-配置,让你很快地用在AVOS Cloud上使用JavaScript和HTML5.
+配置,让你很快地用在LeanCloud上使用JavaScript和HTML5.
 
 请在阅读本文档的同时，对照查看 [JavaScript API文档](./api/javascript/)。本指南并没有完全覆盖所有的 API 调用。
 
 ### Apps
 
-在AVOS Cloud上你可以为你的每一个移动应用创建一个App,每一个App都有它专属
-的App id和App key.你在AVOS Cloud上的账户可以容纳多个App.对每一个应用你都
+在LeanCloud上你可以为你的每一个移动应用创建一个App,每一个App都有它专属
+的App id和App key.你在LeanCloud上的账户可以容纳多个App.对每一个应用你都
 可以部署不同的版本到测试或生产环境.
 
 ### 依赖
@@ -30,7 +30,7 @@ Backbone程序是兼容的,只需要在你的代码中做出一点点改变,我�
 
 ### AV.Object
 
-在AVOS Cloud上保存数据应该使用AV.Object.每一个AV.Object都包含
+在LeanCloud上保存数据应该使用AV.Object.每一个AV.Object都包含
 键-值对,对应一些兼容JSON的数据.这些数据是无模式的,这意味着你不
 需提前指定好一个AV.Object中应该包含哪些key.你只需简单地设定你
 需要的key-value对,我们的后端就会存储它.
@@ -91,9 +91,20 @@ var monster = Monster.spawn(200);
 alert(monster.strength());  // Displays 200.
 ```
 
+创建对象还可以通过 `AV.Object.new` 方法，子类对象也可以：
+
+```
+//AV.Object
+var gameScore = AV.Object.new('GameScore');
+//子类
+var monster = Monster.new({strength: 20});
+```
+
+在使用 [uglify](https://github.com/mishoo/UglifyJS) 做代码压缩的时候，推荐采用上述方式创建对象，否则可能遇到压缩后语法错误。
+
 ### 保存对象
 
-假如你想要在AVOS Cloud上保存GameScore，方法和Backbone.Model差不多,就用
+假如你想要在LeanCloud上保存GameScore，方法和Backbone.Model差不多,就用
 save就可以了.
 
 ```
@@ -116,7 +127,7 @@ gameScore.save(null, {
 ```
 
 在代码运行以后,你可能会对后端发生了什么有兴趣,为了确认数据被保存了,你可以
-在AVOS Cloud的[数据管理](/data.html?appid={{appid}})上查看你的数据.你大致可以看到如下的内容:
+在LeanCloud的[数据管理](/data.html?appid={{appid}})上查看你的数据.你大致可以看到如下的内容:
 
 ```
 objectId: "520ca0bbe4b07e8e0e847e31", score: 1337, playerName: "Sean Plott", cheatMode: false,
@@ -125,10 +136,10 @@ createdAt:"2011-06-10T18:33:42Z", updatedAt:"2011-06-10T18:33:42Z"
 
 这里有2点需要注意的地方:
 
-* 你不需要设定一个叫GameScore的新类,AVOS Cloud会自动地在你第一次使用它的时候为你创建这个类.
+* 你不需要设定一个叫GameScore的新类,LeanCloud会自动地在你第一次使用它的时候为你创建这个类.
 * 每个对象有几个默认的键是不需要开发者额外指定的： objectId是一个对于每一个
 保存的对象为一个标志； createdAt和updatedAt表示对象在cloud中创建和最后一
-次更改的时间.这样的字段都是由AVOS Cloud来填充的,所以他们在保存之前
+次更改的时间.这样的字段都是由LeanCloud来填充的,所以他们在保存之前
 AV.Object中都不会有这些字段.
 
 如果愿意,你也可以在调用save时直接设定属性.
@@ -156,7 +167,7 @@ gameScore.save({
 
 ### 检索对象
 
-在AVOS Cloud中保存数据是很简单的,获取数据也非常容易。如果事先知道
+在LeanCloud中保存数据是很简单的,获取数据也非常容易。如果事先知道
 objectId的话,你可以用一个AV.Query提取出整个AV.Object:
 
 ```
@@ -206,7 +217,7 @@ gameScore.save(null, {
 });
 ```
 
-AVOS Cloud自动查找哪些数据被改动了,所以只有"dirty"的字段会被发送到AVOS Cloud，
+LeanCloud自动查找哪些数据被改动了,所以只有"dirty"的字段会被发送到LeanCloud，
 你不需要担心需要剔除你不想更新的数据.
 
 #### fetchWhenSave
@@ -226,7 +237,7 @@ AVOS Cloud自动查找哪些数据被改动了,所以只有"dirty"的字段会�
 #### 计数器
 
 许多应用都需要维持一些计数器数据 -- 譬如用来跟踪游戏分数、金币甚至道具的数目等等。
-AVOS Cloud提供了便捷的方式来对任何数字字段进行原子性的增加或者减少:
+LeanCloud提供了便捷的方式来对任何数字字段进行原子性的增加或者减少:
 
 ```
 gameScore.increment("score");
@@ -254,12 +265,12 @@ gameScore.save();
 
 ### 删除对象
 
-为了在AVOS Cloud中删除一个对象:
+为了在LeanCloud中删除一个对象:
 
 ```
 myObject.destroy({
   success: function(myObject) {
-    // The object was deleted from the AVOS Cloud.
+    // The object was deleted from the LeanCloud.
   },
   error: function(myObject, error) {
     // The delete failed.
@@ -274,7 +285,7 @@ myObject.destroy({
 // After this, the playerName field will be empty
 myObject.unset("playerName");
 
-// Saves the field deletion to the AVOS Cloud
+// Saves the field deletion to the LeanCloud
 myObject.save();
 ```
 
@@ -290,7 +301,7 @@ AV.Object.destroyAll(objects);
 ### 关系数据
 
 对象可能与别的对象有关系,比如对于Weibo来说,一条微博信息(Post对象)可能有很
-多评论(Comment对象).AVOS Cloud支持各种关系,包括一对一，一对多和多对多。
+多评论(Comment对象).LeanCloud支持各种关系,包括一对一，一对多和多对多。
 
 #### 一对一关系和一对多关系
 
@@ -319,7 +330,7 @@ myComment.set("parent", myPost);
 myComment.save();
 ```
 
-AVOS Cloud内部会自动处理，调用Comment的save方法就可以同时保存两个新对象。
+LeanCloud内部会自动处理，调用Comment的save方法就可以同时保存两个新对象。
 
 如果是现有对象想要关联到新对象，你同样可以通过**只用它们的objectId**来连接彼此。
 请注意，不能直接像上面的例子那样将现有对象设置进去，而是必须new一个新对象并只设置id属性：
@@ -426,7 +437,7 @@ query.find({
 
 ### 数据类型
 
-到现在为止我们使用了String,Number和AV.Object类型,AVOS Cloud同样支持
+到现在为止我们使用了String,Number和AV.Object类型,LeanCloud同样支持
 JavaScript的Date和null类型.
 
 你可以用一个AV.Object中嵌套JavaScript对象和数组来表述更加结构化的数
@@ -831,7 +842,7 @@ query.destroyAll({
 
 ### CQL 查询语言
 
-从 0.4.3 版本开始，我们允许使用类 SQL 语法的 CQL 查询语言来查询 AVOS Cloud 应用内的数据，例如：
+从 0.4.3 版本开始，我们允许使用类 SQL 语法的 CQL 查询语言来查询 LeanCloud 应用内的数据，例如：
 
 ```
 AV.Query.doCloudQuery('select * from GameScore', {
@@ -872,7 +883,7 @@ CQL 语法请参考 [CQL 详细指南](./cql_guide.html)。
 
 ##Promise
 
-除了回调函数之外,每一个在AVOS Cloud JavaScript SDK中的异步方法都会返回一个
+除了回调函数之外,每一个在LeanCloud JavaScript SDK中的异步方法都会返回一个
 Promise.使用Promise，你的代码可以比原来的嵌套callback的方法看起来优雅得多.
 
 ###then 方法
@@ -1118,7 +1129,7 @@ collection.add([
 // Get the "Duke" AV.Object by its sorted position.
 var model = collection.at(0);
 
-// Or you can get it by AVOS Cloud objectId.
+// Or you can get it by LeanCloud objectId.
 var modelAgain = collection.get(model.id);
 
 // Remove "Duke" from the collection.
@@ -1135,7 +1146,7 @@ collection.reset([
 
 ###新建一个 AV.File
 
-AV.File让你可以在AVOSCloud中保存应用的文件,这样可以解决用一个
+AV.File让你可以在LeanCloud 中保存应用的文件,这样可以解决用一个
 AV.Object存太大或者太难处理的问题.最常见的用例就是存储图片,但是你可
 以随意用来存储文档,视频,音乐或者任何二进制数据。
 
@@ -1180,26 +1191,26 @@ if (fileUploadControl.files.length > 0) {
 
 - 你不需要担心文件名重复的问题,每一次上传都会有一个独一无二的标识符,所
   以上传多个文件都叫photo.jpg是没有问题的.
-- 你应该给你的文件一个扩展名,这样会让AVOS Cloud明白文件的类型,并且会按文件
+- 你应该给你的文件一个扩展名,这样会让LeanCloud明白文件的类型,并且会按文件
   类型来进行处理.所以如果你在储存PNG格式的文件的话,请保证你的文件名是
   以".png"为结尾的.
-  
+
 如果您是在Node.js里使用我们的SDK，从`0.3.1`版本开始，我们也让AV.File的构造函数接收[Buffer](http://nodejs.org/api/buffer.html)作为文件存储：
 
 ```
 var file = new AV.File('test.txt', new Buffer('hello world'));
-``` 
+```
 
-因为Node.js对IO的读写经常都是经过Buffer，通过支持Buffer，我们的SDK也能很好地工作在node.js环境。 
+因为Node.js对IO的读写经常都是经过Buffer，通过支持Buffer，我们的SDK也能很好地工作在node.js环境。
 
 从`0.3.2`版本开始，我们还支持保存一个现有存储在其他服务上的URL的文件对象：
 
 ```
-var file = AV.File.withURL('test.jpg', 'https://cn.avoscloud.com/docs/images/permission.png');
+var file = AV.File.withURL('test.jpg', 'https://leancloud.cn/docs/images/permission.png');
 file.save();
 ```
 
-下面你应该向AVOSCloud上传你的文件了.就像AV.Object一样,有很多不同的
+下面你应该向LeanCloud 上传你的文件了.就像AV.Object一样,有很多不同的
 save方法,你可以按你想用的callback和error处理的方式来使用它们.
 
 ```
@@ -1343,7 +1354,7 @@ user.signUp(null, {
 
 这个调用会异步地在在你的应用中创建一个新的用户.在它这样做之前,它同
 样会确认用户名和email在应用内都是唯一的.同样,为了安全我们会将密码散列
-过后存储在AVOSCloud中.我们从不会将用户密码以明文存储,我们也不会用明文
+过后存储在LeanCloud 中.我们从不会将用户密码以明文存储,我们也不会用明文
 向任何客户端发送密码.
 
 注意我们使用了signUp方法而不是save方法.新的AV.User永远应该使用
@@ -1378,12 +1389,12 @@ AV.User.logIn("myname", "mypass", {
 在应用设置的应用选项中中启用email验证可以让你的应用给最终用户一些更安全的使用体验，
 譬如部分功能只开放给验证过邮箱的用户使用，等等。
 Email验证会在AV.User上加入一个emailVerified字段.当一个
-AV.User的email被设定或者修改后,emailVerfied会被设定为false.AVOS Cloud会
+AV.User的email被设定或者修改后,emailVerfied会被设定为false.LeanCloud会
 向用户的email来发送一个链接,点击这个链接会设置emailVerified为true.
 
 有三种emailVerified状态可以供参考:
 
-1. true 用户已经通过点击AVOS Cloud发过来的链接来确认邮箱地址.当用户账户新创
+1. true 用户已经通过点击LeanCloud发过来的链接来确认邮箱地址.当用户账户新创
    建的时候这个值永远不应该是true.
 2. false 在AV.User对象最后一次刷新的时候,用户还是没有确认他们的
    email地址,如果emailVerified是false的话,你应该考虑调用AV.User的
@@ -1391,7 +1402,7 @@ AV.User的email被设定或者修改后,emailVerfied会被设定为false.AVOS Cl
 3. missing AV.User被创建了,但是当时的email验证功能还没有开启,
    或者说AV.User没有email地址.
 
-关于自定义邮件模板和验证链接请看这篇[博客](http://blog.avoscloud.com/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
+关于自定义邮件模板和验证链接请看这篇[博客](http://blog.leancloud.cn/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
 
 用户邮箱验证后，会调用`AV.Cloud.onVerified('email',function)`的云代码回调函数，方便您做一些后处理。
 
@@ -1614,15 +1625,15 @@ AV.User.requestPasswordReset("email@example.com", {
 密码重设的流程如下:
 
 1. 用户输入email来请求重设他们的密码
-2. AVOS Cloud向用户的email地址发送邮件,包含了一个重设密码的链接
-3. 用户点击这个重设密码的链接,会重定向到一个AVOS Cloud页面来允许他们重设密
+2. LeanCloud向用户的email地址发送邮件,包含了一个重设密码的链接
+3. 用户点击这个重设密码的链接,会重定向到一个LeanCloud页面来允许他们重设密
    码
 4. 用户输入新的密码,他们的密码现在会更新为输入的新密码.
 
-注意这个流程的信息会引用你的app的名字,这个名字是你初始在AVOS Cloud上创建的
+注意这个流程的信息会引用你的app的名字,这个名字是你初始在LeanCloud上创建的
 app的名字.
 
-关于自定义邮件模板和验证链接请看这篇[博客](http://blog.avoscloud.com/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
+关于自定义邮件模板和验证链接请看这篇[博客](http://blog.leancloud.cn/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
 
 ###查询
 
@@ -1688,7 +1699,7 @@ post.save(null, {
 
 你还可以定制发送的内容，设置下列选项：
 
-* name 应用名称，默认是你的应用在 AVOS Cloud 显示的名称。
+* name 应用名称，默认是你的应用在 LeanCloud 显示的名称。
 * op 进行的操作字符串，例如`付费`。
 * ttl 以分钟为单位的过期时间。
 
@@ -1718,7 +1729,7 @@ post.save(null, {
 ##角色
 
 随着你的App规模和用户基数的成长,你可能发现你需要比设定用户级的权限更加
-宽泛的权限设置.AVOS Cloud提供一种基于角色的权限管理方案来满足这种需求.角色
+宽泛的权限设置.LeanCloud提供一种基于角色的权限管理方案来满足这种需求.角色
 提供了一种逻辑的方式来将用户分组并给与相同的权限.角色是一种有名字的对
 象,包含了用户和其他的角色.任何授予一个角色的权限会被它包含的所有用户和
 子角色所继承.
@@ -1747,7 +1758,7 @@ AV.Role有一些属性与普通的AV.Object不同:
 
 ###角色对象的安全性
 
-AV.Role使用和其他AVOS Cloud对象一样的ACL权限策略,除开它需要ACL被显式地设
+AV.Role使用和其他LeanCloud对象一样的ACL权限策略,除开它需要ACL被显式地设
 置以外.通常来说,只有用户有极大的权限(比如管理员)才应该被允许创建或者更
 改Role.所以你应该按这种标准来设定Role的ACL.请注意,如果你给了用户一个
 AV.Role一个写权限,这个用户有可能会在这个权限中加入另一个user,或者甚
@@ -1869,13 +1880,13 @@ AV.Push.send({
 });
 ```
 
-`AV.Push` 的更多使用信息参考 API 文档[AV.Push](https://cn.avoscloud.com/docs/api/javascript/symbols/AV.Push.html)。
+`AV.Push` 的更多使用信息参考 API 文档[AV.Push](https://leancloud.cn/docs/api/javascript/symbols/AV.Push.html)。
 
 更多推送的查询条件和格式，请查阅我们的[Push Notification指南](./push_guide.html)来获取更详细的信息
 
 ##地理位置
 
-AVOS Cloud允许你能够将真实世界的经度和纬度坐标放入对象之中.在AV.Object中
+LeanCloud允许你能够将真实世界的经度和纬度坐标放入对象之中.在AV.Object中
 加入一个AV.GeoPoint可以让你查询一个Object离一个参考点的相对位置.这
 允许你轻松的发现一个用户周围最近的用户,或者离一个用户最近的地点.
 
@@ -1968,7 +1979,7 @@ AV.Collection都可以用Backbone.Model和Backbone.Collection加上一点点
 
 1. 按照我们的说明来在你已经有的JavaScript程序中安装SDK.
 2. 将所有的Backbone.Model都替换成AV.Object.这样做的时候,url和
-   urlRoot应该用恰当的className替换,这些对象映射为AVOS Cloud的类
+   urlRoot应该用恰当的className替换,这些对象映射为LeanCloud的类
 
 ```
 var BackboneTodo = Backbone.Model.extend({
@@ -2002,20 +2013,20 @@ todos.fetch();
    取你感兴趣的对象,就像我们必须对AV.Collection的query属性做的一样
 5. 加入或者将你的app更新为使用用户认证方式的,并且在需要的对象上应用ACL
 
-这样就结束了,你的App应该已经就绪并使用AVOS Cloud作为后端.
+这样就结束了,你的App应该已经就绪并使用LeanCloud作为后端.
 
 ##错误处理
 
-大部分AVOS Cloud JavaScript函数会通过一个有callback的对象来报告它们是否成功
+大部分LeanCloud JavaScript函数会通过一个有callback的对象来报告它们是否成功
 了,与Backbone的"options"对象类似.主要的2个callback是success和error.
 在一个操作都没有错误发生的时候success会被调用.通常来说,它的参数在save
 或者get的情况下可能是AV.Object, 或者在find的情形下是一个
 AV.Object数组.
 
-error会在任何一种在与AVOS Cloud的网络连接发生错误的时候调用.这些错误
+error会在任何一种在与LeanCloud的网络连接发生错误的时候调用.这些错误
 信息一般会反映连接到cloud时出现的一些问题,或者处理请求的操作时遇到的一
 些问题.我们可以看下另一个例子,在下面的代码中我们想要获取一个不存在的
-objectId. AVOS Cloud会返回一个错误,所以这里就是我们怎样在你的callback
+objectId. LeanCloud会返回一个错误,所以这里就是我们怎样在你的callback
 里处理错误.
 
 ```
@@ -2035,7 +2046,7 @@ query.get("aBcDeFgH", {
 });
 ```
 
-查询在无法连接到AVOS Cloud的时候同样有可能失败.下面是同样的
+查询在无法连接到LeanCloud的时候同样有可能失败.下面是同样的
 callback但是有一些其他的代码来处理这种情况:
 
 ```
@@ -2051,7 +2062,7 @@ query.get("thisObjectIdDoesntExist", {
     if (error.code === AV.Error.OBJECT_NOT_FOUND) {
       alert("Uh oh, we couldn't find the object!");
     } else if (error.code === AV.Error.CONNECTION_FAILED) {
-      alert("Uh oh, we couldn't even connect to the AVOS Cloud!");
+      alert("Uh oh, we couldn't even connect to the LeanCloud!");
     }
   }
 });

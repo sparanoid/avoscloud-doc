@@ -1,10 +1,10 @@
-# AVOS Cloud Documentation
+# LeanCloud Documentation
 
-AVOS Cloud 开发者文档
+LeanCloud 开发者文档
 
 ## 说明
 
-这个项目是 AVOS Cloud [文档](http://avoscloud.com/docs/)上的所有文档的 Markdown 格式的源码，最终将渲染成你在网站上看到的 [HTML 文档](https://avoscloud.com/docs/)。
+这个项目是 LeanCloud [文档](http://leancloud.cn/docs/)上的所有文档的 Markdown 格式的源码，最终将渲染成你在网站上看到的 [HTML 文档](https://leancloud.cn/docs/)。
 
 因此 Markdown 文件里部分链接写的是最终渲染后的链接，如果直接点击会发现 404 错误。敬请谅解。
 

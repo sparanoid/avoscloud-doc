@@ -1,14 +1,14 @@
 
 # Android 统计 SDK 开发指南
 
-## 建立 AVOS Cloud app，下载 SDK
+## 建立 LeanCloud app，下载 SDK
 
-您可以在cn.avoscloud.com上创建新的应用，然后下载AVOS Cloud Android SDK以及相应的demo。
+您可以在leancloud.cn上创建新的应用，然后下载LeanCloud Android SDK以及相应的demo。
 
 
-## 创建 Android 工程，使用 AVOS Cloud 基本的统计功能
+## 创建 Android 工程，使用 LeanCloud 基本的统计功能
 
-您可以从 [SDK下载页面](https://cn.avoscloud.com/docs/sdk_down.html) 下载android的SDK。
+您可以从 [SDK下载页面](https://leancloud.cn/docs/sdk_down.html) 下载android的SDK。
 
 
 ## 导入 SDK
@@ -23,7 +23,7 @@
 
 请务必确保您的应用拥有如下权限
 
-* 添加权限`android.permission.INTERNET`, 向AVOSCloud的统计服务器发送用户分析数据。
+* 添加权限`android.permission.INTERNET`, 向LeanCloud 的统计服务器发送用户分析数据。
 * 添加权限`android.permission.READ_PHONE_STATE`和`android.permission.ACCESS_WIFI_STATE`, 这两个权限是为了获取用户手机的IMEI以及WiFi的Mac地址，用来唯一的标识用户。
 * `android.permission.ACCESS_NETWORK_STATE` ,用以检测网络状态。
 * `android.permission.READ_LOGS`, 用于获取客户端crash log。通过将crash log汇报到服务器上，您可以了解您的应用crash的原因以及次数。
@@ -51,12 +51,11 @@
 ```
     <application  ...>
         ...
-        <meta-data android:name="Channel ID" android:value="AVOS Cloud"/>
+        <meta-data android:name="Channel ID" android:value="LeanCloud"/>
     </application>
 ```
 
-您可以根据您的实际发布渠道，修改上述的android:value中对应的值，比如将AVOS Cloud改为Your Channel，重新打包后发布。(请不要修改android:name="Channel ID"字段，以免影响使用)
-
+您可以根据您的实际发布渠道，修改上述的android:value中对应的值，比如将LeanCloud改为Your Channel，重新打包后发布。(请不要修改android:name="Channel ID"字段，以免影响使用)
 
 ## 添加使用代码
 
@@ -115,7 +114,7 @@ AVAnalytics.setSessionContinueMillis(60 * 1000);
 
 ## 统计 Fragment 页面
 
-Android 3.0引入了Fragment, 使用Fragment，您可以在一个activity中展示多个用户界面，也可根据您的需要，为不同的设备适配界面。从1.4.2开始，AVOS Cloud SDK增加了对于Fragment统计的支持。您可以使用以下代码统计Fragment页面
+Android 3.0引入了Fragment, 使用Fragment，您可以在一个activity中展示多个用户界面，也可根据您的需要，为不同的设备适配界面。从1.4.2开始，LeanCloud SDK增加了对于Fragment统计的支持。您可以使用以下代码统计Fragment页面
 
 ```
 public class MyListFragment extends ListFragment {
@@ -218,11 +217,11 @@ AVAnalytics.onEvent(Context context, String eventName, String label, int count)
 * key必须跟您在控制台配置的参数一致，大小写敏感。
 * 由于统计参数更新时一个后台更新，您可能在直接调用`AVAnalytics.getConfigParams(this.getContext(), "key")`时遇到返回值为null的情况。您可以通过设置AVOnlineConfigureListener和强制调用updateOnlineConfig来保证自定义配置的获取。
 
-``` 
+```
             AVAnalytics.setOnlineConfigureListener(new AVOnlineConfigureListener() {
               @Override
               public void onDataReceived(JSONObject data) {
-              
+
                    AVAnalytics.getConfigParams(getContext(), "key");
               }
              });

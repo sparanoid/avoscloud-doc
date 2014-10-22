@@ -2,8 +2,8 @@
 
 <div class="home-full-width-content">
   <div class="doc-home-title">
-    <h1 class="font-logo">AVOS Cloud Documentation</h1>
-    <h4>AVOS Cloud 官方开发者文档</h4>
+    <h1 class="font-logo">LeanCloud Documentation</h1>
+    <h4>LeanCloud 官方开发者文档</h4>
   </div>
   <!-- .doc-home-title -->
 
@@ -19,7 +19,7 @@
     <div class="col-sm-3">
       <div class="doc-hero-links">
         <a href="/start.html" class="doc-quick-start-btn">
-          <i class="avc-icon avc-bulb"></i>
+          <i class="icon icon-bulb"></i>
           快速上手
         </a>
       </div>
@@ -29,7 +29,7 @@
     <div class="col-sm-3">
       <div class="doc-hero-links">
         <a href="sdk_down.html" class="doc-quick-start-btn">
-          <i class="avc-icon avc-download"></i>
+          <i class="icon icon-download"></i>
           SDK 下载
         </a>
       </div>
@@ -39,7 +39,7 @@
     <div class="col-sm-3">
       <div class="doc-hero-links">
         <a href="demo.html" class="doc-quick-start-btn">
-          <i class="avc-icon avc-devices"></i>
+          <i class="icon icon-devices"></i>
           Demo
         </a>
       </div>
@@ -49,7 +49,7 @@
     <div class="col-sm-3">
       <div class="doc-hero-links">
         <a href="avoscloud-docs.tar.gz" class="doc-quick-start-btn">
-          <i class="avc-icon avc-package"></i>
+          <i class="icon icon-package"></i>
           离线文档
         </a>
       </div>
@@ -146,7 +146,7 @@
           <li><a href="rest_api.html">REST API 详解</a></li>
           <li><a href="error_code.html">REST API 错误代码详解</a></li>
           <li><a href="cql_guide.html">CQL 查询语言详解</a></li>
-          <li><a href="oauth2_provider.html">AVOS Cloud 开放平台接入</a></li>
+          <li><a href="oauth2_provider.html">LeanCloud 开放平台接入</a></li>
         </ul>
       </div>
     </div>
@@ -173,6 +173,7 @@
           <li><a href="demo.html">Demo</a></li>
           <li><a href="data_security.html">数据和安全</a></li>
           <li><a href="FAQ.html">常见问题</a></li>
+          <li><a href="tool_tips.html">常见功能提示</a></li>
         </ul>
       </div>
     </div>

@@ -116,14 +116,14 @@ AV.Cloud.define("hello", function(request, response) {
 
 我们可以直接将这个初步的项目框架部署到Cloud Code上尝试运行一下。
 
-首先，你需要将这个项目提交到一个git仓库,AVOS Cloud并不提供源码的版本管理功能，而是借助于git这个优秀的分布式版本管理工具。我们推荐您使用[CSDN Code平台](https://code.csdn.net/)，[github](https://github.com/)或者[BitBucket](https://bitbucket.org/)这样第三方的源码
+首先，你需要将这个项目提交到一个git仓库,LeanCloud并不提供源码的版本管理功能，而是借助于git这个优秀的分布式版本管理工具。我们推荐您使用[CSDN Code平台](https://code.csdn.net/)，[github](https://github.com/)或者[BitBucket](https://bitbucket.org/)这样第三方的源码
 托管网站，也可以使用您自己搭建的git仓库(比如使用[gitlab.org](http://gitlab.org/))。下面我们详细描述下怎么使用。
 
 #### 使用 CSDN Code 托管源码
 
 CSDN CODE是国内非常优秀的源码托管平台，您可以使用CODE平台提供公有仓库和有限的私有仓库完成对代码的管理功能。
 
-以下是使用CODE平台与AVOS Cloud云代码结合的一个例子。
+以下是使用CODE平台与LeanCloud云代码结合的一个例子。
 首先在CODE上创建一个项目
 
 ![image](images/csdn_code1.png)
@@ -139,10 +139,10 @@ git remote add origin git@code.csdn.net:${yourname}/test.git
 git push -u origin master
 ```
 
-我们已经将源码成功推送到CODE平台，接下来到AVOS Cloud云代码的管理界面填写下你的git地址（请注意，一定要填写以`git@`开头的地址，我们暂不支持https协议clone源码）并点击save按钮保存：
+我们已经将源码成功推送到CODE平台，接下来到LeanCloud云代码的管理界面填写下你的git地址（请注意，一定要填写以`git@`开头的地址，我们暂不支持https协议clone源码）并点击save按钮保存：
 ![image](images/csdn_code2.png)
 
-添加deploy key到你的CODE平台项目上（deploy key是我们AVOS Cloud机器的ssh public key）
+添加deploy key到你的CODE平台项目上（deploy key是我们LeanCloud机器的ssh public key）
 保存到”项目设置””项目公钥”中，创建新的一项avoscloud:
 
 ![image](images/csdn_code3.png)
@@ -204,13 +204,13 @@ git push -u origin master
 
 ##### Gitlab 无法部署问题
 
-很多用户自己使用[Gitlab](http://gitlab.org/)搭建了自己的源码仓库，有朋友会遇到无法部署到AVOSCloud的问题，即使设置了Deploy Key，却仍然要求输入密码。
+很多用户自己使用[Gitlab](http://gitlab.org/)搭建了自己的源码仓库，有朋友会遇到无法部署到LeanCloud 的问题，即使设置了Deploy Key，却仍然要求输入密码。
 
 可能的原因和解决办法如下：
 
 * 确保您gitlab运行所在服务器的/etc/shadow文件里的git（或者gitlab）用户一行的`!`修改为`*`，原因参考[这里](http://stackoverflow.com/questions/15664561/ssh-key-asks-for-password)，并重启SSH服务`sudo service ssh restart`。
 * 在拷贝deploy key时，确保没有多余的换行符号。
-* Gitlab目前不支持有comment的deploy key。早期AVOSCloud用户生成的deploy key可能带comment，这个comment是在deploy key的末尾76个字符长度的字符串，例如下面这个deploy key:
+* Gitlab目前不支持有comment的deploy key。早期LeanCloud 用户生成的deploy key可能带comment，这个comment是在deploy key的末尾76个字符长度的字符串，例如下面这个deploy key:
 
 ```
 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA5EZmrZZjbKb07yipeSkL+Hm+9mZAqyMfPu6BTAib+RVy57jAP/lZXuosyPwtLolTwdyCXjuaDw9zNwHdweHfqOX0TlTQQSDBwsHL+ead/p6zBjn7VBL0YytyYIQDXbLUM5d1f+wUYwB+Cav6nM9PPdBckT9Nc1slVQ9ITBAqKZhNegUYehVRqxa+CtH7XjN7w7/UZ3oYAvqx3t6si5TuZObWoH/poRYJJ+GxTZFBY+BXaREWmFLbGW4O1jGW9olIZJ5/l9GkTgl7BCUWJE7kLK5m7+DYnkBrOiqMsyj+ChAm+o3gJZWr++AFZj/pToS6Vdwg1SD0FFjUTHPaxkUlNw== App dxzag3zdjuxbbfufuy58x1mvjq93udpblx7qoq0g27z51cx3's cloud code deploy key
@@ -237,7 +237,7 @@ curl -X POST -H "Content-Type: application/json; charset=utf-8"   \
        -H "X-AVOSCloud-Application-Id: {{appid}}"          \
        -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
        -H "X-AVOSCloud-Application-Production: 0"  -d '{}' \
-https://cn.avoscloud.com/1.1/functions/hello
+https://leancloud.cn/1.1/functions/hello
 ```
 
 返回结果：
@@ -309,7 +309,7 @@ curl -X POST -H "Content-Type: application/json; charset=utf-8"   \
        -H "X-AVOSCloud-Application-Id: {{appid}}"          \
        -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
        -H "X-AVOSCloud-Application-Production: 1"  -d '{}' \
-https://cn.avoscloud.com/1.1/functions/hello
+https://leancloud.cn/1.1/functions/hello
 ```
 
 服务端返回告诉你production还没有部署：
@@ -375,7 +375,7 @@ curl -X POST -H "Content-Type: application/json; charset=utf-8"   \
        -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
        -H "X-AVOSCloud-Application-Production: 0"  -d '{}' \
        -d '{"movie":"The Matrix"}' \
-https://cn.avoscloud.com/1.1/functions/averageStars
+https://leancloud.cn/1.1/functions/averageStars
 ```
 
 有两个参数会被传入到Cloud函数：
@@ -419,7 +419,7 @@ AV.Cloud.run("hello", {name: 'dennis'}, {
 });
 ```
 
-API参数详解参见[AV.Cloud.run](https://cn.avoscloud.com/docs/api/javascript/symbols/AV.Cloud.html#.run)。
+API参数详解参见[AV.Cloud.run](https://leancloud.cn/docs/api/javascript/symbols/AV.Cloud.html#.run)。
 
 ### 在 save 前修改对象
 
@@ -474,7 +474,7 @@ AV.Cloud.afterUpdate("Article", function(request) {
 
 ```
 AV.Cloud.beforeDelete("Album", function(request, response) {
-  //查询Photot中还有没有属于这个相册的照片
+  //查询Photo中还有没有属于这个相册的照片
   query = new AV.Query("Photo");
   var album = AV.Object.createWithoutData('Album', request.object.id);
   query.equalTo("album", album);
@@ -601,7 +601,7 @@ crontab的基本语法是
 
 云代码拥有超级权限，默认使用 master key 调用所有 API，因此会忽略 ACL 和 Class Permission 限制。
 
-如果在你的 node.js 环境里也想做到超级权限，请调用下列代码初始化 SDK: 
+如果在你的 node.js 环境里也想做到超级权限，请调用下列代码初始化 SDK:
 
 ```
 AV._initialize("app id", "app key", "master key");
@@ -658,6 +658,10 @@ AV.Cloud.define("Logger", function(request, response) {
 
 ### 绑定独立域名
 
+只有主域名是需要备案的，二级子域名不需要备案。
+
+#### 主域名
+
 如果你想为您的App绑定一个独立域名，需要您用注册的邮箱发送下列信息到我们的支持邮箱`support@avoscloud.com`提出申请或者从`帮助菜单`里的技术支持系统提出 Ticket：
 
 * 您想要绑定的域名（必须是您名下的域名，并且您也已经将CNAME或者A记录指向了avosapps.com）
@@ -666,6 +670,51 @@ AV.Cloud.define("Logger", function(request, response) {
 * 您的域名的备案信息 （必须可以在工信部查询到）
 
 我们将在3个工作日内审核，如果审核通过将为您绑定域名。
+
+#### 域名备案流程
+
+对于企业用户，如果您的域名没有在国内备案过，我们可以协助您与我们的备案接入商一起完成备案，大概分为3个步骤
+
+1. 您提供相应资料，我们来录入
+2. 我们的备案接入商给您邮寄幕布，进行拍照验证，并将其它资料签字盖章后一起邮寄给备案提供商
+3. 提交备案到（公司所在地）管局（通信管理局）审核
+
+请注意：**国内各地管局对备案的政策有差别，具体请查询当地管局**
+
+#####第一步：
+
+请提交以下资料，我们来帮您录入到系统：
+
+1. 单位名称、单位通信地址、营业执照号码
+2. 企业法人姓名、身份证号码、身份证扫描件电子档（正反面）、邮箱、手机号、电话（归属地为公司所在地）、QQ号码
+3. 如果网站负责人和法人不为同一人话，还需要提供网站负责人的姓名、身份证号码、身份证扫描件电子档（正反面）、邮箱、手机号、电话（归属地为公司所在地）、QQ号码
+4. 网站名称（4个汉字以上）、首页地址、域名（可多个）、域名证书（可多个），还有网站服务内容类别，可在以下列表中选择一项
+   * 综合门户
+   * 搜索引擎
+   * 单位门户网站
+   * 网络游戏
+   * 网络广告
+
+#####第二步：
+
+请提供您的地址，我们的备案接入商来给您邮寄幕布，因为幕布数量的关系，这里可能需要排队。
+以下资料是需要您准备好邮寄给接入商
+
+1.  企业营业执照副本复印件，盖公章
+2.  企业法人身份证复印件，盖公章
+3.  网站负责人身份证复印件，盖公章（如果和企业法人是同一人的话，此条可忽略）
+4. 《网站备案信息真实性核验单》在最下面一栏，请网站负责人签字并盖公章。上面主办者名称和域名都需打印出来手写
+
+备案接入商地址：
+>地址：北京市东城区和平里东街15号航天物资大厦209房间
+ 备案专员：赵进涛女士
+ 联系电话：010-84222290转8001；18101125570
+
+#####第三步：
+
+由我们和备案接入商来完成。
+
+备案完成后，我们再执行绑定操作。
 
 ### 下载Web Hosting项目框架
 
@@ -723,7 +772,7 @@ app.listen({"static": {maxAge: 604800000}});
 
 ### 动态请求
 
-如果只是展现静态资源，您可能使用Github Pages类似的免费服务也能做到，但是AVOSCloud提供的Web Hosting功能同时支持动态请求。这是通过编写[Node.js](http://nodejs.org)代码，基于[express.js](http://expressjs.com/)这个web MVC框架做到的。
+如果只是展现静态资源，您可能使用Github Pages类似的免费服务也能做到，但是LeanCloud 提供的Web Hosting功能同时支持动态请求。这是通过编写[Node.js](http://nodejs.org)代码，基于[express.js](http://expressjs.com/)这个web MVC框架做到的。
 
 关于[express.js](http://expressjs.com/)框架，请参考官方文档来学习。
 
@@ -852,7 +901,7 @@ app.use(avosExpressCookieSession({ cookie: { maxAge: 3600000 }}));
 `avos-express-cookie-session`支持的选项包括：
 
 * cookie  -- 可选参数，设置cookie属性，例如maxAge,secure等。我们会强制将httpOnly和signed设置为true。
-* fetchUser -- 是否自动fetch当前登录的AV.User对象。默认为false。如果设置为true，每个HTTP请求都将发起一次AVOS Cloud API调用来fetch用户对象。如果设置为false，默认只可以访问AV.User.current()当前用户的id属性，您可以在必要的时候fetch整个用户。通常保持默认的false就可以。
+* fetchUser -- 是否自动fetch当前登录的AV.User对象。默认为false。如果设置为true，每个HTTP请求都将发起一次LeanCloud API调用来fetch用户对象。如果设置为false，默认只可以访问AV.User.current()当前用户的id属性，您可以在必要的时候fetch整个用户。通常保持默认的false就可以。
 * key -- session在cookie中存储的key名称，默认为avos.sess。
 
 登录很简单：

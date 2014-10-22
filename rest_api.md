@@ -16,9 +16,9 @@ REST API可以让您用任何可以发送HTTP请求的设备来与AVOS Cloud进�
 
 ## 快速参考
 
-所有的API访问都是通过HTTPS进行的.API访问需要在 __https://cn.avoscloud.com__ 域名下,相对路径前缀 __/1.1/__ 表明现在使用的是第 1.1 版的API。
+所有的API访问都是通过HTTPS进行的.API访问需要在 __https://leancloud.cn__ 域名下,相对路径前缀 __/1.1/__ 表明现在使用的是第 1.1 版的API。
 
-在线测试API，请打开[https://cn.avoscloud.com/apionline/](https://cn.avoscloud.com/apionline/)。
+在线测试API，请打开[https://leancloud.cn/apionline/](https://leancloud.cn/apionline/)。
 
 ### 对象
 
@@ -425,15 +425,15 @@ Key必须是字母和数字组成的String,Value可以是任何可以JSON编码�
 createdAt和updatedAt都是UTC时间戳,以ISO 8601标准和毫秒级精度储存:`YYYY-MM-DDTHH:MM:SS.MMMMZ`. objectId 是一个string,在类中唯一标明了一个对象.
 在REST API中class级的在一个资源上的操作只会根据类名来进行.例如,如果类名是GameScore,那么class的URL就是
 ```
-https://cn.avoscloud.com/1.1/classes/GameScore
+https://leancloud.cn/1.1/classes/GameScore
 ```
 用户有一个特殊的类级的url:
 ```
-https://cn.avoscloud.com/1.1/users
+https://leancloud.cn/1.1/users
 ```
 针对于一个特定的对象的操作可以通过组织一个URL来做.例如,对GameScore中的一个objectId为`51e3a334e4b0b3eb44adbe1a`的对象的操作应使用如下URL:
 ```
-https://cn.avoscloud.com/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
+https://leancloud.cn/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
 ```
 ###创建对象
 为了在AVOS Cloud上创建一个新的对象,应该向class的URL发送一个POST请求,其中应该包含对象本身.例如,要创建如上说的对象:
@@ -443,12 +443,12 @@ curl -X POST \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"score":1337,"playerName":"Sean Plott","cheatMode":false}' \
-  https://cn.avoscloud.com/1.1/classes/GameScore
+  https://leancloud.cn/1.1/classes/GameScore
 ```
 当创建成功时,HTTP的返回是201 Created,而header中的Location表示新的object的URL:
 ```
 Status: 201 Created
-Location: https://cn.avoscloud.com/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
+Location: https://leancloud.cn/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
 ```
 响应的主体是一个JSON对象,包含新的对象的objectId和createdAt时间戳.
 ```
@@ -463,7 +463,7 @@ Location: https://cn.avoscloud.com/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
-  https://cn.avoscloud.com/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
+  https://leancloud.cn/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
 ```
 返回的主体是一个JSON对象包含所有用户提供的field加上createdAt,updatedAt和objectId字段:
 ```
@@ -487,7 +487,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'include=game' \
-  https://cn.avoscloud.com/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
+  https://leancloud.cn/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
 ```
 
 ###更新对象
@@ -500,7 +500,7 @@ curl -X PUT \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"score":73453}' \
-  https://cn.avoscloud.com/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
+  https://leancloud.cn/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
 ```
 
 返回的JSON对象只会包含一个updatedAt字段,表明更新发生的时间:
@@ -521,7 +521,7 @@ curl -X PUT \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"score":{"__op":"Increment","amount":1}}' \
-  https://cn.avoscloud.com/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
+  https://leancloud.cn/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
 ```
 
 ####数组
@@ -540,7 +540,7 @@ curl -X PUT \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"skills":{"__op":"AddUnique","objects":["flying","kungfu"]}}' \
-  https://cn.avoscloud.com/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
+  https://leancloud.cn/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
 ```
 
 ####关系
@@ -553,7 +553,7 @@ curl -X PUT \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"opponents":{"__op":"AddRelation","objects":[{"__type":"Pointer","className":"Player","objectId":"51c3ba67e4b0f0e851c16221"}]}}' \
-  https://cn.avoscloud.com/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
+  https://leancloud.cn/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
 ```
 
 或者可以在一个对象中删除一个关系:
@@ -564,7 +564,7 @@ curl -X PUT \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"opponents":{"__op":"RemoveRelation","objects":[{"__type":"Pointer","className":"Player","objectId":"51fa3f64e4b05df1766cfb90"}]}}' \
-  https://cn.avoscloud.com/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
+  https://leancloud.cn/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
 ```
 
 ###删除对象
@@ -575,7 +575,7 @@ curl -X PUT \
 curl -X DELETE \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
-  https://cn.avoscloud.com/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
+  https://leancloud.cn/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
 ```
 
 您可以在一个对象中删除一个字段，通过Delete操作:
@@ -586,7 +586,7 @@ curl -X PUT \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"opponents":{"__op":"Delete"}}' \
-  https://cn.avoscloud.com/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
+  https://leancloud.cn/1.1/classes/GameScore/51e3a334e4b0b3eb44adbe1a
 ```
 
 ###批量操作
@@ -620,7 +620,7 @@ curl -X POST \
           }
         ]
       }' \
-  https://cn.avoscloud.com/1.1/batch
+  https://leancloud.cn/1.1/batch
 ```
 
 批量操作的响应会是一个列表,列表的元素数量和给定的操作数量是一致的.每一个在列表中的元素都有一个字段是"success"或者"error"."success"的值是通常是进行其他REST操作会返回的值:
@@ -667,7 +667,7 @@ curl -X POST \
           }
         ]
       }' \
-  https://cn.avoscloud.com/1.1/batch
+  https://leancloud.cn/1.1/batch
 ```
 
 ###数据类型
@@ -691,7 +691,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'where={"createdAt":{"$gte":{"__type":"Date","iso":"2011-08-21T18:02:52.249Z"}}}' \
-  https://cn.avoscloud.com/1.1/classes/GameScore
+  https://leancloud.cn/1.1/classes/GameScore
 ```
 
 Byte类型包含了一个"base64"字段,这个字段是一些二进制数据编码过的"base64"字符串,base64的标准是MIME使用的标准,不包含空白符.
@@ -738,7 +738,7 @@ Relation类型被用在多对多的类型上,移动端使用 `AVRelation` 作为
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
-  https://cn.avoscloud.com/1.1/classes/GameScore
+  https://leancloud.cn/1.1/classes/GameScore
 ```
 
 返回的值就是一个JSON对象包含了results字段,它的值就是对象的列表:
@@ -776,7 +776,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'where={"playerName":"Sean Plott","cheatMode":false}' \
-  https://cn.avoscloud.com/1.1/classes/GameScore
+  https://leancloud.cn/1.1/classes/GameScore
 ```
 
 where的参数的值应该支持不光是匹配还有比较的方式,除了给定一个确定的值的方式,提供一个hash中有key用于比较也可以.where参数支持下面一些选项:
@@ -804,7 +804,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'where={"score":{"$gte":1000,"$lte":3000}}' \
-  https://cn.avoscloud.com/1.1/classes/GameScore
+  https://leancloud.cn/1.1/classes/GameScore
 ```
 
 为了获得分数在10以下并且是一个奇数,我们需要这样做:
@@ -815,7 +815,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'where={"score":{"$in":[1,3,5,7,9]}}' \
-  https://cn.avoscloud.com/1.1/classes/GameScore
+  https://leancloud.cn/1.1/classes/GameScore
 ```
 
 为了获取一个不在列表中的player,我们可以:
@@ -826,7 +826,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'where={"playerName":{"$nin":["Jonathan Walsh","Dario Wunsch","Shawn Simon"]}}' \
-  https://cn.avoscloud.com/1.1/classes/GameScore
+  https://leancloud.cn/1.1/classes/GameScore
 ```
 
 为了获取有分数的对象,我们应该用:
@@ -837,7 +837,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'where={"score":{"$exists":true}}' \
-  https://cn.avoscloud.com/1.1/classes/GameScore
+  https://leancloud.cn/1.1/classes/GameScore
 ```
 
 为了获取没有分数的对象,用:
@@ -848,7 +848,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'where={"score":{"$exists":false}}' \
-  https://cn.avoscloud.com/1.1/classes/GameScore
+  https://leancloud.cn/1.1/classes/GameScore
 ```
 
 如果您有一个类包含运动队而您又储存了用户的家乡,您可以创建一个查询来寻找用户中的有故乡的运动队，并且赢得比赛的记录的人.查询看起来应该是这样:
@@ -859,7 +859,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'where={"hometown":{"$select":{"query":{"className":"Team","where":{"winPct":{"$gt":0.5}}},"key":"city"}}}' \
-  https://cn.avoscloud.com/1.1/classes/_User
+  https://leancloud.cn/1.1/classes/_User
 ```
 
 您可以用`order`参数来指定一个字段来排序.前面加一个负号的前缀表示逆序.这样返回的score会呈升序:
@@ -870,7 +870,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'order=score' \
-  https://cn.avoscloud.com/1.1/classes/GameScore
+  https://leancloud.cn/1.1/classes/GameScore
 ```
 
 而这样会呈降序:
@@ -881,7 +881,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'order=-score' \
-  https://cn.avoscloud.com/1.1/classes/GameScore
+  https://leancloud.cn/1.1/classes/GameScore
 ```
 
 您可以用多个字段进行排序,只要用一个逗号隔开的列表就可以.为了获取GameScore以score的升序和name的降序进行排序:
@@ -892,7 +892,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'order=score,-name' \
-  https://cn.avoscloud.com/1.1/classes/GameScore
+  https://leancloud.cn/1.1/classes/GameScore
 ```
 
 您可以用`limit`和`skip`来做分页,limit的默认值是100,但是任何1到1000的值都是可选的，在 0 到 1000 范围之外的都强制转成默认的 100。
@@ -905,7 +905,7 @@ curl -X GET \
   -G \
   --data-urlencode 'limit=200' \
   --data-urlencode 'skip=400' \
-  https://cn.avoscloud.com/1.1/classes/GameScore
+  https://leancloud.cn/1.1/classes/GameScore
 ```
 
 您可以限定返回的字段通过传入`keys`参数和一个逗号分隔列表.为了返回对象只包含score和playerName字段(还有特殊的内置字段比如objectId,createdAt和updatedAt):
@@ -916,7 +916,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'keys=score,playerName' \
-  https://cn.avoscloud.com/1.1/classes/GameScore
+  https://leancloud.cn/1.1/classes/GameScore
 ```
 
 所有以上这些参数都可以和其他的组合进行使用.
@@ -931,7 +931,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'where={"arrayKey":2}' \
-  https://cn.avoscloud.com/1.1/classes/RandomObject
+  https://leancloud.cn/1.1/classes/RandomObject
 ```
 
 您同样可以使用"$all"操作符来找到对象的key的值中有2,3和4的:
@@ -942,7 +942,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'where={"arrayKey":{"$all":[2,3,4]}}' \
-  https://cn.avoscloud.com/1.1/classes/RandomObject
+  https://leancloud.cn/1.1/classes/RandomObject
 ```
 
 ###关系查询
@@ -955,7 +955,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'where={"post":{"__type":"Pointer","className":"Post","objectId":"51e3a359e4b015ead4d95ddc"}}' \
-  https://cn.avoscloud.com/1.1/classes/Comment
+  https://leancloud.cn/1.1/classes/Comment
 ```
 
 如果您想获取对象,这个对象的一个字段指向的对象是符合另一个查询的,您可以使用$inQuery操作符.注意默认的limit是100而且最大的limit是1000，这个限制同样适用于内部的查询,所以对于较大的数据集您可能需要细心地构建查询来获得期望的行为.举例说,假设您有一个Post类和一个Comment类,每个Comment都有一个指向它的Post的关系,您可以找到对于有图片的Post的Comment:
@@ -966,7 +966,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'where={"post":{"$inQuery":{"where":{"image":{"$exists":true}},"className":"Post"}}}' \
-  https://cn.avoscloud.com/1.1/classes/Comment
+  https://leancloud.cn/1.1/classes/Comment
 ```
 
 如果您想获取作为其父对象的关系成员的对象,您可以使用$relatedTo操作符,假设您有一个Post类和一个User类,而每一个Post可以被不同的User所like.如果Post下面有一个key是Relation类型，并且叫做likes,存储了喜欢这个Post的User。您可以找到这些user,他们都like过同一个指定的post:
@@ -977,7 +977,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'where={"$relatedTo":{"object":{"__type":"Pointer","className":"Post","objectId":"51e3a359e4b015ead4d95ddc"},"key":"likes"}}' \
-  https://cn.avoscloud.com/1.1/users
+  https://leancloud.cn/1.1/users
 ```
 
 在某些情况之下,您可能需要在一个查询之中返回多种类型,您可以通过传入字段到include参数中.比如,我们想获得最近的10篇评论,而您想同时得到它们相关的post:
@@ -990,7 +990,7 @@ curl -X GET \
   --data-urlencode 'order=-createdAt' \
   --data-urlencode 'limit=10' \
   --data-urlencode 'include=post' \
-  https://cn.avoscloud.com/1.1/classes/Comment
+  https://leancloud.cn/1.1/classes/Comment
 ```
 
 不是作为一个Pointer表示,post字段现在已经被展开为一个完整的对象. __type被设置为Object而className同样也被提供了.举例说,一个指向Post的Pointer可能被展示为:
@@ -1026,7 +1026,7 @@ curl -X GET \
   --data-urlencode 'order=-createdAt' \
   --data-urlencode 'limit=10' \
   --data-urlencode 'include=post.author' \
-  https://cn.avoscloud.com/1.1/classes/Comment
+  https://leancloud.cn/1.1/classes/Comment
 ```
 
 如果您要构建一个查询,这个查询要include多个类,此时用逗号分隔列表即可.
@@ -1043,7 +1043,7 @@ curl -X GET \
   --data-urlencode 'where={"playerName":"Jonathan Walsh"}' \
   --data-urlencode 'count=1' \
   --data-urlencode 'limit=0' \
-  https://cn.avoscloud.com/1.1/classes/GameScore
+  https://leancloud.cn/1.1/classes/GameScore
 ```
 
 因为这个request请求了count而且把limit设为了0,返回的值里面只有计数,没有results.
@@ -1069,7 +1069,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'where={"$or":[{"wins":{"$gt":150}},{"wins":{"$lt":5}}]}' \
-  https://cn.avoscloud.com/1.1/classes/Player
+  https://leancloud.cn/1.1/classes/Player
 ```
 
 任何在查询上的其他的约束都会对返回的对象生效,所以您可以用$or对其他的查询添加约束.
@@ -1086,7 +1086,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -G \
   --data-urlencode 'cql=select * from Player limit 0,100 order by name' \
-  https://cn.avoscloud.com/1.1/cloudQuery
+  https://leancloud.cn/1.1/cloudQuery
 ```
 
 更多请参考 [CQL 详细指南](./cql_guide.html)。
@@ -1111,14 +1111,14 @@ curl -X POST \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"username":"cooldude6","password":"p_n7!-e8","phone":"415-392-0202"}' \
-  https://cn.avoscloud.com/1.1/users
+  https://leancloud.cn/1.1/users
 ```
 
 当创建成功时,HTTP返回为201 Created ,Location头包含了新用户的URL:
 
 ```
 Status: 201 Created
-Location: https://cn.avoscloud.com/1.1/users/51fb1bf7e4b0cc0b5a3792f3
+Location: https://leancloud.cn/1.1/users/51fb1bf7e4b0cc0b5a3792f3
 ```
 
 返回的主体是一个JSON对象,包含objectId, createdAt时间戳表示创建对象时间, sessionToken可以被用来认证这名用户随后的请求.
@@ -1142,7 +1142,7 @@ curl -X GET \
   -G \
   --data-urlencode 'username=cooldude6' \
   --data-urlencode 'password=p_n7!-e8' \
-  https://cn.avoscloud.com/1.1/login
+  https://leancloud.cn/1.1/login
 ```
 
 返回的主体是一个JSON对象包括所有除了password以外的自定义字段.它同样包含了createdAt,updateAt,objectId和sessionToken字段.
@@ -1168,7 +1168,7 @@ emailVerified字段有3种状态可以考虑
 2. false : User对象最后一次被刷新的时候,用户并没有确认过他的email地址,如果您看到emailVerified为false的话,您可以考虑刷新User对象
 3. null : User对象在email验证没有打开的时候就已经创建了,或者User没有email
 
-关于自定义邮件模板和验证链接请看这篇[博客](http://blog.avoscloud.com/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
+关于自定义邮件模板和验证链接请看这篇[博客](http://blog.leancloud.cn/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
 
 ### 请求验证 Email
 
@@ -1180,7 +1180,7 @@ curl -X POST \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"email":"coolguy@iloveapps.com"}' \
-  https://cn.avoscloud.com/1.1/requestEmailVerify
+  https://leancloud.cn/1.1/requestEmailVerify
 ```
 
 ###请求密码重设
@@ -1193,12 +1193,12 @@ curl -X POST \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"email":"coolguy@iloveapps.com"}' \
-  https://cn.avoscloud.com/1.1/requestPasswordReset
+  https://leancloud.cn/1.1/requestPasswordReset
 ```
 
 如果成功的话,返回的值是一个JSON对象.
 
-关于自定义邮件模板和验证链接请看这篇[博客](http://blog.avoscloud.com/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
+关于自定义邮件模板和验证链接请看这篇[博客](http://blog.leancloud.cn/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
 
 ### 手机号码验证
 
@@ -1215,7 +1215,7 @@ curl -X POST \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"username":"cooldude6","password":"p_n7!-e8","mobilePhoneNumber":"186xxxxxxxx"}' \
-  https://cn.avoscloud.com/1.1/users
+  https://leancloud.cn/1.1/users
 ```
 
 那么在注册成功后，AVOS Cloud 将向`186xxxxxxxx`发送一条验证短信。开发者提供一个输入框让用户输入这个验证短信中附带的验证码，开发者调用下列 API 来确认验证码正确：
@@ -1226,7 +1226,7 @@ curl -X POST \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{}' \
-  https://cn.avoscloud.com/1.1/verifyMobilePhone/6位数字验证码
+  https://leancloud.cn/1.1/verifyMobilePhone/6位数字验证码
 ```
 
 其中 URL 中的 `code` 就是6位验证数字。
@@ -1243,7 +1243,7 @@ curl -X POST \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"mobilePhoneNumber": "186xxxxxxxx"}' \
-  https://cn.avoscloud.com/1.1/requestMobilePhoneVerify
+  https://leancloud.cn/1.1/requestMobilePhoneVerify
 ```
 
 ### 手机号码短信登录
@@ -1256,7 +1256,7 @@ curl -X POST \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"mobilePhoneNumber": "186xxxxxxxx"}' \
-  https://cn.avoscloud.com/1.1/requestLoginSmsCode
+  https://leancloud.cn/1.1/requestLoginSmsCode
 ```
 
 在用户收到短信验证码之后，可以输入该验证码加上手机号码来登录应用：
@@ -1268,7 +1268,7 @@ curl -X GET \
   -G \
   --data-urlencode 'mobilePhoneNumber=186xxxxxxxx' \
   --data-urlencode 'smsCode=123456' \
-  https://cn.avoscloud.com/1.1/login
+  https://leancloud.cn/1.1/login
 ```
 
 也可以采用手机号码和密码的方式登录：
@@ -1280,7 +1280,7 @@ curl -X GET \
   -G \
   --data-urlencode 'mobilePhoneNumber=186xxxxxxxx' \
   --data-urlencode 'password=p_n7!-e8' \
-  https://cn.avoscloud.com/1.1/login
+  https://leancloud.cn/1.1/login
 ```
 
 ### 使用短信验证码重置用户密码
@@ -1293,7 +1293,7 @@ curl -X POST \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"mobilePhoneNumber": "186xxxxxxxx"}' \
-  https://cn.avoscloud.com/1.1/requestPasswordResetBySmsCode
+  https://leancloud.cn/1.1/requestPasswordResetBySmsCode
 ```
 
 发送一条重置密码的短信验证码到注册用户的手机上，需要传入注册时候的`mobilePhoneNumber`。
@@ -1306,7 +1306,7 @@ curl -X POST \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"password": "new password"}' \
-  https://cn.avoscloud.com/1.1/resetPasswordBySmsCode/收到的6位验证码
+  https://leancloud.cn/1.1/resetPasswordBySmsCode/收到的6位验证码
 ```
 
 修改成功后，就可以用新密码登陆了。
@@ -1319,7 +1319,7 @@ curl -X POST \
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
-  https://cn.avoscloud.com/1.1/users/51fa6886e4b0cc0b5a3792e9
+  https://leancloud.cn/1.1/users/51fa6886e4b0cc0b5a3792e9
 ```
 
 返回的body是一个JSON对象,包含所有用户提供的字段,除了密码以外.也包括了createdAt,updatedAt和objectId字段.
@@ -1349,7 +1349,7 @@ curl -X PUT \
   -H "X-AVOSCloud-Session-Token: pnktnjyb996sj4p156gjtp4im" \
   -H "Content-Type: application/json" \
   -d '{"phone":"415-369-6201"}' \
-  https://cn.avoscloud.com/1.1/users/51fa6886e4b0cc0b5a3792e9
+  https://leancloud.cn/1.1/users/51fa6886e4b0cc0b5a3792e9
 ```
 
 返回的body是一个JSON对象,只有一个updatedAt字段表明更新发生的时间.
@@ -1371,7 +1371,7 @@ curl -X PUT \
   -H "X-AVOSCloud-Session-Token: pnktnjyb996sj4p156gjtp4im" \
   -H "Content-Type: application/json" \
   -d '{"old_password":"the_old_pass", "new_password":"the_new_pass"}' \
-  https://cn.avoscloud.com/1.1/users/51fa6886e4b0cc0b5a3792e9/updatePassword
+  https://leancloud.cn/1.1/users/51fa6886e4b0cc0b5a3792e9/updatePassword
 ```
 
 其中：
@@ -1390,7 +1390,7 @@ curl -X PUT \
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
-  https://cn.avoscloud.com/1.1/users
+  https://leancloud.cn/1.1/users
 ```
 
 返回的值是一个JSON对象包括一个results字段, 值是包含了所有对象的一个JSON数组.
@@ -1427,7 +1427,7 @@ curl -X DELETE \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "X-AVOSCloud-Session-Token: pnktnjyb996sj4p156gjtp4im" \
-  https://cn.avoscloud.com/1.1/users/g7y9tkhB7O
+  https://leancloud.cn/1.1/users/g7y9tkhB7O
 ```
 
 ###用户账户连接
@@ -1456,6 +1456,20 @@ AVOSCloud允许你连接你的用户到其他服务，比如新浪微博和腾�
 {
   "authData": {
     "qq": {
+      "openid": "0395BA18A5CD6255E5BA185E7BEBA242",
+      "access_token": "12345678-SaMpLeTuo3m2avZxh5cjJmIrAfx4ZYyamdofM7IjU",
+      "expires_in": 1382686496
+    }
+  }
+}
+```
+
+[微信](http://open.weixin.qq.com/)的authData内容:
+
+```
+{
+  "authData": {
+    "weixin": {
       "openid": "0395BA18A5CD6255E5BA185E7BEBA242",
       "access_token": "12345678-SaMpLeTuo3m2avZxh5cjJmIrAfx4ZYyamdofM7IjU",
       "expires_in": 1382686496
@@ -1493,14 +1507,14 @@ curl -X POST \
          }
     }
     }' \
-  https://cn.avoscloud.com/1.1/users
+  https://leancloud.cn/1.1/users
 ```
 
 AVOSCloud会校验提供的authData是否有效，并检查是否已经有一个用户连接了这个authData服务。如果已经有用户存在并连接了同一个authData，那么返回200 OK和详细信息(包括用户的sessionToken):
 
 ```
 Status: 200 OK
-Location: https://cn.avoscloud.com/1.1/users/51fb1bf7e4b0cc0b5a3792f3
+Location: https://leancloud.cn/1.1/users/51fb1bf7e4b0cc0b5a3792f3
 ```
 
 应答的body类似:
@@ -1526,7 +1540,7 @@ Location: https://cn.avoscloud.com/1.1/users/51fb1bf7e4b0cc0b5a3792f3
 
 ```
 Status: 201 Created
-Location: https://cn.avoscloud.com/1.1/users/51fb1bf7e4b0cc0b5a3792f3
+Location: https://leancloud.cn/1.1/users/51fb1bf7e4b0cc0b5a3792f3
 ```
 
 应答内容包括objectId,createdAt,sessionToken以及一个自动生成的随机username，例如:
@@ -1559,7 +1573,7 @@ curl -X PUT \
           }
         }
       }' \
-  https://cn.avoscloud.com/1.1/users/51fb1bf7e4b0cc0b5a3792f3
+  https://leancloud.cn/1.1/users/51fb1bf7e4b0cc0b5a3792f3
 ```
 
 完成连接后，你可以使用匹配的authData来认证他们。
@@ -1578,7 +1592,7 @@ curl -X POST \
       "weibo" : null
     }
       }' \
-  https://cn.avoscloud.com/1.1/users/51fb1bf7e4b0cc0b5a3792f3
+  https://leancloud.cn/1.1/users/51fb1bf7e4b0cc0b5a3792f3
 ```
 
 
@@ -1635,7 +1649,7 @@ curl -X POST \
           }
         }
       }' \
-  https://cn.avoscloud.com/1.1/roles
+  https://leancloud.cn/1.1/roles
 ```
 
 您可以通过加入已有的对象到roles和users关系中来创建一个有子角色和用户的角色:
@@ -1673,14 +1687,14 @@ curl -X POST \
           ]
         }
       }' \
-  https://cn.avoscloud.com/1.1/roles
+  https://leancloud.cn/1.1/roles
 ```
 
 当创建成功时,HTTP返回是 201 Created而Location header包含了新的对象的URL地址:
 
 ```
 Status: 201 Created
-Location: https://cn.avoscloud.com/1.1/roles/51e3812ee4b0b3eb44adbd44
+Location: https://leancloud.cn/1.1/roles/51e3812ee4b0b3eb44adbd44
 ```
 
 ###获取角色
@@ -1691,7 +1705,7 @@ Location: https://cn.avoscloud.com/1.1/roles/51e3812ee4b0b3eb44adbd44
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
-  https://cn.avoscloud.com/1.1/roles/51e3812ee4b0b3eb44adbd44
+  https://leancloud.cn/1.1/roles/51e3812ee4b0b3eb44adbd44
 ```
 
 响应的body是一个JSON对象包含角色的所有字段:
@@ -1743,7 +1757,7 @@ curl -X PUT \
           ]
         }
       }' \
-  https://cn.avoscloud.com/1.1/roles/51e3812ee4b0b3eb44adbd44
+  https://leancloud.cn/1.1/roles/51e3812ee4b0b3eb44adbd44
 ```
 
 相似的,我们可以删除一个"Moderrators"的子角色:
@@ -1765,7 +1779,7 @@ curl -X PUT \
           ]
         }
       }' \
-  https://cn.avoscloud.com/1.1/roles/51e3812ee4b0b3eb44adbd44
+  https://leancloud.cn/1.1/roles/51e3812ee4b0b3eb44adbd44
 ```
 
 
@@ -1780,7 +1794,7 @@ curl -X DELETE \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "X-AVOSCloud-Session-Token: pnktnjyb996sj4p156gjtp4im" \
-  https://cn.avoscloud.com/1.1/roles/51e3812ee4b0b3eb44adbd44
+  https://leancloud.cn/1.1/roles/51e3812ee4b0b3eb44adbd44
 ```
 
 ###安全性
@@ -1830,12 +1844,90 @@ curl -X PUT \
           ]
         }
       }' \
-  https://cn.avoscloud.com/1.1/roles/<ModeratorsRoleObjectId>
+  https://leancloud.cn/1.1/roles/<ModeratorsRoleObjectId>
 ```
 
 ##文件
 
-文件上传，我们推荐使用各个客户端的SDK进行上传。REST API暂不开放。
+文件上传，我们推荐使用各个客户端的SDK进行上传，或者使用[命令行工具](./cloud_code_commandline.html)。
+
+**通过 REST API 上传文件受到三个限制，而使用 sdk 或者命令行上传没有这些限制**：
+
+* 上传最大文件大小有 10M 的限制
+* 每个应用每秒最多上传 1 个文件
+* 每个应用每分钟最多上传 30 个文件。
+
+
+### 上传文件
+
+上传文件到 AVOS Cloud 通过 POST 请求，注意必须指定文件的 `content-type`，例如上传一个文本文件 `hello.txt` 包含一行字符串:
+
+```
+curl -X POST \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  -H "Content-Type: text/plain" \
+  -d 'Hello, World!' \
+  https://leancloud.cn/1.1/files/hello.txt
+```
+
+文件上传成功后，返回 `201 Created` 的应答和创建的文件对象（可以在 `_File` 表看到）：
+
+```
+{  "size":13,
+   "bucket":"1qdney6b",
+   "url":"http://ac-1qdney6b.qiniudn.com/3zLG4o0d27MsCQ0qHGRg4JUKbaXU2fiE35HdhC8j.txt",
+   "name":"hello.txt",
+   "createdAt":"2014-10-14T05:55:57.455Z",
+   "objectId":"543cbaede4b07db196f50f3c"
+}
+```
+
+其中 `url` 就是文件下载链接, `objectId` 是文件的对象 id。`name`就是上传的文件名称。
+
+也可以尝试上传一张图片，假设当前目录有一个文件 `test.png`：
+
+```
+curl -X POST \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  -H "Content-Type: image/png" \
+  --data-binary '@test.png'  \
+  https://leancloud.cn/1.1/files/test.png
+```
+
+### 关联文件到对象
+
+一个文件上传后，您可以关联该文件到某个 AVObject 对象上：
+
+```
+curl -X POST \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+   -H "Content-Type: application/json" \
+  -d '{
+        "name": "Andrew",
+        "picture": {
+          "id": "543cbaede4b07db196f50f3c",
+          "__type": "File"
+        }
+      }' \
+  https://leancloud.cn/1.1/classes/Player     
+```
+
+其中 `id` 就是文件对象的 objectId。
+
+
+### 删除文件
+
+知道文件对象 ObjectId 的情况下，可以通过 DELETE 删除文件：
+
+```
+curl -X DELETE \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  https://leancloud.cn/1.1/files/543cbaede4b07db196f50f3c
+```
 
 ##Push 通知
 
@@ -1870,14 +1962,14 @@ curl -X POST \
           ""
         ]
       }' \
-  https://cn.avoscloud.com/1.1/installations
+  https://leancloud.cn/1.1/installations
 ```
 
 当创建成功后,HTTP的返回值为201 Created , Location header包括了新的安装的URL
 
 ```
 Status: 201 Created
-Location: https://cn.avoscloud.com/1.1/installations/51ff1808e4b074ac5c34d7fd
+Location: https://leancloud.cn/1.1/installations/51ff1808e4b074ac5c34d7fd
 ```
 
 返回的body是一个JSON对象,包括了objectId和createdAt这个创建对象的时间戳.
@@ -1897,7 +1989,7 @@ Location: https://cn.avoscloud.com/1.1/installations/51ff1808e4b074ac5c34d7fd
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
-  https://cn.avoscloud.com/1.1/installations/51ff1808e4b074ac5c34d7fd
+  https://leancloud.cn/1.1/installations/51ff1808e4b074ac5c34d7fd
 ```
 
 返回的JSON对象所有用户提供的字段,加上createdAt,updatedAt和objectId字段:
@@ -1932,7 +2024,7 @@ curl -X PUT \
           "foo"
         ]
       }' \
-  https://cn.avoscloud.com/1.1/installations/51ff1808e4b074ac5c34d7fd
+  https://leancloud.cn/1.1/installations/51ff1808e4b074ac5c34d7fd
 ```
 
 ###查询安装对象
@@ -1945,7 +2037,7 @@ curl -X PUT \
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
-  https://cn.avoscloud.com/1.1/installations
+  https://leancloud.cn/1.1/installations
 ```
 
 返回的JSON对象的results字段包含了所有的结果:
@@ -1987,7 +2079,7 @@ curl -X GET \
 curl -X DELETE \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
-  https://cn.avoscloud.com/1.1/installations/51fcb74ee4b074ac5c34cf85
+  https://leancloud.cn/1.1/installations/51fcb74ee4b074ac5c34cf85
 ```
 
 ##Cloud 函数
@@ -2000,7 +2092,7 @@ curl -X POST \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{}' \
-  https://cn.avoscloud.com/1.1/functions/hello
+  https://leancloud.cn/1.1/functions/hello
 ```
 
 您可以查看Cloud Code Guide来查看更多的信息.
@@ -2024,7 +2116,7 @@ curl -X GET \
           }
         }
       }' \
-  https://cn.avoscloud.com/1.1/classes/PlaceObject
+  https://leancloud.cn/1.1/classes/PlaceObject
 ```
 
 这会按离纬度30.0,经度-20.0的距离排序返回一系列的结果.第一个就是最近的对象.(注意如果一个特定的order参数给了的话,它会覆盖按距离排序).例如,下面是两个上面的查询返回的结果:
@@ -2073,7 +2165,7 @@ curl -X GET \
           "$maxDistanceInMiles": 10.0
         }
       }' \
-  https://cn.avoscloud.com/1.1/classes/PlaceObject
+  https://leancloud.cn/1.1/classes/PlaceObject
 ```
 
 同样做查询寻找在一个特定的范围里面的对象也是可以的,为了找到在一个矩形的区域里的对象,按下面的格式加入一个约束 {"$within": {"$box": {[southwestGeoPoint, northeastGeoPoint]}}}.
@@ -2101,7 +2193,7 @@ curl -X GET \
           }
         }
       }' \
-  https://cn.avoscloud.com/1.1/classes/PizzaPlaceObject
+  https://leancloud.cn/1.1/classes/PizzaPlaceObject
 ```
 
 ###警告
@@ -2126,7 +2218,7 @@ curl -X POST \
          "content" : "反馈的文字内容",
          "contact" : "联系方式，QQ或者邮箱手机等"
        }' \
-  https://cn.avoscloud.com/1.1/feedback
+  https://leancloud.cn/1.1/feedback
 ```
 
 提交后的用户反馈在可以在组件菜单的用户反馈里看到。
@@ -2145,7 +2237,7 @@ curl -X POST \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
   -d '{"mobilePhoneNumber": "186xxxxxxxx"}' \
-  https://cn.avoscloud.com/1.1/requestSmsCode
+  https://leancloud.cn/1.1/requestSmsCode
 ```
 
 验证收到的 6 位数字验证码是否正确通过：
@@ -2155,7 +2247,7 @@ curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
-  https://cn.avoscloud.com/1.1/verifySmsCode/6位数字验证码
+  https://leancloud.cn/1.1/verifySmsCode/6位数字验证码
 ```
 
 其中 `code` 是手机收到的 6 位数字验证码。
@@ -2170,7 +2262,7 @@ curl -X POST \
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
-  https://cn.avoscloud.com/1.1/rtm/messages/logs
+  https://leancloud.cn/1.1/rtm/messages/logs
 ```
 
 <table>
@@ -2225,13 +2317,13 @@ curl -X GET \
 
 统计API可以获取一个应用的统计数据。因为统计数据的隐私敏感性，统计API必须使用master key的签名方式鉴权，请参考 更安全的鉴权方式 一节。
 
-获取某个应用的基本信息，包括各平台的应用版本，应用发布渠道。（注意：下面示例直接使用`X-AVOSCloud-Master-Key`，不过我们推荐您在实际使用中采用[新鉴权方式](https://cn.avoscloud.com/docs/rest_api.html#%E6%9B%B4%E5%AE%89%E5%85%A8%E7%9A%84%E9%89%B4%E6%9D%83%E6%96%B9%E5%BC%8F)加密，不要明文传递Key。）
+获取某个应用的基本信息，包括各平台的应用版本，应用发布渠道。（注意：下面示例直接使用`X-AVOSCloud-Master-Key`，不过我们推荐您在实际使用中采用[新鉴权方式](https://leancloud.cn/docs/rest_api.html#%E6%9B%B4%E5%AE%89%E5%85%A8%E7%9A%84%E9%89%B4%E6%9D%83%E6%96%B9%E5%BC%8F)加密，不要明文传递Key。）
 
 ```
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Master-Key: {{masterkey}}" \
-  https://cn.avoscloud.com/1.1/stats/appinfo
+  https://leancloud.cn/1.1/stats/appinfo
 ```
 
 返回的json数据
@@ -2255,7 +2347,7 @@ curl -X GET \
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Master-Key: {{masterkey}}" \
-  "https://cn.avoscloud.com/1.1/stats/appmetrics?platform=iOS&start=20140301&end=20140315&metrics=active_user"
+  "https://leancloud.cn/1.1/stats/appmetrics?platform=iOS&start=20140301&end=20140315&metrics=active_user"
 ```
 
 具体支持的参数：
@@ -2320,7 +2412,7 @@ metrics参数可选项解释：
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Master-Key: {{masterkey}}" \
-  "https://cn.avoscloud.com/1.1/stats/rtmetrics?platform=iOS&metrics=current_active"
+  "https://leancloud.cn/1.1/stats/rtmetrics?platform=iOS&metrics=current_active"
 ```
 
 具体支持的参数：
@@ -2366,7 +2458,7 @@ metrics参数可选项解释：
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Master-Key: {{masterkey}}" \
-  "https://cn.avoscloud.com/1.1/stats/appmetrics?platform=iOS&start=20140301&end=20140315&metrics=new_user,retention_1"
+  "https://leancloud.cn/1.1/stats/appmetrics?platform=iOS&start=20140301&end=20140315&metrics=new_user,retention_1"
 ```
 将返回
 
@@ -2412,7 +2504,7 @@ curl -X GET \
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Master-Key: {{appkey}}" \
-  https://cn.avoscloud.com/1.1/statistics/apps/{{appid}}/sendPolicy
+  https://leancloud.cn/1.1/statistics/apps/{{appid}}/sendPolicy
 ```
 
 返回结果：

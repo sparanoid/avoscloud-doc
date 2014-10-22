@@ -2,12 +2,14 @@
 
 AVOSCloud Feedback 是一个非常轻量的模块，可以用最少两行的代码来实现一个用户反馈系统，并且能够方便的在我们的移动App中查看用户的反馈。
 
-## AVOS Cloud移动App
+**您可以在应用的组件菜单里看到所有的用户反馈并回复。**
 
-用户如果有新的反馈会主动推送通知到我们提供的移动App，建议您安装，并使用AVOS Cloud帐户登录：
+## LeanCloud移动App
 
-* [Android App](https://download.avoscloud.com/apk/)
-* iOS App(正在审核)
+用户如果有新的反馈会主动推送通知到我们提供的移动App，建议您安装，并使用LeanCloud帐户登录：
+
+* [Android App](http://download.leancloud.cn/apk/AVOSCloudMobileApp.apk)
+* [iOS App](https://itunes.apple.com/cn/app/avos-cloud-ying-yong-tong/id854896336?mt=8&uo=4)
 
 ## iOS 反馈组件
 
@@ -16,7 +18,7 @@ AVOSCloud Feedback 是一个非常轻量的模块，可以用最少两行的代�
 
 ```
 AVUserFeedbackAgent *agent = [AVUserFeedbackAgent sharedInstance];
-[agent showConversations:self title:@"feedback" contact:@"test@avoscloud.com"];
+[agent showConversations:self title:@"feedback" contact:@"test@leancloud.cn"];
 ```
 ![image](images/avoscloud-ios-feedback.png)
 
@@ -41,11 +43,11 @@ AVUserFeedbackAgent *agent = [AVUserFeedbackAgent sharedInstance];
 ## Android Feedback组件
 
 ### 导入SDK
- 您可以从 https://cn.avoscloud.com/docs/sdk_down.html 页面下载`用户反馈模块`，解压缩avoscloudfeedback.zip压缩包后，将libs下得的`avosfeedback-v{version}.jar`包（需要包括下载的其他基础jar包）加入您工程的libs下面。
+ 您可以从 https://leancloud.cn/docs/sdk_down.html 页面下载`用户反馈模块`，解压缩avoscloudfeedback.zip压缩包后，将libs下得的`avosfeedback-v{version}.jar`包（需要包括下载的其他基础jar包）加入您工程的libs下面。
 
 之后，您需要将res下的资源文件夹拷贝并且合并到您工程的res目录下。更改资源文件的内容并不影响SDK，但是请不要改变资源的文件名和文件内资源ID。
 
-*　注：AVOSCloud Feedback Android SDK的资源文件都是以avoscloud_feedback打头。*
+*　注： LeanCloud Feedback Android SDK的资源文件都是以avoscloud_feedback打头。*
 
 
 ### 添加代码，使用基础功能
@@ -54,7 +56,7 @@ AVUserFeedbackAgent *agent = [AVUserFeedbackAgent sharedInstance];
 
 打开AndroidManifest.xml文件，在里面添加需要用到的activity和需要的权限:
 
-```       
+```
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -111,7 +113,7 @@ AVUserFeedbackAgent *agent = [AVUserFeedbackAgent sharedInstance];
 
 #### Feedback数据模型
 
-* Comment 
+* Comment
 Comment 代表了反馈系统中间，用户或者开发者的每一次回复。不同的类型可以通过CommentType属性来指定：
 
 ```
@@ -130,7 +132,7 @@ FeedbackThread代表了用户与开发者的整个交流过程。其中有两个
         thread.add(newComment);
         //或者也可以使用thread.getCommentsList().add(newComment);
         thread.sync(syncCallback);
-        
+
 ```
 
 更多的信息您可以参考我们的实现的Activity：

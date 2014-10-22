@@ -1,6 +1,6 @@
 # 实时通信服务开发指南
 
-除了实时的消息推送服务外，AVOS Cloud 从 2.5.9 版本开始提供实时的点对点消息服务，这意味着，你将可以通过我们的服务开发实时的用户间聊天、游戏对战等互动功能。截至目前，我们提供 Android 和 iOS 两个主要平台的客户端SDK。
+除了实时的消息推送服务外，LeanCloud 从 2.5.9 版本开始提供实时的点对点消息服务，这意味着，你将可以通过我们的服务开发实时的用户间聊天、游戏对战等互动功能。截至目前，我们提供 Android 和 iOS 两个主要平台的客户端SDK。
 
 我们也提供了两个平台下的 Demo， [Android Chat Demo ](https://github.com/avoscloud/Android-SDK-demos/tree/master/keepalive)， [iOS Chat Demo](https://github.com/avoscloud/iOS-SDK-demos/tree/master/KeepAlive) 。
 
@@ -10,7 +10,7 @@
 
 实时通信服务中的每一个终端称为 Peer。Peer 拥有一个在应用内唯一标识自己的ID。系统中的每一条消息都来自于一个 Peer，发送到一个或多个 Peer。
 
-AVOS Cloud 的通信服务允许一个 Peer ID 在多个不同的设备上登录，也允许一个设备上有多个 Peer ID 同时登录。开发者可以根据自己的应用场景选择ID。
+LeanCloud 的通信服务允许一个 Peer ID 在多个不同的设备上登录，也允许一个设备上有多个 Peer ID 同时登录。开发者可以根据自己的应用场景选择ID。
 
 ### Session
 
@@ -36,7 +36,7 @@ Session 中的几个动词：
 
 实时通信服务的消息。我们的消息体允许用户一次传输不超过**5KB**的文本数据。开发者可以在文本协议基础上自定义自己的应用层协议。
 
-消息分为暂态(transient)和持久消息。AVOS Cloud 为后者提供至多7天50条的离线消息。暂态消息并不保存离线，适合开发者的控制协议。
+消息分为暂态(transient)和持久消息。LeanCloud 为后者提供至多7天50条的离线消息。暂态消息并不保存离线，适合开发者的控制协议。
 
 我们现在还为通信消息提供存储和获取功能，你可以通过 [REST API](rest_api.html#实时通信-api) 或 SDK（即将加入）获取整个应用或特定对话的消息记录。
 
@@ -56,7 +56,7 @@ Session 中的几个动词：
 
 ## 权限和认证
 
-为了满足开发者对权限和认证的需求，我们设计了签名的概念。你可以在 AVOS Cloud 应用控制台、设置、应用选项中强制启用签名。启用后，所有的 Session open 和 watch 行为都需要包含签名，这样你可以对用户的登录以及他可以关注哪些用户进行充分的控制。
+为了满足开发者对权限和认证的需求，我们设计了签名的概念。你可以在 LeanCloud 应用控制台、设置、应用选项中强制启用签名。启用后，所有的 Session open 和 watch 行为都需要包含签名，这样你可以对用户的登录以及他可以关注哪些用户进行充分的控制。
 
 签名采用**Hmac-sha1**算法，签名的消息各式如下
 
@@ -95,7 +95,7 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
 
 从一个聊天应用的开发角度，最核心的问题是消息的收发功能实现。只要能够完成一次最简单的消息收发流程，整个实时通信服务就基本上能够理解了。您可以通过下载我们的聊天Demo来了解如何使用实时通信服务来搭建一个[聊天应用](https://github.com/avoscloud/Android-SDK-demos/tree/master/keepalive)。
 
-**注:如果您是第一次阅读AVOS Cloud的文档，您可能还需要知道如何去[初始化 AVOS Cloud SDK](https://cn.avoscloud.com/docs/android_guide.html#应用程序) **
+**注:如果您是第一次阅读LeanCloud的文档，您可能还需要知道如何去[初始化 LeanCloud SDK](https://leancloud.cn/docs/android_guide.html#应用程序) **
 
 在Android的SDK中，你只需要运用两个类及其相关的方法，就可以轻松完成这些工作。
 
@@ -316,7 +316,7 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
            Group group = sm.getGroup("140a534fd092809500e6d651e73400c7");
            AVHistroyMessageQuery groupHistoryQuery = group.getHistoryMessageQuery();//获取AVHistoryMessageQuery对象来查询聊天室的聊天记录
            groupHistoryQuery.findInBackground(new HistoryMessageCallback(){
-                
+
                 @Override
                 public void done(List<AVHistoryMessage> messages,AVException error){
                   for(AVHistoryMessage msg:messages){
@@ -733,7 +733,7 @@ npm install lean-cloud-chat
 
 ### 我有自己的用户系统
 
-我们并不强制接入实时消息服务的应用使用 AVOS Cloud 的用户系统。实时消息服务中的 PeerId 可以由用户任意指定，只要在用户系统中保证一致即可（在匿名聊天 Demo KeepAlive 里我们用的是 installationId）。对已有用户系统的应用来说，你可以使用自己的用户 ID 作为 PeerId，并通过[签名](realtime.html#权限和认证)做权限认证。
+我们并不强制接入实时消息服务的应用使用 LeanCloud 的用户系统。实时消息服务中的 PeerId 可以由用户任意指定，只要在用户系统中保证一致即可（在匿名聊天 Demo KeepAlive 里我们用的是 installationId）。对已有用户系统的应用来说，你可以使用自己的用户 ID 作为 PeerId，并通过[签名](realtime.html#权限和认证)做权限认证。
 
 ### 聊天支持图片、语音吗？
 
@@ -773,6 +773,6 @@ iOS在应用退出前台后即离线，这时收到消息会触发一个APNS的�
 
 ### 我希望给群组增加一些自定义数据，如名字
 
-我们的群组信息实际上是 AVOS Cloud 的一个标准的数据表 `AVOSRealtimeGroups`。对于群组的元信息，你可以在关联的表里设置，也可以在这个表里添加新的列。请对这个表设置合理的 ACL 来保证内容不会被恶意篡改。
+我们的群组信息实际上是 LeanCloud 的一个标准的数据表 `AVOSRealtimeGroups`。对于群组的元信息，你可以在关联的表里设置，也可以在这个表里添加新的列。请对这个表设置合理的 ACL 来保证内容不会被恶意篡改。
 
 **注意请不要通过修改 `m` 列来改变群组成员**，这样目标用户无法收到通知，会造成数据不一致的情况。

@@ -1,9 +1,9 @@
 
-# AVOS Cloud FAQ
+# LeanCloud FAQ
 
 ## 帐户和平台常见问题
 
-### AVOS Cloud 部署在哪个云平台上
+### LeanCloud 部署在哪个云平台上
 
 我们部署国内多个云计算平台提供商上，采用混合部署策略（虚拟机和实体机混合部署），并且都在双线机房内，保证您的应用的访问体验和可靠性。
 
@@ -24,7 +24,7 @@
 
 ### 如何付费
 
-请使用[支付宝](http://alipay.com)充值到 AVOS Cloud 账户，我们将每个月自动从您的账户余额里扣除账单费用。每次扣费优先使用充值金额，其次是赠送金额。
+请使用[支付宝](http://alipay.com)充值到 LeanCloud 账户，我们将每个月自动从您的账户余额里扣除账单费用。每次扣费优先使用充值金额，其次是赠送金额。
 
 ### 付费可以开发票吗
 
@@ -40,14 +40,14 @@
 
 通常情况下，我们以一到两周的周期发布新版本更新，获取更新信息可以通过：
 
-* 我们的[博客](http://blog.avoscloud.com/)，每次更新的详细信息都会发布在那里。
+* 我们的[博客](http://blog.leancloud.cn/)，每次更新的详细信息都会发布在那里。
 * [官方微博](http://weibo.com/avoscloud)
 * 每个月初我们还会发送一个每月的更新摘要邮件到您的注册邮箱。
 * 控制台右上方有一个`消息中心`功能，请注意查看新通知。
 
 ### API开放吗
 
-我们的API完全开放，我们提供的SDK也都是基于开放API实现的，详细API请访问[REST API文档](https://cn.avoscloud.com/docs/rest_api.html)。
+我们的API完全开放，我们提供的SDK也都是基于开放API实现的，详细API请访问[REST API文档](https://leancloud.cn/docs/rest_api.html)。
 
 ### 提供哪些平台的SDK
 
@@ -62,7 +62,7 @@
 * [C#](https://github.com/freewing99/BaasReponsitory)
 * [PHP](https://github.com/killme2008/avoscloud-php-library)
 
-详情请到[SDK下载页面](https://cn.avoscloud.com/docs/sdk_down.html)。
+详情请到[SDK下载页面](https://leancloud.cn/docs/sdk_down.html)。
 
 ### iOS和Android是否可以使用同一个App
 
@@ -71,17 +71,17 @@
 
 ### Unity 3D支持如何
 
-请在我们的 [SDK 下载页面](https://avoscloud.com/docs/sdk_down.html) 下载 Unity SDK。
+请在我们的 [SDK 下载页面](https://leancloud.cn/docs/sdk_down.html) 下载 Unity SDK。
 
 ### 开发文档有提供搜索功能吗
 
-文档首页右上角就有搜索框，您也可以直接访问[搜索页面](https://cn.avoscloud.com/search.html)。
+文档首页右上角就有搜索框，您也可以直接访问[搜索页面](https://leancloud.cn/search.html)。
 
 ## API相关
 
 ### 可以在线测试API吗
 
-请访问 [API 在线测试工具](https://cn.avoscloud.com/apionline/)。
+请访问 [API 在线测试工具](https://leancloud.cn/apionline/)。
 
 ### 403错误
 
@@ -96,20 +96,20 @@
 
 表示应用API授权失败，请检查是否初始化了App Id和App Key。
 
-* 如何初始化，请查看[快速入门](https://cn.avoscloud.com/start.html)
+* 如何初始化，请查看[快速入门](https://leancloud.cn/start.html)
 * App Id 和 App key 在应用设置菜单里可以找到。
 
 ### 错误信息代码和详细解释在哪里
 
 * [错误代码详解](./error_code.html)。
-* iOS SDK 请看 [https://cn.avoscloud.com/docs/api/iOS/docs/AVConstants.html](https://cn.avoscloud.com/docs/api/iOS/docs/AVConstants.html)
-* Android SDK 请看[https://cn.avoscloud.com/docs/api/android/doc/index.html](https://cn.avoscloud.com/docs/api/android/doc/index.html)
+* iOS SDK 请看 [https://leancloud.cn/docs/api/iOS/docs/AVConstants.html](https://leancloud.cn/docs/api/iOS/docs/AVConstants.html)
+* Android SDK 请看[https://leancloud.cn/docs/api/android/doc/index.html](https://leancloud.cn/docs/api/android/doc/index.html)
 
 REST API 返回的错误信息跟 SDK 保持一致。
 
 ### 其他语言调用REST API如何编码参数
 
-REST API 文档使用 curl 作为示范，其中 `--data-urlencode` 表示要对参数做 URL encode 编码，如果是 GET 请求，直接将 URL encode 过的参数通过`&`连接起来，放到 URL 的问号后。类似`https://cn.avoscloud.com/1.1/login?username=xxxx&password=xxxxx`。
+REST API 文档使用 curl 作为示范，其中 `--data-urlencode` 表示要对参数做 URL encode 编码，如果是 GET 请求，直接将 URL encode 过的参数通过`&`连接起来，放到 URL 的问号后。类似`https://leancloud.cn/1.1/login?username=xxxx&password=xxxxx`。
 
 ### 如何实现大小写不敏感的查询
 
@@ -133,7 +133,7 @@ REST API 文档使用 curl 作为示范，其中 `--data-urlencode` 表示要对
 
 ### 如何在App邮件内完全使用自己的品牌
 
-请参考博客文章[自定义应用内用户重设密码和邮箱验证页面](http://blog.avoscloud.com/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
+请参考博客文章[自定义应用内用户重设密码和邮箱验证页面](http://blog.leancloud.cn/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
 
 ### 创建唯一索引失败
 
@@ -145,7 +145,7 @@ REST API 文档使用 curl 作为示范，其中 `--data-urlencode` 表示要对
 
 ### 如何在应用之间共享数据
 
-参见这篇[博客](http://blog.avoscloud.com/blog/2014/03/31/2014nian-3yue-di-4zhou-avos-cloud-geng-xin/)。
+参见这篇[博客](http://blog.leancloud.cn/blog/2014/03/31/2014nian-3yue-di-4zhou-avos-cloud-geng-xin/)。
 
 ## iOS/OS X SDK
 
@@ -173,7 +173,7 @@ $ gem install cocoapods
 
  一般是由于 Framework 的链接找不到造成的。建议用 CocoaPods 更新一下, 没有用 CocoaPods 的项目可以删除对 Framework 的引用,然后再重新加进来。
 
-AVOS Cloud 依赖的 framework 包括：
+LeanCloud 依赖的 framework 包括：
 
 * SystemConfiguration.framework
 * MobileCoreServices.framework
@@ -184,7 +184,7 @@ AVOS Cloud 依赖的 framework 包括：
 
 ### 请求报错
 
-请求返回的错误码的详细说明 请查阅[这个文档](https://cn.avoscloud.com/docs/error_code.html)
+请求返回的错误码的详细说明 请查阅[这个文档](https://leancloud.cn/docs/error_code.html)
 
 ### 地理位置查询错误
 
@@ -205,7 +205,7 @@ AVOS Cloud 依赖的 framework 包括：
 
 ### 有没有同步 API
 
-JavaScript SDK 由于平台的特殊性（运行在单线程运行的浏览器或者 Node.js 环境中），不提供同步 API，所有需要网络交互的 API 都需要以 callback 的形式调用，我们提供了[Promise模式](https://cn.avoscloud.com/docs/js_guide.html#promise)来减少 callback 嵌套过多的问题。
+JavaScript SDK 由于平台的特殊性（运行在单线程运行的浏览器或者 Node.js 环境中），不提供同步 API，所有需要网络交互的 API 都需要以 callback 的形式调用，我们提供了[Promise模式](https://leancloud.cn/docs/js_guide.html#promise)来减少 callback 嵌套过多的问题。
 
 ## 消息推送
 
@@ -223,7 +223,7 @@ JavaScript SDK 由于平台的特殊性（运行在单线程运行的浏览器�
 
 ### Android 消息接收能不能自定义 Receiver 不弹出通知
 
-可以，请看[消息推送开发指南](https://cn.avoscloud.com/docs/push_guide.html#%E8%87%AA%E5%AE%9A%E4%B9%89-receiver)。
+可以，请看[消息推送开发指南](https://leancloud.cn/docs/push_guide.html#%E8%87%AA%E5%AE%9A%E4%B9%89-receiver)。
 
 如果要自定义 receiver，必须在消息的data里带上自定义的 action，我们在接收到消息后，将广播 action 为您定义的值的 intent 事件，您的 receiver 里也必须带上 `intent-filter` 来捕获该 action 值的 intent 事件。
 
@@ -264,11 +264,11 @@ JavaScript SDK 由于平台的特殊性（运行在单线程运行的浏览器�
 
 ### 云代码如何上传文件
 
-参考这篇[博客](http://blog.avoscloud.com/blog/2013/11/23/zai-yun-dai-ma-zhong-chu-li-shang-chuan-wen-jian/)，或者[云代码开发指南这部分](https://cn.avoscloud.com/docs/cloud_code_guide.html#%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6)。
+参考这篇[博客](http://blog.leancloud.cn/blog/2013/11/23/zai-yun-dai-ma-zhong-chu-li-shang-chuan-wen-jian/)，或者[云代码开发指南这部分](https://leancloud.cn/docs/cloud_code_guide.html#%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6)。
 
 ### 云代码中如何处理用户登录和 Cookie
 
-参考这篇[博客](http://blog.avoscloud.com/blog/2013/12/16/zai-yun-dai-ma-zhong-chu-li-yong-hu-deng-lu/)，或者[云代码指南这部分内容](https://cn.avoscloud.com/docs/cloud_code_guide.html#%E5%A4%84%E7%90%86%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E5%92%8C%E7%99%BB%E5%87%BA)。
+参考这篇[博客](http://blog.leancloud.cn/blog/2013/12/16/zai-yun-dai-ma-zhong-chu-li-yong-hu-deng-lu/)，或者[云代码指南这部分内容](https://leancloud.cn/docs/cloud_code_guide.html#%E5%A4%84%E7%90%86%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E5%92%8C%E7%99%BB%E5%87%BA)。
 
 
 ### 云代码的二级域名多久生效
@@ -277,7 +277,12 @@ JavaScript SDK 由于平台的特殊性（运行在单线程运行的浏览器�
 
 ### 云代码二级域名可以启用 HTTPS 吗
 
-参考[博客](http://blog.avoscloud.com/blog/2013/12/20/wei-yun-dai-ma-tuo-guan-wang-zhan-qi-yong-https/)。
+参考[博客](http://blog.leancloud.cn/blog/2013/12/20/wei-yun-dai-ma-tuo-guan-wang-zhan-qi-yong-https/)。
+
+### 云代码Web Hosting备案
+
+只有网站类的才需要备案，并且在主域名已备案的情况下，二级子域名不需要备案。
+如果主站需要托管在我们这边，如果主站还没有备案过，我们可以协助您完成备案，请参考[文档](https://leancloud.cn/docs/cloud_code_guide.html#域名备案流程)
 
 ## 文件
 

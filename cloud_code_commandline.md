@@ -2,7 +2,7 @@
 
 ## 介绍
 
-云代码命令行工具是用来管理、部署云代码项目的命令行工具，称之为`avoscloud-code`项目。通过它，你可以部署、发布、回滚云代码，并且可以对同一个云代码项目做多应用管理，还可以查看云代码日志，批量上传文件到 AVOS Cloud 平台上等。
+云代码命令行工具是用来管理、部署云代码项目的命令行工具，称之为`avoscloud-code`项目。通过它，你可以部署、发布、回滚云代码，并且可以对同一个云代码项目做多应用管理，还可以查看云代码日志，批量上传文件到 LeanCloud 平台上等。
 
 ## 安装和使用
 
@@ -56,15 +56,15 @@ $ avoscloud -h
 Usage: avoscloud [选项] <命令>
 
   有效的命令列表包括:
-    deploy: 部署云代码到 AVOS Cloud 平台开发环境
-    undeploy: 从 AVOS Cloud 平台清除云代码部署，包括生产环境和开发环境
+    deploy: 部署云代码到 LeanCloud 平台开发环境
+    undeploy: 从 LeanCloud 平台清除云代码部署，包括生产环境和开发环境
     status: 查询当前部署状态
     search <keyword>: 根据关键字查询开发文档
     publish: 发布开发环境代码到生产环境
     new: 创建云代码项目
     logs: 查看云代码日志
     clear: 清除本地状态，在输入 app id 或者 master key 错误的情况下使用
-    upload <file-or-directory>: 导入文件到 AVOS Cloud 平台，如果是目录，则会将该目录下的文件递归导入。
+    upload <file-or-directory>: 导入文件到 LeanCloud 平台，如果是目录，则会将该目录下的文件递归导入。
     app [list]:  显示当前应用，deploy、status 等命令运行在当前应用上，如果加上 list ，则显示所有的应用信息。
     checkout <app>: 切换到一个应用，deploy、status 等命令将运行在该应用上。
     add <app>: 添加一个应用。
@@ -96,10 +96,10 @@ $ avoscloud -V
 
 ## Bash Completion
 
-下载 [avoscloud_completion.sh](https://github.com/avoscloud/avoscloud-code-command/blob/master/avoscloud_completion.sh) 保存到某个目录，例如通常保存为 `~/.avoscloud_completion.sh`，然后在 `.bashrc` 或者 `.bash_profile` 文件中添加：
+下载 [leancloud.cnpletion.sh](https://github.com/avoscloud/avoscloud-code-command/blob/master/leancloud.cnpletion.sh) 保存到某个目录，例如通常保存为 `~/.leancloud.cnpletion.sh`，然后在 `.bashrc` 或者 `.bash_profile` 文件中添加：
 
 ```
-source ~/.avoscloud_completion.sh
+source ~/.leancloud.cnpletion.sh
 ```
 
 重启终端 bash，或者重新加载 profile 文件，就可以让 avoscloud 命令拥有自动提示和完成功能(tab 按键提示)。
@@ -148,14 +148,14 @@ Project created!
 
 avoscloud 命令还支持代码的热加载，修改代码后无需重新启动，就可以看到代码的最新结果（包括 web 功能）。
 
-更多关于云代码开发，请参考 [云代码开发指南](https://cn.avoscloud.com/docs/cloud_code_guide.html) 。
+更多关于云代码开发，请参考 [云代码开发指南](https://leancloud.cn/docs/cloud_code_guide.html) 。
 
 
 ## 部署
 
 ### 本地推送部署
 
-在你开发和本地测试云代码项目通过后，你可以直接将本地源码推送到 AVOS Cloud 云代码平台运行，只要执行 `deploy` 命令：
+在你开发和本地测试云代码项目通过后，你可以直接将本地源码推送到 LeanCloud 云代码平台运行，只要执行 `deploy` 命令：
 
 ```
 $ avoscloud deploy
@@ -191,7 +191,7 @@ $ avoscloud deploy -o '测试本地推送部署'
 
 ### Git仓库部署
 
-如果你的代码是保存在某个 Git 仓库，例如 [Github](https://github.com) 上，你也可以请求 AVOS Cloud 平台从 Git 仓库获取源码并自动部署，这个操作可以在云代码的部署菜单里完成，也可以在本地执行 `deploy` 命令和 `-g` 选项配合完成：
+如果你的代码是保存在某个 Git 仓库，例如 [Github](https://github.com) 上，你也可以请求 LeanCloud 平台从 Git 仓库获取源码并自动部署，这个操作可以在云代码的部署菜单里完成，也可以在本地执行 `deploy` 命令和 `-g` 选项配合完成：
 
 ```
 $ avoscloud -g deploy
@@ -241,7 +241,7 @@ Production commit log  : 'Uploaded at 2014-10-10 13:54:26'
 
 ```
 
-通过 `undeploy` 命令，可以将云代码彻底从 AVOS Cloud 平台移除（包括代码、版本信息、提交日志等）：
+通过 `undeploy` 命令，可以将云代码彻底从 LeanCloud 平台移除（包括代码、版本信息、提交日志等）：
 
 ```
 $ avoscloud undeploy
@@ -285,7 +285,7 @@ $ avoscloud -t logs
 
 ## 多应用管理
 
-从 0.5.0 版本开始，我们为 avoscloud 添加了多应用管理功能，类似 git 的多分支功能。使用这个功能，允许你将同一个云代码项目部署到多个 AVOS Cloud 应用上，**但是仅限于云代码 2.0 项目使用**。
+从 0.5.0 版本开始，我们为 avoscloud 添加了多应用管理功能，类似 git 的多分支功能。使用这个功能，允许你将同一个云代码项目部署到多个 LeanCloud 应用上，**但是仅限于云代码 2.0 项目使用**。
 
 ### 查看应用状态
 
@@ -316,7 +316,7 @@ $ avoscloud app
 
 ### 添加应用
 
-如果你想将 new_app 发布到其他 AVOS Cloud 应用，你可以通过 `add` 命令来添加一个应用：
+如果你想将 new_app 发布到其他 LeanCloud 应用，你可以通过 `add` 命令来添加一个应用：
 
 ```
 $ avoscloud add other_app <other app 的应用 id>
@@ -384,14 +384,14 @@ $ avoscloud app list
 
 ## 批量上传文件
 
-如果你有一些文件希望上传到 AVOS Cloud 平台上，可以通过 `upload` 命令，既可以上传单个文件，也可以批量上传一个目录下（包括子目录）下的所有文件。
+如果你有一些文件希望上传到 LeanCloud 平台上，可以通过 `upload` 命令，既可以上传单个文件，也可以批量上传一个目录下（包括子目录）下的所有文件。
 
 ```
 $ avoscloud upload public/index.html
 Uploads /Users/dennis/programming/avos/new_app/public/index.html successfully at: http://ac-7104en0u.qiniudn.com/f9e13e69-10a2-1742-5e5a-8e71de75b9fc.html
 ```
 
-上传成功后会显示文件在 AVOS Cloud 平台上的 URL。
+上传成功后会显示文件在 LeanCloud 平台上的 URL。
 
 上传 images 目录下的所有文件：
 
@@ -407,7 +407,7 @@ avoscloud upload images/
 $ avoscloud search AVObject
 ```
 
-这将打开浏览器，显示[搜索结果](https://cn.avoscloud.com/search.html?q=AVObject)。
+这将打开浏览器，显示[搜索结果](https://leancloud.cn/search.html?q=AVObject)。
 
 也可以查询多个关键字，空格隔开即可：
 

@@ -2,7 +2,7 @@
 
 ## 建立 app，下载 SDK
 
-您可以在cn.avoscloud.com上创建新的应用，然后下载AVOS Cloud iOS SDK以及相应的demo。
+您可以在leancloud.cn上创建新的应用，然后下载LeanCloud iOS SDK以及相应的demo。
 
 
 ## 创建 Xcode 工程，使用基本的统计功能
@@ -10,7 +10,7 @@
 
 ### 导入 SDK
 
-您可以从 [SDK 下载页面](https://cn.avoscloud.com/docs/sdk_down.html) 下载iOS的SDK。您也可以使用Podfile通过cocoapods下载我们的SDK，如
+您可以从 [SDK 下载页面](https://leancloud.cn/docs/sdk_down.html) 下载iOS的SDK。您也可以使用Podfile通过cocoapods下载我们的SDK，如
 
 ```
 pod 'AVOSCloud'
@@ -18,7 +18,7 @@ pod 'AVOSCloud'
 
 ### 使用统计功能
 
-经过我们的一系列更新升级, 使用最新的SDK您不需要任何代码上的操作就可以使用统计的基本功能. 
+经过我们的一系列更新升级, 使用最新的SDK您不需要任何代码上的操作就可以使用统计的基本功能.
 **统计功能为默认打开, 并且可以在线配置.** 您可以进入应用的 [分析 -> 统计设置（左下角） -> 数据发送策略](/stat.html?appid={{appid}}#/statconfig/trans_strategoy) 在线更改SDK端的数据报告发送策略.
 
 * 建议使用AV_BATCH形式，减少App与网络的交互，为用户节约流量. 如果不设置channelId,默认会是@"App Store"渠道)
@@ -113,7 +113,7 @@ pod 'AVOSCloud'
 
 #### 使用多渠道统计
 
-您可以选择多种程序分发渠道, 例如某Cydia源，或其他网站，可以为不同渠道(提供不同)的软件包进行分发渠道的设定，以便统计终端用户得到程序的来源。 如果您只有苹果官方App Store一个分发渠道，则不再需要做设定，AVOSCloud SDK默认渠道标记为`App Store`。
+您可以选择多种程序分发渠道, 例如某Cydia源，或其他网站，可以为不同渠道(提供不同)的软件包进行分发渠道的设定，以便统计终端用户得到程序的来源。 如果您只有苹果官方App Store一个分发渠道，则不再需要做设定， LeanCloud SDK默认渠道标记为`App Store`。
 
 例如您在360发布,需要统计360渠道:
 ```
@@ -127,7 +127,7 @@ pod 'AVOSCloud'
 
 ### 获取在线参数
 
-从1.4.2 AVOS Cloud SDK开始，您可以在您的应用中动态添加您的在线参数。通过在线参数，您可以控制您的应用行为，而不需要再次发布您的应用。 您可以控制台某个应用的`组件 -> 自定义参数设置`中配置你的自定义在线参数，在线配置参数会在SDK启动后，自动从后台定义的数据表格中获取。从1.4.2开始，您可以使用带回调版本的在线查询API，比如如果您在后台定义了在线参数<k1, v1>，您可以通过以下方法来获取
+从1.4.2 LeanCloud SDK开始，您可以在您的应用中动态添加您的在线参数。通过在线参数，您可以控制您的应用行为，而不需要再次发布您的应用。 您可以控制台某个应用的`组件 -> 自定义参数设置`中配置你的自定义在线参数，在线配置参数会在SDK启动后，自动从后台定义的数据表格中获取。从1.4.2开始，您可以使用带回调版本的在线查询API，比如如果您在后台定义了在线参数<k1, v1>，您可以通过以下方法来获取
 
 ```
     [AVAnalytics updateOnlineConfigWithBlock:^(NSDictionary *dict, NSError *error) {
@@ -141,7 +141,7 @@ pod 'AVOSCloud'
 
 ### 提供开发者选项，控制是否启用统计
 
-从2.5.5 AVOS Cloud SDK开始，您可以添加如下代码禁止统计功能（默认启用统计功能），这样可以避免测试数据污染线上数据。
+从2.5.5 LeanCloud SDK开始，您可以添加如下代码禁止统计功能（默认启用统计功能），这样可以避免测试数据污染线上数据。
 
 ```
 	[AVAnalytics setAnalyticsEnabled:NO];

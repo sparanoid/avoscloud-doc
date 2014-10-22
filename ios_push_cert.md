@@ -64,7 +64,7 @@
 
 ## 上传证书
 
-在 AVOS Cloud的[应用设置 -> 推送设置](/app.html?appid={{appid}}#/push)里，上传上面步骤得到 .p12 证书文件。这是 iOS SDK 能够接收到 AVOS Cloud 推送消息的必要步骤。
+在 LeanCloud的[应用设置 -> 推送设置](/app.html?appid={{appid}}#/push)里，上传上面步骤得到 .p12 证书文件。这是 iOS SDK 能够接收到 LeanCloud 推送消息的必要步骤。
 
 ![Enable push](images/ios_cert/upload_p12.png)
 

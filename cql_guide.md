@@ -1,7 +1,7 @@
 
 # Cloud Query Language 详细指南
 
-Cloud Query Language（简称 CQL） 是 AVOS Cloud 为查询 API 定制的一套类似 SQL 查询语法的子集和变种，主要目的是降低大家学习 AVOS Cloud 查询的 API 的成本，可以使用传统的 SQL 语法来查询 AVOS Cloud 应用内的数据。
+Cloud Query Language（简称 CQL） 是 LeanCloud 为查询 API 定制的一套类似 SQL 查询语法的子集和变种，主要目的是降低大家学习 LeanCloud 查询的 API 的成本，可以使用传统的 SQL 语法来查询 LeanCloud 应用内的数据。
 
 本文档将详细介绍 CQL 的语法和常见用法。
 
@@ -24,8 +24,8 @@ List<AVObject> avObjects = query.find()
 
 ```
 select [查询字段列表，逗号隔开] from [class 名称]
-   [where [条件列表] 
-   [limit [skip],limit 
+   [where [条件列表]
+   [limit [skip],limit
    [order by [排序字段列表] [asc |desc]]]]
 ```
 
@@ -359,7 +359,7 @@ CQL 提供了一些内置函数来方便地创建 pointer、geopoint 等类型�
   <tr><td>current_timestamp()</td><td>创建当前日期</td></tr>
 </table>
 
-如果不使用这些函数，你也使用 [REST API 文档](https://cn.avoscloud.com/docs/rest_api.html#数据类型) 定义的 JSON 对象来创建特定类型，例如 Pointer:
+如果不使用这些函数，你也使用 [REST API 文档](https://leancloud.cn/docs/rest_api.html#数据类型) 定义的 JSON 对象来创建特定类型，例如 Pointer:
 
 ```
 select * from Comment where post=

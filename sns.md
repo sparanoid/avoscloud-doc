@@ -24,7 +24,7 @@ pod 'AVOSCloudSNS'
 就这么简单, 现在你已经拥有了用户登录功能!
 
 ### SSO
-利用SSO, 可以使用户不用输入用户名密码等复杂操作, 一键登录. **目前AVOSCloudSNS 已经支持新浪微博和手机QQ, 并且不需要使用各个平台官方的SDK, 保证您的app体积最小化**. 而你需要做的也很简单,以新浪微博为例:
+利用SSO, 可以使用户不用输入用户名密码等复杂操作, 一键登录. **目前 LeanCloudSNS 已经支持新浪微博和手机QQ, 并且不需要使用各个平台官方的SDK, 保证您的app体积最小化**. 而你需要做的也很简单,以新浪微博为例:
 
 ```
 [AVOSCloudSNS setupPlatform:AVOSCloudSNSSinaWeibo withAppKey:@"Weibo APP ID" andAppSecret:@"Weibo APP KEY" andRedirectURI:@""];
@@ -107,7 +107,7 @@ AVOSCloud Android SNS为开发人员提供了一个非常轻量的模块, 使用
 
 ### 导入 SDK
 
-您可以从 [本地下载](https://cn.avoscloud.com/docs/sdk_down.html) Android SNS SDK（从1.4.4版本开始包括avossns的jar包），将下载的jar包加入您工程的libs目录。如果您还不知道如何安装SDK，请查看[快速入门指南](/start.html)。
+您可以从 [本地下载](https://leancloud.cn/docs/sdk_down.html) Android SNS SDK（从1.4.4版本开始包括avossns的jar包），将下载的jar包加入您工程的libs目录。如果您还不知道如何安装SDK，请查看[快速入门指南](/start.html)。
 
 ### 添加代码，使用 SSO 登录
 
@@ -179,11 +179,11 @@ public class MyActivity extends Activity {
 ```
 
 
-### 绑定 AVOS Cloud User
+### 绑定 LeanCloud User
 
-您也可以将SSO登录后的帐号信息与AVOSCloud的User绑定，通过绑定，您可以在两种用户体系间建立联系，方便信息的共享和使用。
+您也可以将SSO登录后的帐号信息与LeanCloud 的User绑定，通过绑定，您可以在两种用户体系间建立联系，方便信息的共享和使用。
 
-如果您还未安装AVOS Cloud Android SDK，请参阅[快速入门指南](/start.html)。
+如果您还未安装LeanCloud Android SDK，请参阅[快速入门指南](/start.html)。
 
 SSO登录过程与上述代码都相同，您只需要在callback中进行关联即可，示例代码如下
 
@@ -198,7 +198,7 @@ final SNSCallback myCallback = new SNSCallback() {
  };
 ```
 
-上述代码，可以将您的SNS帐号与已经创建的AVOS Cloud User帐号绑定。您也可以使用```loginWithAuthData```，它将为您创建一个新的匿名用户
+上述代码，可以将您的SNS帐号与已经创建的LeanCloud User帐号绑定。您也可以使用```loginWithAuthData```，它将为您创建一个新的匿名用户
 
 ```
   SNS.loginWithAuthData(authData, new LogInCallback() {
@@ -214,7 +214,7 @@ final SNSCallback myCallback = new SNSCallback() {
 
 ```
 
-如果您不想再使用SNS相关的功能，您可以使用```logout```解除SNS帐号和AVOS Cloud User帐号的绑定。
+如果您不想再使用SNS相关的功能，您可以使用```logout```解除SNS帐号和LeanCloud User帐号的绑定。
 ```
   SNS.logout(AVUser.getCurrentUser(), type, new SaveCallback() {
       @Override
@@ -229,7 +229,7 @@ final SNSCallback myCallback = new SNSCallback() {
 
 #### 不引入SNS模块的第三方账号与AVUser绑定
 
-在实际的使用过程中，有一部分用户在涉及到SNS相关功能，比如分享模块时，引用了其他第三方库，然而这些库中所引用的SNS jar很有可能与AVOS Cloud存在版本的冲突。这个时候，用户往往非常的苦恼，无法解决这样的问题。考虑到这一部分用户的需求，我们在AVUser中间添加了几个类似的方法，以便用户能够更便捷地与AVUser进行绑定，从而快速的结合AVOS Cloud的用户系统。
+在实际的使用过程中，有一部分用户在涉及到SNS相关功能，比如分享模块时，引用了其他第三方库，然而这些库中所引用的SNS jar很有可能与LeanCloud存在版本的冲突。这个时候，用户往往非常的苦恼，无法解决这样的问题。考虑到这一部分用户的需求，我们在AVUser中间添加了几个类似的方法，以便用户能够更便捷地与AVUser进行绑定，从而快速的结合LeanCloud的用户系统。
 
 通过`AVUser.loginWithAuthData`来创建一个匿名的AVUser对象：
 ```

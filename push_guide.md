@@ -12,7 +12,7 @@ Installation 表示一个允许推送的设备的唯一标示，对应[数据管
 
 * deviceType  设备类型，目前只支持"ios"和"android"
 * deviceToken iOS设备才有的用于 APNS 推送的唯一标识符，只对 iOS 有效。
-* installationId AVOSCloud为每个Android设备产生的唯一标识符，只对android有效。
+* installationId LeanCloud 为每个Android设备产生的唯一标识符，只对android有效。
 * badge iOS设备呈现在应用程序图标右上角的红色圆形数字提示,用于提示一些无需即时处置的音讯,比方程序更新数、未读数等。
 * timeZone 设备设定的时区
 * channels 设备订阅的频道
@@ -32,9 +32,9 @@ Installation 表示一个允许推送的设备的唯一标示，对应[数据管
 
 ## iOS消息推送
 
-### 如何使用 AVOS Cloud 的 Push 功能
+### 如何使用 LeanCloud 的 Push 功能
 
-本节将向您简单介绍如何在iOS设备中使用AVOS cloud的推送功能。
+本节将向您简单介绍如何在iOS设备中使用LeanCloud的推送功能。
 
 ### 配置 iOS 推送证书
 
@@ -152,7 +152,7 @@ AVPush *push = [[AVPush alloc] init];
 
 ### 高级定向发送
 
-频道对于大多数应用来说可能就足够了。但是某些情况下，你可能需要更高精度的定向推送。AVOSCloud允许你通过AVQuery API查询Installation列表，并向指定条件的query推送消息。
+频道对于大多数应用来说可能就足够了。但是某些情况下，你可能需要更高精度的定向推送。LeanCloud 允许你通过AVQuery API查询Installation列表，并向指定条件的query推送消息。
 
 因为AVInstallation同时是AVObject的子类，因此你可以保存任何数据类型到AVInstallation，并将它和你的其他应用数据对象关联起来，这样以来，你可以非常灵活地向你用户群做定制化、动态的推送。
 
@@ -282,7 +282,7 @@ AVPush *push = [[AVPush alloc] init];
 
 当设备关闭或者无法连接到网络的时候，推送通知就无法被送达。如果你有一条时间敏感的推送通知，不希望在太长时间后被用户读到，那么可以设置一个过期时间来避免打扰用户。
 
-AVPush提供了两个方法来设置通知的过期日期，首先是expireAtDate：接收NSDate来告诉AVOSCloud不要再去发送通知。
+AVPush提供了两个方法来设置通知的过期日期，首先是expireAtDate：接收NSDate来告诉LeanCloud 不要再去发送通知。
 
 ```
 NSDateComponents *comps = [[NSDateComponents alloc] init];
@@ -393,7 +393,7 @@ AVPush *push = [[AVPush alloc] init];
 
 ```
 - (void)application:(UIApplication *)application
-      didReceiveRemoteNotification:(NSDictionary *)userInfo 
+      didReceiveRemoteNotification:(NSDictionary *)userInfo
             fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {
   // Create empty photo object
   NSString *photoId = [userInfo objectForKey:@"p"];
@@ -509,7 +509,7 @@ Android 消息推送有专门的Demo，请见[AVOSCloud-Push](https://github.com
 
 ### Installation
 
-当您的app安装在用户设备后，如果要使用消息推送功能，AVOS Cloud SDK会自动生成一个Installation对象。Installation对象包含了推送所需要的所有信息。您可以使用Android SDK，通过installation对象进行消息推送。Installation对象本质上代表了设备安装您的App的一个安装信息。
+当您的app安装在用户设备后，如果要使用消息推送功能，LeanCloud SDK会自动生成一个Installation对象。Installation对象包含了推送所需要的所有信息。您可以使用Android SDK，通过installation对象进行消息推送。Installation对象本质上代表了设备安装您的App的一个安装信息。
 
 #### 保存 installation
 
@@ -646,10 +646,10 @@ curl -X POST \
         "channels":[ "public"],
         "data": {
           "action": "com.avos.UPDATE_STATUS"
-          "name": "avos cloud."
+          "name": "LeanCloud."
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 请注意：**如果您使用自定义的Receiver，发送的消息必须带action，并且其值在receiver配置的<intent-filter>列表里存在，比如这里的'com.avos.UPDATE_STATUS'**
@@ -710,7 +710,7 @@ public class MyActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
+
 		Intent intent = getIntent();
 		AVAnalytics.trackAppOpened(intent);
 	}
@@ -731,7 +731,7 @@ public class MyActivity extends Activity {
 Windows Phone 8 的推送较为特殊，因为微软在设计的时候把推送消息定义为一个包含跳转页面信息的载体，比如微信推送：你单击微信发送的 Windows Phone 的 Toast 推送消息，单击进去之后，它不是打开微信的默认首页（假如叫做Main.xaml），而是进入某一个聊天的具体的页面（假如叫做chat.xaml）。这种场景微软是通过在推送消息里面包含了代码逻辑来实现的，比如要实现刚才这一套流程，微信服务端必须向微软的 MPNS 发送一个如下类似的消息（Http或者Https Post 请求）：
 
 ```
-<?xml version="1.0" encoding="utf-8"?> 
+<?xml version="1.0" encoding="utf-8"?>
     <wp:Notification xmlns:wp="WPNotification">
         <wp:Toast>
             <wp:Text1>微信</wp:Text1>
@@ -740,17 +740,17 @@ Windows Phone 8 的推送较为特殊，因为微软在设计的时候把推送�
         </wp:Toast>
     </wp:Notification>
 ```
-所以在使用 AVOS Cloud 推送服务向 Windows Phone 8 平台推送的时候一定要对微软官方的推送有所了解，如果想深入了解，可以点击详细查看微软官方关于 [Windows Phone 8 推送的官方教程](http://msdn.microsoft.com/en-us/library/windows/apps/hh202967\(v=vs.105\).aspx)。
+所以在使用 LeanCloud 推送服务向 Windows Phone 8 平台推送的时候一定要对微软官方的推送有所了解，如果想深入了解，可以点击详细查看微软官方关于 [Windows Phone 8 推送的官方教程](http://msdn.microsoft.com/en-us/library/windows/apps/hh202967\(v=vs.105\).aspx)。
 
-针对 Windows Phone 8 的特殊性，AVOS Cloud 采用了统一接口去处理，如下 C# 代码可以实现以上所说的功能：
-在 AVOS Cloud 所有 .NET 语言 SDK 均可如下进行操作。（注：Unity 暂时不支持.Wait（）方法 和 await 关键字，所以它需要使用任务的链式表达，详情请查看 Unity 的文档。）
+针对 Windows Phone 8 的特殊性，LeanCloud 采用了统一接口去处理，如下 C# 代码可以实现以上所说的功能：
+在 LeanCloud 所有 .NET 语言 SDK 均可如下进行操作。（注：Unity 暂时不支持.Wait（）方法 和 await 关键字，所以它需要使用任务的链式表达，详情请查看 Unity 的文档。）
 
 ```
   AVPush avPush = new AVPush();
   avPush.Data = new Dictionary<string, object>();
   avPush.Data.Add("title", "微信");
   avPush.Data.Add("alert", "您有一条聊天消息");
-  avPush.Data.Add("param", "/chat.xaml?NavigatedFrom=Toast Notification");
+  avPush.Data.Add("wp-param", "/chat.xaml?NavigatedFrom=Toast Notification");
   await avPush.SendAsync()；
 ```
 ### 推送给所有的设备
@@ -780,7 +780,7 @@ await task;
 
 ### Installation
 
-当您的app安装在用户设备后，如果要使用消息推送功能，AVOS Cloud SDK会自动生成一个installation对象。installation对象包含了推送所需要的所有信息。您可以使用REST API，通过installation对象进行消息推送。
+当您的app安装在用户设备后，如果要使用消息推送功能，LeanCloud SDK会自动生成一个installation对象。installation对象包含了推送所需要的所有信息。您可以使用REST API，通过installation对象进行消息推送。
 
 #### 保存 installation
 
@@ -800,12 +800,12 @@ curl -X POST \
           "public", "protected", "private"
         ]
       }' \
-  https://cn.avoscloud.com/1.1/installations
+  https://leancloud.cn/1.1/installations
 ```
 
 ##### 保存 Android 设备的 installId
 
-对于Android设备，AVOS SDK会自动生成uuid作为installId保存到AVOS Cloud. 您可以使用以下REST API保存Android设备的installation ID.
+对于Android设备，AVOS SDK会自动生成uuid作为installId保存到LeanCloud. 您可以使用以下REST API保存Android设备的installation ID.
 
 ```
 curl -X POST \
@@ -819,7 +819,7 @@ curl -X POST \
           "public", "protected", "private"
         ]
       }' \
-  https://cn.avoscloud.com/1.1/installations
+  https://leancloud.cn/1.1/installations
 ```
 
 ##### 订阅频道
@@ -834,7 +834,7 @@ curl -X PUT \
           "Giants"
         ]
       }' \
-  https://cn.avoscloud.com/1.1/installations/mrmBZvsErB
+  https://leancloud.cn/1.1/installations/mrmBZvsErB
 ```
 
 ### 推送消息
@@ -847,10 +847,10 @@ curl -X POST \
   -H "Content-Type: application/json" \
   -d '{
         "data": {
-          "alert": "Hello From AVOS Cloud."
+          "alert": "Hello From LeanCloud."
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 #### 发送给特定的用户
@@ -869,10 +869,10 @@ curl -X POST \
             {"$regex":"\\Qpublic\\E"}
         }
         "data": {
-          "alert": "Hello From AVOS Cloud."
+          "alert": "Hello From LeanCloud."
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 
 ```
 
@@ -886,10 +886,10 @@ curl -X POST \
   -d '{
         "channels":[ "public"],
         "data": {
-          "alert": "Hello From AVOS Cloud."
+          "alert": "Hello From LeanCloud."
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 
 ```
 
@@ -905,10 +905,10 @@ curl -X POST \
             "installationId":"57234d4c-752f-4e78-81ad-a6d14048020d"
             }
         "data": {
-          "alert": "Hello From AVOS Cloud."
+          "alert": "Hello From LeanCloud."
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 * 推送给不活跃的用户
@@ -925,10 +925,10 @@ curl -X POST \
               }
         }
         "data": {
-            "alert": "Hello From AVOS Cloud."
+            "alert": "Hello From LeanCloud."
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 * 根据查询条件做推送：
@@ -946,7 +946,7 @@ curl -X POST \
           "alert": "Willie Hayes injured by own pop fly."
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 **请注意，where条件查询的都是installations表。这里是假设installations表存储了injuryReports的布尔属性**
@@ -977,7 +977,7 @@ curl -X POST \
           "alert": "Free hotdogs at the avoscloud concession stand!"
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 上面的例子假设installation有个owner属性指向_User表的记录，并且用户有个location属性是GeoPoint类型，我们就可以根据地理信息位置做推送。
@@ -998,7 +998,7 @@ curl -X POST \
           "alert": "Season tickets on sale until December  4, 2013"
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 也可以是相对时间（从推送API调用开始算起，结合push_time做定期推送）:
@@ -1014,7 +1014,7 @@ curl -X POST \
           "alert": "Season tickets on sale until December  4, 2013"
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 ##### 定制消息属性：
@@ -1035,7 +1035,7 @@ curl -X POST \
           "title": "Mets Score!"
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 
@@ -1052,10 +1052,10 @@ curl -X POST \
         "channels":[ "public"],
         "data": {
           "action": "com.avos.UPDATE_STATUS"
-          "name": "avos cloud."
+          "name": "LeanCloud."
         }
       }' \
-  https://cn.avoscloud.com/1.1/push
+  https://leancloud.cn/1.1/push
 ```
 
 请注意：**如果您使用自定义的Receiver，发送的消息必须带action，并且值为'com.avos.UPDATE_STATUS'**

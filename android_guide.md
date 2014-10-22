@@ -1,6 +1,6 @@
 # Android 开发指南
 
-如果你还没有安装 AVOS Cloud SDK ，请前往[快速入门指南](/start.html)。
+如果你还没有安装 LeanCloud SDK ，请前往[快速入门指南](/start.html)。
 
 如果你希望从项目里学习，请前往 [Android-SDK-Demos](https://github.com/avoscloud/Android-SDK-demos) 。
 
@@ -13,26 +13,26 @@
 
 从 2.4.0 开始, 我们重新设计了 SDK 的结构，优化了模块间的依赖关系，实现了分模块下载 SDK 的功能。以下列举每个模块需要的包：
 
-### AVOS Cloud 基本存储模块
+### LeanCloud 基本存储模块
 
 * avoscloud-<版本号>.jar
 * android-async-http-1.4.4-fix.jar
 * fastjson.jar
 * httpmime-4.2.4.jar
 
-### AVOS Cloud 推送模块和实时聊天模块
+### LeanCloud 推送模块和实时聊天模块
 
-* AVOS Cloud 基础存储模块
+* LeanCloud 基础存储模块
 * avospush-版本号.jar
 
-### AVOS Cloud 统计模块
+### LeanCloud 统计模块
 
-* AVOS Cloud基础存储模块
+* LeanCloud基础存储模块
 * avosstatistics-版本号.jar
 
-### AVOS Cloud SNS 模块
+### LeanCloud SNS 模块
 
-* AVOS Cloud基础存储模块
+* LeanCloud基础存储模块
 * weibo.sdk.android.sso.jar
 * qq.sdk.1.6.1.jar
 
@@ -40,11 +40,11 @@
 
 ## 简介
 
-AVOS Cloud 平台为移动应用提供了一个完整的后端解决方案，目标是让开发者不需要再编写和维护传统的服务器代码。我们提供的 SDK 开发包也非常轻量，让开发者用最简单的方式使用 AVOS Cloud 平台的服务。
+LeanCloud 平台为移动应用提供了一个完整的后端解决方案，目标是让开发者不需要再编写和维护传统的服务器代码。我们提供的 SDK 开发包也非常轻量，让开发者用最简单的方式使用 LeanCloud 平台的服务。
 
 ## 应用程序初始化
 
-以下为 AVOS Cloud Android SDK 需要的所有的权限，请检查你的 `AndroidManifest.xml`。此外千万不要忘记在 `AndroidManifest.xml` 中注明 application name！过去用户反馈的很多问题都是因为这一步没有正确配置导致的。
+以下为 LeanCloud Android SDK 需要的所有的权限，请检查你的 `AndroidManifest.xml`。此外千万不要忘记在 `AndroidManifest.xml` 中注明 application name！过去用户反馈的很多问题都是因为这一步没有正确配置导致的。
 ```
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -54,13 +54,13 @@ AVOS Cloud 平台为移动应用提供了一个完整的后端解决方案，目
 
 ```
 
-在 AVOS Cloud 平台注册后，你创建的每个应用都有自己的 ID 和 Key，在你的代码中将凭此 ID 和 Key 来访问 AVOS Cloud 的服务。你可以在一个帐号中创建多个应用。
+在 LeanCloud 平台注册后，你创建的每个应用都有自己的 ID 和 Key，在你的代码中将凭此 ID 和 Key 来访问 LeanCloud 的服务。你可以在一个帐号中创建多个应用。
 
-在你的应用访问 AVOS Cloud 之前，你需要使用上述的 ID 和 Key 在代码中对 AVOS Cloud SDK 进行初始化。你需要继承 [`Application`](http://developer.android.com/reference/android/app/Application.html) 类，并且在 `onCreate()` 方法中调用 `AVOSCloud.initialize(AppId,AppKey)` 来进行初始化。
+在你的应用访问 LeanCloud 之前，你需要使用上述的 ID 和 Key 在代码中对 LeanCloud SDK 进行初始化。你需要继承 [`Application`](http://developer.android.com/reference/android/app/Application.html) 类，并且在 `onCreate()` 方法中调用 `AVOSCloud.initialize(AppId,AppKey)` 来进行初始化。
 
 ## 数据的存储
 
-AVOS Cloud 的数据存储服务是建立在对象 --- `AVObject` 基础上的，每个 `AVObject` 包含若干属性，属性的值是与 JSON 格式兼容的数据。你不需要预先指定每个 `AVObject` 包含哪些属性，可以随时增加新的属性。
+LeanCloud 的数据存储服务是建立在对象 --- `AVObject` 基础上的，每个 `AVObject` 包含若干属性，属性的值是与 JSON 格式兼容的数据。你不需要预先指定每个 `AVObject` 包含哪些属性，可以随时增加新的属性。
 
 例如要记录一个游戏的分数，可以建立一个类名为 GameScore 的 `AVObject` 对象，包含下面三个属性：
 ```
@@ -84,7 +84,7 @@ try {
 }
 ```
 
-成功运行以上代码后，数据就已经保存到 AVOS Cloud。为确认这一点，你可以用 AVOS Cloud 控制台的数据浏览器查看[该应用的数据](/data.html?appid={{appid}})，找到这个对象：
+成功运行以上代码后，数据就已经保存到 LeanCloud。为确认这一点，你可以用 LeanCloud 控制台的数据浏览器查看[该应用的数据](/data.html?appid={{appid}})，找到这个对象：
 ```
 objectId: "542b6b9ee4b06664dd893da1", score: 9876, playerName: "Charlie", level: 12,
 createdAt:"2013-10-29 11:24:28", updatedAt:"2013-10-29 11:24:28"
@@ -109,14 +109,14 @@ try {
 
 这里需要注意几点：
 
-* 在运行以上代码时，如果云端（AVOS Cloud的服务器，以下简称云端）不存在 `GameScore` 数据表，那么 AVOS Cloud 将根据你第一次（也就是运行的以上代码）保存的 `GameScore` 对象来创建数据表，并且插入相应数据。
+* 在运行以上代码时，如果云端（LeanCloud的服务器，以下简称云端）不存在 `GameScore` 数据表，那么 LeanCloud 将根据你第一次（也就是运行的以上代码）保存的 `GameScore` 对象来创建数据表，并且插入相应数据。
 * 如果云端的这个应用中已经存在名为 `GameScore` 的数据表，而且也包括 `score`、`playerName`、`level` 等属性，新加入属性的值的数据类型要和创建该属性时一致，否则保存数据将失败。
 * 每个 `AVObject` 对象有几个保存元数据的属性是不需要开发者指定的，包括 `objectId` 是每个成功保存的对象的唯一标识符。`createdAt` 和 `updatedAt` 是每个对象在服务器上创建和最后修改的时间。这些属性的创建和更新是由系统自动完成的，请不要在代码里使用这些属性来保存数据。
 * 在Android平台上，大部分的代码是在主线程上运行的，如果在主线程上进行耗时的阻塞性操作，如访问网络等，你的代码可能会无法正常运行，避免这个问题的方法是把会导致阻塞的同步操作改为异步，在一个后台线程运行，例如 `save()` 还有一个异步的版本 `saveInBackground()`，需要传入一个在异步操作完成后运行的回调函数。查询、更新、删除操作也都有对应的异步版本。
 
 ### 数据检索
 
-使用 AVOS Cloud 查询数据比保存更容易。如果你已经知道某条数据的 `objectId`，可以使用 `AVQuery` 直接检索到一个完整的 `AVObject`：
+使用 LeanCloud 查询数据比保存更容易。如果你已经知道某条数据的 `objectId`，可以使用 `AVQuery` 直接检索到一个完整的 `AVObject`：
 
 ```
 AVQuery<AVObject> query = new AVQuery<AVObject>("GameScore");
@@ -137,14 +137,14 @@ int level = gameScore.getInt("level");
 ```
 
 ### 在后台工作
-在 Android 平台上，大部分代码是在主线程上运行的，如果在主线程上进行耗时的阻塞性操作，例如查询大量数据，你的代码可能无法正常运行。避免这个风险的办法是变同步为异步，AVOS Cloud SDK 提供了现成的异步解决方案。例如，我们使用 `saveInBackground` 方法来在一个后台线程中保存之前的 `AVObject` 对象：
+在 Android 平台上，大部分代码是在主线程上运行的，如果在主线程上进行耗时的阻塞性操作，例如查询大量数据，你的代码可能无法正常运行。避免这个风险的办法是变同步为异步，LeanCloud SDK 提供了现成的异步解决方案。例如，我们使用 `saveInBackground` 方法来在一个后台线程中保存之前的 `AVObject` 对象：
 ```
 gameScore.saveInBackground();
 ```
 
 开发者不需要自己动手实现多线程，`saveInBackground()` 的操作将在后台线程中进行，不会影响应用程序的响应。
 
-通常情况下，我们希望知道后台线程任务的结果，比如保存数据是否成功？AVOS Cloud 也为此提供了回调类。对于 `saveInBackground()` 方法，有一个 `saveCallback` 回调方式。最简单的使用方法是写一个匿名内部类来接收回调结果。例如你想知道保存数据是否成功：
+通常情况下，我们希望知道后台线程任务的结果，比如保存数据是否成功？LeanCloud 也为此提供了回调类。对于 `saveInBackground()` 方法，有一个 `saveCallback` 回调方式。最简单的使用方法是写一个匿名内部类来接收回调结果。例如你想知道保存数据是否成功：
 
 
 ```
@@ -191,9 +191,9 @@ gameScore.saveInBackground(new SaveCallback() {
    @Override
    public void done(AVException e) {
         if (e == null) {
-            Log.i("AVOS Cloud", "Save successfully.");
+            Log.i("LeanCloud", "Save successfully.");
         } else {
-            Log.e("AVOS Cloud", "Save failed.");
+            Log.e("LeanCloud", "Save failed.");
         }
     }
 });
@@ -201,7 +201,7 @@ gameScore.saveInBackground(new SaveCallback() {
 
 ### 计数器
 
-许多应用都需要实现计数器功能 -- 比如跟踪游戏的分数、金币甚至道具数目等等。AVOS Cloud 提供了便捷的原子操作来实现计数器：
+许多应用都需要实现计数器功能 -- 比如跟踪游戏的分数、金币甚至道具数目等等。LeanCloud 提供了便捷的原子操作来实现计数器：
 
 ```
 AVObject player = new AVObject("Player");
@@ -359,7 +359,7 @@ userQuery.findInBackground(new FindCallback<AVObject>() {
 
 ### 数据类型
 
-目前为止，我们支持的数据类型有String、Int、Boolean、以及AVObject对象类型。同时AVOS Cloud也支持java.util.Date、byte[]数组、JSONObject、JSONArray数据类型。
+目前为止，我们支持的数据类型有String、Int、Boolean、以及AVObject对象类型。同时LeanCloud也支持java.util.Date、byte[]数组、JSONObject、JSONArray数据类型。
 你可以在JSONArray对象中嵌套JSONObject对象存储在一个AVObject中。
 以下是一些例子：
 
@@ -647,7 +647,7 @@ AVQuery的include方法可以被多次调用，每次调用的字段可以不一
 
 ### 缓存查询
 
-经常需要缓存一些查询的结果到磁盘上，这可以让你在离线的时候，或者当App刚启动，网络请求还没有足够时间完成的时候可以展现一些数据给用户。AVOSCloud会自动清空缓存，当缓存占用了太多空间的时候。
+经常需要缓存一些查询的结果到磁盘上，这可以让你在离线的时候，或者当App刚启动，网络请求还没有足够时间完成的时候可以展现一些数据给用户。LeanCloud 会自动清空缓存，当缓存占用了太多空间的时候。
 
 默认情况下的查询不会使用缓存，除非你使用`setCachePolicy`方法明确设置启用。例如，尝试从网络请求，如果网络不可用则从缓存数据中获取，可以这样设置：
 
@@ -665,7 +665,7 @@ public void done(List<AVObject> scoreList, AVException e) {
 });
 ```
 
-AVOSCloud提供了几种不同的缓存策略：
+LeanCloud 提供了几种不同的缓存策略：
 
 * IGNORE_CACHE ： 默认的缓存策略，查询不走缓存，查询结果也不存储在缓存。
 * CACHE_ONLY ： 查询只从缓存获取，不走网络。如果缓存中没有结果，引发一个AVException
@@ -702,7 +702,7 @@ query.setMaxCacheAge(TimeUnit.DAYS.toMillis(1));
 查询缓存也同时可以用在AVQuery的getFirst()和getInBackground()方法上。
 
 #### Last-Modified选项
-在网络请求中间Last-Modified一般是标注在http响应中，用来表示该资源在服务器端的最后修改时间。在AVOSCloud中间，我们也提供了这个选项来提升缓存的准确性、提高网络效率。
+在网络请求中间Last-Modified一般是标注在http响应中，用来表示该资源在服务器端的最后修改时间。在LeanCloud 中间，我们也提供了这个选项来提升缓存的准确性、提高网络效率。
 当你通过`AVOSCloud.setLastModifyEnabled(boolean enable)`来激活这个选项时，所有的对象和它们所对应的Last-Modified时间都会被缓存起来。
 当某个AVObject对象再次被发起一个get请求时，请求中就会带着Last-Modified信息，服务器端则会校验双方的Last-Modified信息。如果双方的Last-Modified时间一致，则说明自上次get请求之后，服务器端的数据并没有被修改，所以服务器不再需要将对象重新返回，客户端直接取缓存内对象返回即可，从而节省了网络资源。反之，则与平时一样，服务器返回该对象数据和对应的Last-Modified信息，由客户端更新缓存内容并返回，从而保证了缓存的正确性。
 ** 注：该功能现在正处于beta阶段，请谨慎使用 **
@@ -744,8 +744,8 @@ query.deleteAll();
 ```
 
 ### CQL查询
-Cloud Query Language（简称 CQL） 是 AVOS Cloud 为查询 API 定制的一套类似 SQL 查询语法的子集和变种，主要目的是降低大家学习 AVOS Cloud 查询的 API 的成本，可以使用传统的 SQL 语法来查询 AVOS Cloud 应用内的数据。
-这里只是示范在Android中的调用方法，具体的CQL语法，请参考[Cloud Query Language 详细指南](https://avoscloud.com/docs/cql_guide.html).
+Cloud Query Language（简称 CQL） 是 LeanCloud 为查询 API 定制的一套类似 SQL 查询语法的子集和变种，主要目的是降低大家学习 LeanCloud 查询的 API 的成本，可以使用传统的 SQL 语法来查询 LeanCloud 应用内的数据。
+这里只是示范在Android中的调用方法，具体的CQL语法，请参考[Cloud Query Language 详细指南](https://leancloud.cn/docs/cql_guide.html).
 你可以通过一下方法来进行调用
 ```
 AVQuery.doCloudQueryInBackground("select * from ObjectTest",new CloudQueryCallback<AVCloudQueryResult>(){
@@ -775,7 +775,7 @@ AVQuery.doCloudQueryInBackground("select count(*) from ObjectTest",new CloudQuer
 
 ## 子类化
 
-AVOSCloud希望设计成能让人尽快上手并使用。你可以通过AVObject.get方法访问所有的数据。但是在很多现有成熟的代码中，子类化能带来更多优点，诸如简洁、可扩展性以及IDE提供的代码自动完成的支持等等。子类化不是必须的，你可以将下列代码转化：
+LeanCloud 希望设计成能让人尽快上手并使用。你可以通过AVObject.get方法访问所有的数据。但是在很多现有成熟的代码中，子类化能带来更多优点，诸如简洁、可扩展性以及IDE提供的代码自动完成的支持等等。子类化不是必须的，你可以将下列代码转化：
 
 ```
 AVObject shield = new AVObject("Armor");
@@ -923,11 +923,11 @@ MyUser cloudUser = AVUser.logIn(username, password,
 ```
 
 ## ACL权限控制
-ACL(Access Control List)是最灵活和简单的应用数据安全管理方法。通俗的解释就是为每一个数据创建一个访问的白名单列表，只有在名单上的用户(AVUser)或者具有某种角色(AVRole)的用户才能被允许访问。为了更好地保证用户数据安全性，AVOS Cloud表中每一张都有一个ACL列。当然，AVOS Cloud还提供了进一步的读写权限控制。一个 User 必须拥有读权限（或者属于一个拥有读权限的 Role）才可以获取一个对象的数据，同时，一个 User 需要写权限（或者属于一个拥有写权限的 Role）才可以更改或者删除一个对象。
-以下列举了几种在AVOS Cloud常见的ACL使用范例：
+ACL(Access Control List)是最灵活和简单的应用数据安全管理方法。通俗的解释就是为每一个数据创建一个访问的白名单列表，只有在名单上的用户(AVUser)或者具有某种角色(AVRole)的用户才能被允许访问。为了更好地保证用户数据安全性，LeanCloud表中每一张都有一个ACL列。当然，LeanCloud还提供了进一步的读写权限控制。一个 User 必须拥有读权限（或者属于一个拥有读权限的 Role）才可以获取一个对象的数据，同时，一个 User 需要写权限（或者属于一个拥有写权限的 Role）才可以更改或者删除一个对象。
+以下列举了几种在LeanCloud常见的ACL使用范例：
 
 ### 默认访问权限
-在没有显式指定的情况下，AVOS Cloud中的每一个对象都会有一个默认的ACL值。这个值代表了，所有的用户，对这个对象都是可读可写的。此时你可以在数据管理的表中ACL属性中看到这样的值:
+在没有显式指定的情况下，LeanCloud中的每一个对象都会有一个默认的ACL值。这个值代表了，所有的用户，对这个对象都是可读可写的。此时你可以在数据管理的表中ACL属性中看到这样的值:
 ```
         {"*":{"read":true,"write":true}}
 ```
@@ -1208,7 +1208,7 @@ String url = file.getThumbnailUrl(false, 200, 100);
 ```
 
 ## 用户
-用户是一个应用程序的核心。对于个人开发者来说，能够让自己的应用程序积累到多的用户，就能给自己带来更多的创作动力。因此AVOS Cloud提供了一个专门的用户类，AVUser来自动处理用户账户管理所需的功能。
+用户是一个应用程序的核心。对于个人开发者来说，能够让自己的应用程序积累到多的用户，就能给自己带来更多的创作动力。因此LeanCloud提供了一个专门的用户类，AVUser来自动处理用户账户管理所需的功能。
 有了这个类，你就可以在你的应用程序中添加用户帐户功能。
 
 AVUser是一个AVObject的子类，它继承了AVObject所有的方法，具有AVObject相同的功能。不同的是，AVUser增加了一些特定的关于用户账户相关的功能。
@@ -1253,9 +1253,9 @@ user.signUpInBackground(new SignUpCallback() {
 
 如果注册不成功，你可以查看返回的错误对象。最有可能的情况是，用户名或电子邮件已经被另一个用户注册。这种情况你可以提示用户，要求他们尝试使用不同的用户名进行注册。
 
-你也可以要求用户使用Email做为用户名注册，这样做的好处是，你在提交信息的时候可以将输入的“用户名“默认设置为用户的Email地址，以后在用户忘记密码的情况下可以使用AVOS Cloud提供的重置密码功能。
+你也可以要求用户使用Email做为用户名注册，这样做的好处是，你在提交信息的时候可以将输入的“用户名“默认设置为用户的Email地址，以后在用户忘记密码的情况下可以使用LeanCloud提供的重置密码功能。
 
-关于自定义邮件模板和验证链接请看这篇[博客](http://blog.avoscloud.com/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
+关于自定义邮件模板和验证链接请看这篇[博客](http://blog.leancloud.cn/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
 
 用户邮箱验证后，会调用`AV.Cloud.onVerified('email',function)`的云代码回调函数，方便你做一些后处理。
 
@@ -1318,11 +1318,11 @@ AVUser.requestPasswordResetInBackground("myemail@example.com", new RequestPasswo
 密码重置流程如下：
 
  * 用户输入他们的电子邮件，请求重置自己的密码。
- * AVOS Cloud向他们的邮箱发送一封包含特殊的密码重置连接的电子邮件。
+ * LeanCloud向他们的邮箱发送一封包含特殊的密码重置连接的电子邮件。
  * 用户根据向导点击重置密码连接，打开一个特殊的页面，让他们输入一个新的密码。
  * 用户的密码已被重置为新输入的密码。
 
-关于自定义邮件模板和验证链接请看这篇[博客](http://blog.avoscloud.com/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
+关于自定义邮件模板和验证链接请看这篇[博客](http://blog.leancloud.cn/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
 
 用户邮箱验证后，会调用`AV.Cloud.onVerified('email',function)`的云代码回调函数，方便你做一些后处理。
 
@@ -1344,7 +1344,7 @@ AVUser.requestPasswordResetInBackground("myemail@example.com", new RequestPasswo
 
 ### 发送验证邮件
 
-验证邮件对于很多应用来说并非是必须的，然而一旦遭遇到恶劣的强注事件时，通过验证邮件来阻拦spam用户的攻击就成为最直接和简便的方法。AVOSCloud同样也提供了这样的方法，让用户免去这方面的担忧。
+验证邮件对于很多应用来说并非是必须的，然而一旦遭遇到恶劣的强注事件时，通过验证邮件来阻拦spam用户的攻击就成为最直接和简便的方法。LeanCloud 同样也提供了这样的方法，让用户免去这方面的担忧。
 发送验证邮件的流程也很简单，在开发者获得用户的邮箱之后就可以发送验证邮件：
 
 ```
@@ -1357,11 +1357,11 @@ AVUser.requestPasswordResetInBackground("myemail@example.com", new RequestPasswo
         });
 ```
 
-关于自定义邮件模板和验证链接请看这篇[博客](http://blog.avoscloud.com/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
+关于自定义邮件模板和验证链接请看这篇[博客](http://blog.leancloud.cn/blog/2014/01/09/zi-ding-yi-ying-yong-nei-yong-hu-zhong-she-mi-ma-he-you-xiang-yan-zheng-ye-mian/)。
 
 ###  手机号码验证
 
-在应用设置中打开`注册手机号码验证`选项后，当你在注册用户时，填写用户手机字段后，AVOS Cloud 会自动向该手机号码发送一个验证短信，用户在输入验证码以后，该用户就被表示为已经验证过手机。
+在应用设置中打开`注册手机号码验证`选项后，当你在注册用户时，填写用户手机字段后，LeanCloud 会自动向该手机号码发送一个验证短信，用户在输入验证码以后，该用户就被表示为已经验证过手机。
 
 以下代码就可发送注册验证码到用户手机:
 ```
@@ -1473,7 +1473,7 @@ query.findInBackground(new FindCallback<AVObject>() {
 
 ### 匿名用户
 
-如果你的App需要使用一个相对弱化的用户系统时，你可以考虑AVOS Cloud提供的匿名用户系统来实现你的功能。
+如果你的App需要使用一个相对弱化的用户系统时，你可以考虑LeanCloud提供的匿名用户系统来实现你的功能。
 
 你只需要一行代码就可以获取以后一个匿名的用户账号：
 ```
@@ -1492,7 +1492,7 @@ query.findInBackground(new FindCallback<AVObject>() {
 User表是一个特殊的表，专门存储AVUser对象。在浏览器端，你会看到一个_User表。
 
 ## 地理位置
-AVOS Cloud允许用户根据地球的经度和纬度坐标进行基于地理位置的信息查询。你可以在AVObject的查询中添加一个AVGeoPoint的对象查询。你可以实现轻松查找出离当前用户最接近的信息或地点的功能。
+LeanCloud允许用户根据地球的经度和纬度坐标进行基于地理位置的信息查询。你可以在AVObject的查询中添加一个AVGeoPoint的对象查询。你可以实现轻松查找出离当前用户最接近的信息或地点的功能。
 
 ### 地理位置对象
 
@@ -1568,8 +1568,8 @@ AVCloud.setProductionMode(false); //调用测试环境云代码
 默认为true，也就是调用生产环境云代码函数。
 
 ## 短信验证码服务
-除了用户相关的包括注册，登录等操作以外，AVOS Cloud还支持额外的短信验证码服务。
-在实际的应用中，假如有一些相对比较敏感的操作，比如付费、删除重要资源等操作，你希望能够通过短信验证的方式来与用户进行确认，你就可以在用户验证过手机号码，应用管理平台打开了`启用手机号码短信认证`选项的前提下，使用AVOS Cloud提供的短信验证码服务。
+除了用户相关的包括注册，登录等操作以外，LeanCloud还支持额外的短信验证码服务。
+在实际的应用中，假如有一些相对比较敏感的操作，比如付费、删除重要资源等操作，你希望能够通过短信验证的方式来与用户进行确认，你就可以在用户验证过手机号码，应用管理平台打开了`启用手机号码短信认证`选项的前提下，使用LeanCloud提供的短信验证码服务。
 
 下面是使用方法，也可以参考 github 上的 [sms-demo](https://github.com/avoscloud/sms-demo) 项目。
 
