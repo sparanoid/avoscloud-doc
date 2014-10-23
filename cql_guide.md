@@ -166,7 +166,17 @@ in 后面还可以是一个子查询，比如查询玩家信息，并且成绩�
 select * from Player where name in (select name from GameScore where score>80)
 ```
 
-注意子查询必须指定查询的字段名称是`select name`
+注意子查询必须指定查询的字段名称是`select name`。
+
+子查询另一种常见形式是使用 `=` 或 `!=` 跟一条查询语句：
+
+```
+select * from Player where name =(select name from GameScore where score>80)
+select * from Player where name !=(select name from GameScore where score<=80)
+```
+
+**请注意子查询的语句也受上限 1000 条记录的限制**
+
 
 ### 地理位置信息查询
 
