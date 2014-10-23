@@ -49,9 +49,15 @@ Object的键必须是字母或者数字的字符串.值可以是字符串,数字
 NameYourClassesLikeThis或者nameYourKeysLikeThis的命名,可以使你的代码看
 上去更优雅.
 
-为了建立一个新的子类,你可以使用AV.Object.extend方法.每次调用AV.Query都
-会用一样的类名返回一个新的类的实例.如果你熟悉Backbone.Model的话,你
-已经明白如何使用AV.Object了.它本身就是设计来让两者可以相互替换的.
+为了建立一个新的子类,你可以使用AV.Object.extend方法.如果你熟悉
+Backbone.Model的话,你已经明白如何使用AV.Object了.它本身就是设计来让
+两者可以相互替换的.
+
+**注意**：`AV.Object.extend` 产生的对象需要作为全局变量保存，因为每调用
+一次，就会产生一个新的类的实例，并且和之前创建的实例形成一个链表。
+如果你的应用时不时出现 `Maximum call stack size exceeded` 错误，请
+确认是否误用了该方法。
+
 
 ```
 // 创建AV.Object子类.
