@@ -96,7 +96,7 @@ $ avoscloud -V
 
 ## Bash Completion
 
-下载 [leancloud.cnpletion.sh](https://github.com/leancloud/avoscloud-code-command/blob/master/avoscloud_completion.sh) 保存到某个目录，例如通常保存为 `~/.leancloud_completion.sh`，然后在 `.bashrc` 或者 `.bash_profile` 文件中添加：
+下载 [avoscloud_completion.sh](https://raw.githubusercontent.com/leancloud/avoscloud-code-command/master/avoscloud_completion.sh) 保存到某个目录，例如通常保存为 `~/.leancloud_completion.sh`，然后在 `.bashrc` 或者 `.bash_profile` 文件中添加：
 
 ```
 source ~/.leancloud_completion.sh
