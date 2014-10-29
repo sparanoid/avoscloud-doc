@@ -38,7 +38,7 @@
 
 我们提供的下载包里包含了必须的依赖库，请务必使用我们提供的jar包，才能保证SDK的正常运行。特别是 fastjson 和 android-async-http 必须使用我们提供的版本，否则无法运行。
 
-*注:如果您需要使用美国站点，请下载[SSL证书](https://download.leancloud.cn/sdk/android/current/avoscloud_us_ssl.bks)并拷贝到您的项目`res/raw/`目录下*
+**注:如果您需要使用美国站点，请下载[SSL证书](https://download.leancloud.cn/sdk/android/current/avoscloud_us_ssl.bks)并拷贝到您的项目`res/raw/`目录下**
 
 ## 简介
 
