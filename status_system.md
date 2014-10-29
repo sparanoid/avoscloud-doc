@@ -428,7 +428,7 @@ query.find().then(function(statuses){
       AVStatusQuery<AVStatus> inboxQuery = AVStatus.inboxQuery(AVStatus.class, userB,AVStatus.INBOX_TYPE.TIMELINE.toString());
       inboxQuery.setLimit(50);  //设置最多返回50条状态
       inboxQuery.setSinceId(0);  //查询返回的status的messageId必须大于sinceId，默认为0
-      inboxQuery.findInBackground(new FindCallback<AVStatus>(){
+      inboxQuery.findInBackground(new InboxStatusFindCallback(){
         @Override
         public void done(final List<AVStatus> parseObjects, final AVException parseException) {
 
@@ -444,6 +444,8 @@ query.find().then(function(statuses){
 * maxId限定查询返回的status的messageId必须小于等于传入的message id。
 
 使用这两个id就可以做分页查询。**`AVStatusQuery`查询不支持skip**。
+
+InboxStatusFindCallback内部有一个方法叫做isEnd(),用来检查收件箱查询是否已经到了最老的一页数据。
 
 ### 获取收件箱的计数
 

@@ -16,8 +16,8 @@
 ### LeanCloud 基本存储模块
 
 * avoscloud-<版本号>.jar
-* android-async-http-1.4.4-fix.jar
-* fastjson.jar
+* android-async-http-1.4.6.jar
+* fastjson.jar (请一定要使用我们提供的jar,针对原版有bug修正。)
 * httpmime-4.2.4.jar
 
 ### LeanCloud 推送模块和实时聊天模块
@@ -772,6 +772,21 @@ AVQuery.doCloudQueryInBackground("select count(*) from ObjectTest",new CloudQuer
 });
 
 ```
+在更多的时候，一个查询语句中间会有很多的值是可变值，为此，我们也提供了类似prepareStatement的语法结构。
+
+```
+
+    AVQuery.doCloudQueryInBackground("select * from ObjectUnitTestArmor where durability = ? and name = ?",
+        new CloudQueryCallback<AVCloudQueryResult>() {
+
+          @Override
+          public void done(AVCloudQueryResult result, AVException parseException) {
+
+          }
+        }, Armor.class, 100,"祈福");
+  
+```
+
 
 ## 子类化
 
@@ -1452,6 +1467,34 @@ AVUser.requestPasswordResetInBackground("myemail@example.com", new RequestPasswo
     });
 ```
 修改成功以后，用户就可以使用新密码登陆了
+
+### 短信模板
+
+在提交了短信模板并且得到审核以后，你可以通过SDK来发送符合短信模板的短信给你的用户。
+
+假设您提交了如下的短信模板，并且将这个模板的名称保存为"Register_Template"：
+```
+Hi {{username}},
+欢迎注册{{name}}应用，您可以通过验证码:{{code}}，进行注册。本条短信将在{{ttl}}分钟后自行销毁。请尽快使用。
+以上。
+{{appname}}
+```
+*注：其中的name,code,ttl是预留的字段，分别代表应用名、验证码、过期时间。不需要填充内容，会自动填充。*
+
+您可以通过如下代码进行短信发送：
+
+```
+    HashMap<String,Object> env = new HashMap<String,Object>();
+    env.put("username",9527);
+    env.put("appname", "来自未来的你");
+    AVOSCloud.requestSMSCodeInBackgroud("12312312312", "Register_Template", env, new RequestMobileCodeCallback() {
+      
+      @Override
+      public void done(AVException e) {
+         //do something you need
+      }
+    });
+```
 
 ### 查询
 
