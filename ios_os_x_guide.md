@@ -1648,6 +1648,7 @@ NSArray<AVObject *> * pizzaPlacesInSF = [query findObjects];
 
  * 每个AVObject数据对象中只能有一个AVGeoPoint对象。
  * 地理位置的点不能超过规定的范围。纬度的范围应该是在-90.0到90.0之间。经度的范围应该是在-180.0到180.0之间。如果您添加的经纬度超出了以上范围，将导致程序错误。
+ * iOS 8.0 之后使用定位服务前需要调用 [locationManager requestWhenInUseAuthorization] 或者 [locationManager requestAlwaysAuthorization] 获取用户使用期授权或永久授权，而这两个请求授权需要在 info.plist 里面对应添加 NSLocationWhenInUseUsageDescription 或 NSLocationWhenInUseUsageDescription 的 key/value，value 为开启定位服务原因的描述，SDK 内部默认使用的是使用期授权。
 
 ## 调用云代码
 
