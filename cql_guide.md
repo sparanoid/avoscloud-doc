@@ -166,7 +166,17 @@ in 后面还可以是一个子查询，比如查询玩家信息，并且成绩�
 select * from Player where name in (select name from GameScore where score>80)
 ```
 
-注意子查询必须指定查询的字段名称是`select name`
+注意子查询必须指定查询的字段名称是`select name`。
+
+子查询另一种常见形式是使用 `=` 或 `!=` 跟一条查询语句：
+
+```
+select * from Player where name =(select name from GameScore where score>80)
+select * from Player where name !=(select name from GameScore where score<=80)
+```
+
+**请注意子查询的语句也受上限 1000 条记录的限制**
+
 
 ### 地理位置信息查询
 
@@ -293,7 +303,6 @@ and 的优先级高于 or，因此上面的查询也可以用括号来明确地�
 select * from GameScore where (score>80 and score<=100) or score=0
 ```
 
-
 ## 限定返回值
 
 通过 `limit` 语句来限定返回结果大小，比如限定返回 100 个：
@@ -310,6 +319,17 @@ select * from Comment limit 100,10
 
 这个形式跟 MySQL 是类似的。
 
+
+
+### 占位符
+
+查询条件和 limit 子句还支持占位符，也就是可以用问号 `?` 替代值，值的列表通过 SDK 提供的方法传入，具体请参考各 SDK 用法，例如：
+
+```
+select * from GameScore where name=? and score>? limit ?,?
+```
+
+我们推荐使用占位符的方式来使用 CQL，查询语句可以通过预编译得到缓存，降低 CQL 的转换开销。
 
 ## 排序
 
@@ -373,6 +393,8 @@ select * from Comment where post=
 ## 性能和建议
 
 CQL 最终还是转换成 [REST API](./rest_api.html) 里查询部分提到的各种 where 条件，因为多了一层转换，理论上会比直接使用 where 查询慢一点。并且 CQL 对长度有所限制，要求在 4096 字节以内。
+
+此外，我们推荐查询语句都采用占位符的方式，使用占位符的查询语句将有机会被缓存复用，避免重复解释的开销。
 
 
 

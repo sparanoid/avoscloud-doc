@@ -49,9 +49,15 @@ Object的键必须是字母或者数字的字符串.值可以是字符串,数字
 NameYourClassesLikeThis或者nameYourKeysLikeThis的命名,可以使你的代码看
 上去更优雅.
 
-为了建立一个新的子类,你可以使用AV.Object.extend方法.每次调用AV.Query都
-会用一样的类名返回一个新的类的实例.如果你熟悉Backbone.Model的话,你
-已经明白如何使用AV.Object了.它本身就是设计来让两者可以相互替换的.
+为了建立一个新的子类,你可以使用AV.Object.extend方法.如果你熟悉
+Backbone.Model的话,你已经明白如何使用AV.Object了.它本身就是设计来让
+两者可以相互替换的.
+
+**注意**：`AV.Object.extend` 产生的对象需要作为全局变量保存，因为每调用
+一次，就会产生一个新的类的实例，并且和之前创建的实例形成一个链表。
+如果你的应用时不时出现 `Maximum call stack size exceeded` 错误，请
+确认是否误用了该方法。
+
 
 ```
 // 创建AV.Object子类.
@@ -856,8 +862,8 @@ AV.Query.doCloudQuery('select * from GameScore', {
     console.dir(error);
   }
 });
-//查询总记录数并返回前100条。
-AV.Query.doCloudQuery('select count(*),* from GameScore', {
+//查询分数大于 50 的记录数并返回前100条。
+AV.Query.doCloudQuery('select count(*),* from GameScore where score>50', {
   success: function(result){
     //results 是查询返回的结果，AV.Object 列表
     var results = result.results;
@@ -880,6 +886,27 @@ doCloudQuery 回调中的`result`包含三个属性：
 
 CQL 语法请参考 [CQL 详细指南](./cql_guide.html)。
 
+针对查询条件，我们推荐使用占位符的 CQL 语句来提升性能，占位符对应的值按照顺序组合起来作为第二个参数 `pvalues` 数组传入：
+
+```
+//查询分数大于 50 的记录数并返回前10条。
+AV.Query.doCloudQuery('select count(*),* from GameScore where score>? limit ?',[50,10],
+ {
+  success: function(result){
+    //results 是查询返回的结果，AV.Object 列表
+    var results = result.results;
+    //count 表示符合查询条件的总记录数
+    var count = result.count;
+    //do something with results...
+  },
+  error: function(error){
+    //查询失败，查看 error
+    console.dir(error);
+  }
+});
+```
+
+`AV.Query.doCloudQuery` 返回的也是下面提到的 `AV.Promise` 对象。
 
 ##Promise
 
@@ -1268,7 +1295,7 @@ var size = file.size();
 var ownerId = file.ownerId();
 ```
 
-`0.3.1`版本开始，我们增强了metaData方法，它同时是gettter和setter方法:
+`0.3.1`版本开始，我们增强了metaData方法，它同时是getter和setter方法:
 
 ```
 //获取所有元信息组成的JSON对象
@@ -1716,6 +1743,30 @@ post.save(null, {
 	});
 ```
 
+如果您在应用设置里创建了短信模板，并且通过了管理员审核，那就可以发送模板短信，假设模板名称为 `test`，模板内容为
+
+```
+欢迎您使用 {{name}} 服务，我们将在 {{date}} 举办庆祝活动，欢迎参加。
+```
+
+其中`name` 和 `date` 都是可替换的模板变量，那么可以通过下列方式来发送这条模板短信：
+
+```
+	AV.Cloud.requestSmsCode({
+	   mobilePhoneNumber: '186xxxxxxxx',
+	   template: "test"
+	   name: 'PP打车',
+	   date: '2014 年 10 月 22 号',
+	   ttl: 5
+	}).then(function(){
+	    //发送成功
+	}, function(err){
+		//发送失败
+	});
+```
+
+`template` 指定模板名称，`mobilePhoneNumber` 是接收短信的手机号码，其他变量都将作为模板变量渲染。发送的短信内容将渲染为 `欢迎您使用 pp打车 服务，我们将在 2014 年 10 月 22 号 举办庆祝活动，欢迎参加。`。
+
 在用户收到验证码并输入后，通过下列代码来验证是否正确：
 
 ```
@@ -1874,6 +1925,17 @@ var query = new AV.Query("_Installation");
 query.equalTo("installationId", installationId);
 AV.Push.send({
   where: query,
+  data: {
+     alert: "Public message"
+  }
+});
+```
+
+此外，如果你觉得 AV.Query 太繁琐，也可以写一句 [CQL](./cql_guide.html) 来搞定：
+
+```
+AV.Push.send({
+  cql: "select * from _Installation where installationId='设备id'",
   data: {
      alert: "Public message"
   }

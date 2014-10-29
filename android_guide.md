@@ -749,6 +749,7 @@ query.deleteAll();
 Cloud Query Language（简称 CQL） 是 LeanCloud 为查询 API 定制的一套类似 SQL 查询语法的子集和变种，主要目的是降低大家学习 LeanCloud 查询的 API 的成本，可以使用传统的 SQL 语法来查询 LeanCloud 应用内的数据。
 这里只是示范在Android中的调用方法，具体的CQL语法，请参考[Cloud Query Language 详细指南](https://leancloud.cn/docs/cql_guide.html).
 你可以通过一下方法来进行调用
+
 ```
 AVQuery.doCloudQueryInBackground("select * from ObjectTest",new CloudQueryCallback<AVCloudQueryResult>(){
 
@@ -774,7 +775,9 @@ AVQuery.doCloudQueryInBackground("select count(*) from ObjectTest",new CloudQuer
 });
 
 ```
-在更多的时候，一个查询语句中间会有很多的值是可变值，为此，我们也提供了类似prepareStatement的语法结构。
+
+在更多的时候，一个查询语句中间会有很多的值是可变值，为此，我们也提供了类似 Java JDBC 里的 PreparedStatement 使用占位符查询的语法结构。
+
 
 ```
 
@@ -788,6 +791,8 @@ AVQuery.doCloudQueryInBackground("select count(*) from ObjectTest",new CloudQuer
         }, Armor.class, 100,"祈福");
   
 ```
+
+最后的可变参数`100` 和 `"祈福"` 会自动替换查询语句中的问号位置（按照问号的先后出现顺序）
 
 
 ## 子类化
