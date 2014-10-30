@@ -242,7 +242,17 @@ query.find().then(function(statuses){
 
     }];
     
-如果您在应用设置的应用选项里勾选了`自动互相关注（事件流）`，那么在当前用户关注某个人，那个人也会自动关注当前用户。   
+如果您在应用设置的应用选项里勾选了`自动互相关注（事件流）`，那么在当前用户关注某个人，那个人也会自动关注当前用户。  
+
+从 2.6.7 版本开始，我们允许在 follow 的时候同时传入一个 attribute 列表，用于设置关系的属性，这些属性都将在 `_Follower` 和 `_Followee` 表同时存在:
+
+```
+   NSDictionary * attrs = ……
+   [[AVUser currentUser] follow:userObjectId userDictionary:attrs andCallback:^(BOOL succeeded, NSError *error) {
+	    //处理结果
+    }];
+
+``` 
 
 #### 获取粉丝和关注列表
 
@@ -253,6 +263,16 @@ query.find().then(function(statuses){
 
 	//关注列表查询
 	AVQuery *query= [AVUser followeeQuery:@"USER_OBJECT_ID"];
+	
+
+
+`followerQuery` 和 `followeeQuery` 返回的 AVQuery 可以增加其他查询条件，只要在`_Followee`和`_Follower` 表里存在的属性都可以作为查询或者排序条件。
+     
+
+**注：默认的查询得到的AVUser对象仅仅有ObjectId数据，如果需要整个AVUser对象所有属性，则需要调用include方法**。例如
+
+	AVQuery *query= [AVUser followeeQuery:@"USER_OBJECT_ID"];
+	[query includeKey:@"followee"];
 
 
 是分别获得某个用户的粉丝和关注, 我们也可以同时取得这这两种:
@@ -261,7 +281,6 @@ query.find().then(function(statuses){
         NSArray *followers=dict[@"followers"];
         NSArray *followees=dict[@"followees"];
     }];
-
 
 
 ### 状态
@@ -337,8 +356,8 @@ query.find().then(function(statuses){
 
 `AVStatusQuery`可以设置sinceId和maxId:
 
-* sinceId设定查询返回的status的messageId必须大于传入的message id，
-* maxId限定查询返回的status的messageId必须小于等于传入的message id。
+* sinceId  设定查询返回的status的messageId必须大于传入的message id，
+* maxId  限定查询返回的status的messageId必须小于等于传入的message id。
 
 使用这两个id就可以做分页查询。**`AVStatusQuery`查询不支持skip**
 
@@ -557,12 +576,12 @@ AVUser.getCurrentUser().followInBackground("target user objectId", attributes, n
 
 `AVStatus`有一个`messageId`属性，用于标示这条status在inbox里的唯一位置。使用这个`messageId`结合`AVStatusQuery`可以做分页查询，AVStatusQuery可以设置`sinceId`和`maxId`：
 
-* sinceId设定查询返回的status的messageId必须大于传入的message id，
-* maxId限定查询返回的status的messageId必须小于等于传入的message id。
+* sinceId  设定查询返回的status的messageId必须大于传入的message id，
+* maxId  限定查询返回的status的messageId必须小于等于传入的message id。
 
 使用这两个id就可以做分页查询。**`AVStatusQuery`查询不支持skip**。
 
-InboxStatusFindCallback内部有一个方法叫做isEnd(),用来检查收件箱查询是否已经到了最老的一页数据。
+从 v2.6.7 版本开始，`InboxStatusFindCallback` 提供一个方法叫做isEnd(),用来**在查询后**检查收件箱查询是否已经到了最早的一页数据。
 
 ### 获取收件箱的计数
 
