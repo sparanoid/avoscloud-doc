@@ -220,7 +220,6 @@ query.find().then(function(statuses){
 ## iOS SDK中的使用方法
 
 
-
 ### 好友关系
 
 #### 关注/取消关注
@@ -384,7 +383,7 @@ query.find().then(function(statuses){
 
  Android的事件流已经正式发布，欢迎尝试！
  
- ### 好友关系
+### 好友关系
 
 #### 关注和取消关注
 
