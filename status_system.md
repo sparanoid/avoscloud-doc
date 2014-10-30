@@ -223,7 +223,7 @@ query.find().then(function(statuses){
 
 ### 好友关系
 
-#### 关注和取消关注
+#### 关注/取消关注
 
 当前登陆用户可以关注某人：
 
@@ -254,7 +254,7 @@ query.find().then(function(statuses){
 
 ``` 
 
-#### 获取粉丝和关注列表
+#### 获取粉丝/关注列表
 
 有2个特殊的`AVQuery`:
 
