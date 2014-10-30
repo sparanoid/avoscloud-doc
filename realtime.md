@@ -594,6 +594,70 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
 - (AVSignature *)signatureForGroupWithPeerId:(NSString *)peerId groupId:(NSString *)groupId groupPeerIds:(NSArray *)groupPeerIds action:(NSString *)action
 ```
 
+###聊天记录查询
+聊天记录的查询使用AVHistoryMessageQuery实现。可以通过不同参数构造不同类型的查询：
+#### 通用查询
+
+```
++ (instancetype)query;
++ (instancetype)queryWithTimestamp:(int64_t)timestamp limit:(int)limit;
+```
+
+#### 查询指定ConversationId的记录
+
+```
++ (instancetype)queryWithConversationId:(NSString *)conversationId;
++ (instancetype)queryWithConversationId:(NSString *)conversationId timestamp:(int64_t)timestamp limit:(int)limit;
+```
+
+#### 查询来自指定peerId的记录
+
+```
++ (instancetype)queryWithFromPeerId:(NSString *)fromPeerId;
++ (instancetype)queryWithFromPeerId:(NSString *)fromPeerId timestamp:(int64_t)timestamp limit:(int)limit;
+```
+
+#### 查询两个peerId之间的记录
+
+```
++ (instancetype)queryWithFirstPeerId:(NSString *)firstPeerId secondPeerId:(NSString *)secondPeerId;
++ (instancetype)queryWithFirstPeerId:(NSString *)firstPeerId secondPeerId:(NSString *)secondPeerId timestamp:(int64_t)timestamp limit:(int)limit;
+```
+
+#### 查询指定群组的记录
+
+```
++ (instancetype)queryWithGroupId:(NSString *)groupId;
++ (instancetype)queryWithGroupId:(NSString *)groupId timestamp:(int64_t)timestamp limit:(int)limit;
+```
+
+#### 实例
+查询早于timestamp的 MyPeerId 和 TheOtherPeerId 之间的10条聊天记录
+
+```
+    AVHistoryMessageQuery *query = [AVHistoryMessageQuery queryWithFirstPeerId:@"MyPeerId" secondPeerId:@"TheOtherPeerId" timestamp:timestamp limit:10];
+    [query findInBackgroundWithCallback:^(NSArray *objects, NSError *error) {
+        if(!error) {
+            //do something
+        } else {
+            NSLog(@"%@", error);
+        }
+    }];
+```
+
+查询群组 MyGroupId 的所有聊天记录
+
+```
+    AVHistoryMessageQuery *query = [AVHistoryMessageQuery queryWithGroupId:@"MyGroupId"];;
+    [query findInBackgroundWithCallback:^(NSArray *objects, NSError *error) {
+        if(!error) {
+            //do something
+        } else {
+            NSLog(@"%@", error);
+        }
+    }];
+```
+
 ## JS 开发指南
 
 ###  方法
