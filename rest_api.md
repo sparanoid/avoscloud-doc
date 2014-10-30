@@ -1912,7 +1912,7 @@ curl -X POST \
           "__type": "File"
         }
       }' \
-  https://leancloud.cn/1.1/classes/Player     
+  https://leancloud.cn/1.1/classes/Player
 ```
 
 其中 `id` 就是文件对象的 objectId。
@@ -2312,6 +2312,23 @@ curl -X GET \
 * 对点对点通信，convid 为所有对话参与者的 peer id **排序**后以`:`分隔，做 md5 所得。如对话参与者 peer id 为 `u1234` 和 `u0988`，那么对话 ID 为 `bcd26a54e98687390b0abb4d83683d4b`。
 * 对群组功能，convid 即群组 ID。
 
+### 取未读消息数
+
+您可以从服务器端通过 REST API 调用获取实时通信中，某个 peer 的未读消息
+数。注意这个消息数仅包含单聊的未读数，群组不算在内。
+
+```
+curl -X GET \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  https://leancloud.cn/1.1/rtm/messages/unread/PEER_ID
+```
+
+返回：
+
+```json
+{"count": 4}
+```
 
 ##统计数据API
 
