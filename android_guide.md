@@ -792,7 +792,7 @@ AVQuery.doCloudQueryInBackground("select count(*) from ObjectTest",new CloudQuer
   
 ```
 
-最后的可变参数`100` 和 `"祈福"` 会自动替换查询语句中的问号位置（按照问号的先后出现顺序）
+最后的可变参数`100` 和 `"祈福"` 会自动替换查询语句中的问号位置（按照问号的先后出现顺序）。我们更推荐使用占位符语法，理论上会降低 CQL 转换的性能开销。
 
 
 ## 子类化
@@ -1475,33 +1475,6 @@ AVUser.requestPasswordResetInBackground("myemail@example.com", new RequestPasswo
 ```
 修改成功以后，用户就可以使用新密码登陆了
 
-### 短信模板
-
-在提交了短信模板并且得到审核以后，你可以通过SDK来发送符合短信模板的短信给你的用户。
-
-假设您提交了如下的短信模板，并且将这个模板的名称保存为"Register_Template"：
-```
-Hi {{username}},
-欢迎注册{{name}}应用，您可以通过验证码:{{code}}，进行注册。本条短信将在{{ttl}}分钟后自行销毁。请尽快使用。
-以上。
-{{appname}}
-```
-*注：其中的name,code,ttl是预留的字段，分别代表应用名、验证码、过期时间。不需要填充内容，会自动填充。*
-
-您可以通过如下代码进行短信发送：
-
-```
-    HashMap<String,Object> env = new HashMap<String,Object>();
-    env.put("username",9527);
-    env.put("appname", "来自未来的你");
-    AVOSCloud.requestSMSCodeInBackgroud("12312312312", "Register_Template", env, new RequestMobileCodeCallback() {
-      
-      @Override
-      public void done(AVException e) {
-         //do something you need
-      }
-    });
-```
 
 ### 查询
 
@@ -1631,6 +1604,37 @@ AVCloud.setProductionMode(false); //调用测试环境云代码
    //短信格式类似于：
    //你正在{某应用}中进行{具体操作名称}，你的验证码是:{123456}，请输入完整验证，有效期为:{10}分钟
 
+```
+
+### 自定义短信模板
+
+如果您想完全自定义短信的内容，可以在应用设置的短信模板创建自定义的短信模板，但是需要**审核**。
+
+在提交了短信模板并且得到审核以后，你可以通过SDK来发送符合短信模板的短信给你的用户。
+
+假设您提交了如下的短信模板，并且将这个模板的名称保存为"Register_Template"：
+
+```
+Hi {{username}},
+欢迎注册{{name}}应用，您可以通过验证码:{{code}}，进行注册。本条短信将在{{ttl}}分钟后自行销毁。请尽快使用。
+以上。
+{{appname}}
+```
+**注：其中的name,code,ttl是预留的字段，分别代表应用名、验证码、过期时间。不需要填充内容，会自动填充。**
+
+您可以通过如下代码进行短信发送：
+
+```
+    HashMap<String,Object> env = new HashMap<String,Object>();
+    env.put("username",9527);
+    env.put("appname", "来自未来的你");
+    AVOSCloud.requestSMSCodeInBackgroud("12312312312", "Register_Template", env, new RequestMobileCodeCallback() {
+      
+      @Override
+      public void done(AVException e) {
+         //do something you need
+      }
+    });
 ```
 
 ### 验证短信验证码
