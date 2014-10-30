@@ -1716,12 +1716,13 @@ NSArray<AVObject *> * pizzaPlacesInSF = [query findObjects];
 
 假设您提交了如下的短信模板，并且将这个模板的名称保存为"Register_Template"：
 
-```
+<pre ng-non-bindable ><code> 
 Hi {{username}},
 欢迎注册{{name}}应用，您可以通过验证码:{{code}}，进行注册。本条短信将在{{ttl}}分钟后自行销毁。请尽快使用。
 以上。
 {{appname}}
-```
+</code></pre>
+
 **注：其中的name,code,ttl是预留的字段，分别代表应用名、验证码、过期时间。不需要填充内容，会自动填充。**
 
 您可以通过如下代码进行短信发送：
