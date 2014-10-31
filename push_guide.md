@@ -878,7 +878,6 @@ curl -X POST \
 * 发送给public频道的用户
 
 ```
-
   curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}"          \
   -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
@@ -887,13 +886,12 @@ curl -X POST \
         "where":{
           "channels":
             {"$regex":"\\Qpublic\\E"}
-        }
+        },
         "data": {
           "alert": "Hello From LeanCloud."
         }
       }' \
   https://leancloud.cn/1.1/push
-
 ```
 
 或者更简便的方式
@@ -923,7 +921,7 @@ curl -X POST \
   -d '{
         "where":{
             "installationId":"57234d4c-752f-4e78-81ad-a6d14048020d"
-            }
+            },
         "data": {
           "alert": "Hello From LeanCloud."
         }
@@ -943,7 +941,7 @@ curl -X POST \
             "updatedAt":{
                 "$lt":{"__type":"Date","iso":"2013-06-29T11:33:53.323Z"}
               }
-        }
+        },
         "data": {
             "alert": "Hello From LeanCloud."
         }
@@ -1001,6 +999,24 @@ curl -X POST \
 ```
 
 上面的例子假设installation有个owner属性指向_User表的记录，并且用户有个location属性是GeoPoint类型，我们就可以根据地理信息位置做推送。
+
+#### 使用 CQL 查询推送
+
+上述`where`的查询条件都可以使用 [CQL](./cql_guide.html) 查询替代，例如查询某个设备推送：
+
+```
+  curl -X POST \
+  -H "X-AVOSCloud-Application-Id: {{appid}}"          \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
+  -H "Content-Type: application/json" \
+  -d '{
+        "cql":"select * from _Installation where installationId='xxxxxxxxxxxxx'",
+        "data": {
+          "alert": "Hello From LeanCloud."
+        }
+      }' \
+  https://leancloud.cn/1.1/push
+```
 
 #### 推送消息属性
 
