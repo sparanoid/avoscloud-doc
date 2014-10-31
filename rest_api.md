@@ -1091,6 +1091,18 @@ curl -X GET \
 
 更多请参考 [CQL 详细指南](./cql_guide.html)。
 
+CQL 还支持占位符查询，where 和 limit 子句的条件参数可以使用问号替换，然后通过 `pvalues` 传入：
+
+```
+curl -X GET \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  -G \
+  --data-urlencode 'cql=select * from Player where name=? limit ?,? order by name' \
+   --data-urlencode 'pvalues=["dennis", 0, 100]'
+  https://leancloud.cn/1.1/cloudQuery
+```
+
 ##用户
 
 不仅在mobile app上,还在其他系统中,很多应用都有一个统一的登陆流程.通过REST API访问用户的账户让您可以通过AVOS Cloud使用这项功能.
@@ -2251,6 +2263,18 @@ curl -X POST \
 ```
 
 其中 `code` 是手机收到的 6 位数字验证码。
+
+如果您创建了短信模板，可以指定 `template` 参数指定模板名称来使用您的模板，并且可以传入变量渲染模板：
+
+
+```
+curl -X POST \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  -H "Content-Type: application/json" \
+  -d '{"mobilePhoneNumber": "186xxxxxxxx", "template":"activity","date":"2014 年 10 月 31 号"}' \
+  https://leancloud.cn/1.1/requestSmsCode
+```
 
 ##实时通信 API
 
