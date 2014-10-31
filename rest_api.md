@@ -1091,7 +1091,7 @@ curl -X GET \
 
 更多请参考 [CQL 详细指南](./cql_guide.html)。
 
-CQL 还支持占位符查询，where 和 limit 子句的条件参数可以使用问号替换，然后通过 `pvalues` 传入：
+CQL 还支持占位符查询，where 和 limit 子句的条件参数可以使用问号替换，然后通过 `pvalues` 数组传入：
 
 ```
 curl -X GET \
