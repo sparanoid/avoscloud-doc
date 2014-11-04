@@ -684,7 +684,7 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
     }];
 ```
 
-## JS 开发指南
+# LeanCloud Realtime Messaging JavaScript SDK
 
 ###  方法
 #### new AVChatClient(settings)
@@ -693,6 +693,8 @@ settings:{
   appId: 应用ID,
   peerId: 当前用户的PeerID,
   auth: 私聊签名函数(当平台设置启动签名后，需要传递),
+  server: (非必须)，'us' 为使用美国节点,
+  sp: (非必须)，设置为 true 时可以实现 非watch情况下发送信息，需要auth签名进行相关设置
   groupAuth: 群组聊天签名函数(当平台设置启动签名后，需要传递),
   watchingPeerIds: (非必须)
 }
@@ -700,8 +702,9 @@ settings:{
 具体签名函数 需要类似下面的示例格式，基于 Promise 的异步操作。
 
 ```
-function auth(peerId, watchingPeerIds){
+function auth(peerId, watchingPeerIds, sp){
   // 类似
+  // 参数 sp : Boolean 类型，为超级用户时为 true，即不需要watch即可发送信息 。
   /*
   return new Promise(resolve,reject){
 
@@ -741,13 +744,14 @@ function groupAuth(peerId, groupId, action, groupPeerIds){
  发送私聊消息
  参数：msg:消息内容, to:发送目标 PeerId, transient（非必须):为true时代表无需离线，默认为支持离线发送。
 
-```
+ ```
  send().then(function(data){
   //success full send callback
   },function(err){
   //error callback
 })
 ```
+
 #### watch(peers)
 参数：peers:单个peerId 或数组。
 #### unwatch(peers)
@@ -758,9 +762,7 @@ function groupAuth(peerId, groupId, action, groupPeerIds){
 #### on(name, func)
 监听时间
 参数：name:事件名称,func:事件处理函数
-
 ###  事件
-
 #### close
  链接关闭
 #### online
@@ -790,7 +792,6 @@ groupId:群组ID,groupPeerIds:单个或数组群组ID
 groupId:群组ID
 
 ### 群组事件
-
 #### membersJoined
 有成员加入群
 #### membersLeft
@@ -806,17 +807,20 @@ groupId:群组ID
 依赖   <a href="https://github.com/gimite/web-socket-js">web-socket-js</a> 可以用flash做 gateway
 
 
-### 浏览器端环境依赖：
+### 浏览器端环境依赖
 1. jQuery (非必须)  用于 jsonp 方式请求 (请求 socket 服务器信息)，主要是针对 ie9 以下浏览器的跨域支持。如果没有 jQuey 会根据 XMLHttpRequest 创建ajax跨域请求。
 2. es6-promise (非必须) 当需要签名认证的时候需要，是一个 promise 接口。
-3.  /lib/flash/swfobject.js web_socket.js (非必须) 用于跨浏览器支持 websocket.针对 不支持 websocket 的浏览器。 参照 <a href="https://github.com/gimite/web-socket-js">web-socket-js</a>
-
+3. ./lib/flash/swfobject.js web_socket.js (非必须) 用于跨浏览器支持 websocket.针对 不支持 websocket 的浏览器。 参照 <a href="https://github.com/gimite/web-socket-js">web-socket-js</a>
+4. ./lib/es5-shim.js IE 8 以下的浏览器需要依赖这个
+5. ./lib/json2.js  IE7以及以下浏览器
 ### 浏览器端 lib 生成
 
-browserify chat.js -o  lib/chat.js --exclude xmlhttprequest --exclude ws -s AVChatClient
+browserify chat.js -o  lib/av-chat.js --exclude xmlhttprequest --exclude ws -s AVChatClient
+browserify chat.js  --exclude xmlhttprequest --exclude ws -s AVChatClient  | uglifyjs  > lib/av-chat-min.js
 
 ### node 环境
 npm install lean-cloud-chat
+
 
 
 ## FAQ
