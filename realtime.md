@@ -12,6 +12,8 @@
 
 LeanCloud 的通信服务允许一个 Peer ID 在多个不同的设备上登录，也允许一个设备上有多个 Peer ID 同时登录。开发者可以根据自己的应用场景选择ID。
 
+为了做到细粒度的权限控制，Peer 需要先 watch 对方方可给对方发送消息，你可以在 watch 动作上增加签名认证来控制权限，防止骚扰。Super Peer（超级用户）可以在不 watch 的状态下给任意 Peer 发送消息，不过 Super Peer 的登录需要服务器端签名控制，目前仅服务器端的 NodeJS SDK 支持 Super Peer。
+
 ### Session
 
 Peer 通过开启(open)一个 Session 加入实时通信服务，Peer 可以在 Session 中关注(watch)一组 Peer ID，当被关注者上下线时，会收到通知。Peer 在开启 Session 后会收到其他 Peer 的消息，关注(watch)其他 Peer 后也可以向其发送消息。Peer 只能向自己关注的其他 Peers 发送消息，但可以接收到其他peers的消息。
@@ -56,9 +58,9 @@ Session 中的几个动词：
 
 ## 权限和认证
 
-为了满足开发者对权限和认证的需求，我们设计了签名的概念。你可以在 LeanCloud 应用控制台、设置、应用选项中强制启用签名。启用后，所有的 Session open 和 watch 行为都需要包含签名，这样你可以对用户的登录以及他可以关注哪些用户进行充分的控制。
+为了满足开发者对权限和认证的需求，我们设计了签名的概念。你可以在 LeanCloud 应用控制台、设置、应用选项中强制启用签名。启用后，所有的 Session open 和 watch 行为都需要包含签名，这样你可以对用户的登录以及他可以关注哪些用户，进而可以给哪些用户发消息进行充分的控制。
 
-签名采用**Hmac-sha1**算法，输出字节流的十六进制字符串(hex dump)，签名的消息各式如下
+签名采用**Hmac-sha1**算法，输出字节流的十六进制字符串(hex dump)，签名的消息格式如下
 
 ```
 app_id:peer_id:watch_peer_ids:timestamp:nonce
@@ -76,6 +78,19 @@ app_id:peer_id:watch_peer_ids:timestamp:nonce
 
 开发者可以实现自己的SignatureFactory，调用远程的服务器的签名接口获得签名。如果你没有自己的服务器，可以直接在我们的云代码上通过 Web Hosting 动态接口实现自己的签名接口。在移动应用中直接做签名是**非常危险**的，它可能导致你的**master key**泄漏。
 
+签名的 python 代码范例
+
+```python
+import hmac, hashlib
+
+### 签名函数 hmac-sha1 hex dump
+def sign(msg, k):
+    return hmac.new(k, msg, hashlib.sha1).digest().encode('hex')
+
+### 签名的消息和 key
+sign("app_id:peer_id:watch_peer_ids:timestamp:nonce", "master key")
+```
+
 ### 群组功能的签名
 
 在群组功能中，我们对**加群**，**邀请**和**踢出群**这三个动作也允许加入签名，他的签名格式是：
@@ -90,6 +105,17 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
 * `group_id` 是此次行为关联的群组 ID，对于创建群尚没有id的情况，`group_id`是空字符串
 * `group_peer_ids` 是`:`分隔的**升序排序**的 peer id，即邀请和踢出的 peer_id，对加入群的情况，这里是空字符串
 * `action` 是此次行为的动作，三种行为分别对应常量 `join`, `invite` 和 `kick`
+
+### Super Peer
+
+为了方便用户的特殊场景，我们设计了超级用户（Super Peer）的概念。超级用户可以无需 watch 某一个用户就给对方发送消息。超级用户的使用需要强制签名认证。
+
+签名格式是在普通用户的签名消息后加常量 `su`。
+
+
+```
+app_id:peer_id:watch_peer_ids:timestamp:nonce:su
+```
 
 ## Android 实时通信服务
 
