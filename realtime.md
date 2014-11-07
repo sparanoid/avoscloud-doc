@@ -327,6 +327,7 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
 ###聊天记录查询
 聊天记录的查询的基本方法跟AVQuery类似但是略有不同。
 针对Session的聊天记录和聊天室Group的聊天记录查询略有不同，但是基本都是一样：
+
 ```
            SessionManager sm = SessionManager.getInstance(selfId);
            AVHistroyMessageQuery sessionHistoryQuery = sm.getHistroyMessageQuery();
@@ -683,6 +684,96 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
         }
     }];
 ```
+
+## Windows Phone 8.0 SDK
+### 安装
+为了支持实时聊天，我们依赖了一个开源的第三方的 WebSocket 的库，所以推荐开发者从[Nuget](https://www.nuget.org/packages/AVOSCloud.Phone/1.2.3.1-beta)上下载我们的 SDK。
+
+为了更方便开发者阅读和理解 SDK 里面的各种抽象概念，我们先从一个应用场景来简单地剖析实时聊天组件在 Windows Phone 8.0 SDK 中如何使用。
+
+### 场景设定
+* 应用场景：参考微信单聊，微博私信
+* 实现需求：用户A（UserA）想与用户B（UserB）进行单独聊天
+* 实现步骤：
+
+```
+  Step1.UserA 创建 AVSession 与 LeanCloud 服务端建立长连接
+  Step2.UserA 告诉 LeanCloud 服务端我要关注（Watch）UserB
+  Step3.UserA 发送消息给 LeanCloud 服务端，因为在第二步的时候，已经关注了 UserB，LeanCloud 服务端就会把这条信息发送给 UserB
+  Step4.UserB 想接受到别人发的消息，也需要创建 AVSession 与 LeanCloud 服务端建立长连接
+  Step5.UserB 告诉 LeanCloud 服务端我也要关注（Watch）UserA
+  Step6.UserB 就能收到第3步，由 UserA 发来的消息了。
+```
+
+以上逻辑是一个最基本的聊天系统应该有的逻辑交互，在 LeanCloud 中，实现以上步骤需要如下代码：
+
+```
+  AVSession session = new AVSession("UserA");//Step1
+  session.WatchPeer("UserB");//Step1
+  session.SendMessage("Hello,B!", "UserB", true);//Step3
+```
+这是UserA需要做的事情，UserB 想要实现接受的话需要如下几步：
+
+```
+  AVSession session = new AVSession("UserB");Step4
+  session.WatchPeer("UserA");//Step5
+  session.SetListener(new SampleAVSessionListener()
+            {
+                OnMessage = (s, msg) =>
+                {
+                    var content = msg.Message;
+                    MessageBox.Show(content);
+                }
+            });
+  ///最后这一步要做详细的解释。
+  ///SampleAVSessionListener 是一个实现了接口 IAVSessionListener 简单的类，它实现了 IAVSessionListener 代理，
+  ///这些代理的主要作用就是用来监听 SDK 所发出的具体的事件的响应。
+```
+附上`SampleAVSessionListener`的代码，开发者可以讲如下代码拷贝到 Visual Studio 中：
+
+```
+ public class SampleAVSessionListener : IAVSessionListener
+ {
+        public SessionOpen OnSessionOpen { get; set; }//AVSession打开时执行的代理。
+
+        public SessionPaused OnSessionPaused { get; set; }//AVSession 与服务端断开连接时执行的代理，一般都是因为 WP 手机锁屏或者应用被切换至后台了，所执行的代理。
+
+        public SessionResumed OnSessionResumed { get; set; }//AVSession 重连成功之后执行的代理。
+
+        public SessionClosed OnSessionClosed { get; set; }//关闭 AVSession 之后执行的代理。
+
+        public Message OnMessage { get; set; }//接受到消息时执行的代理。
+
+        public MessageSent OnMessageSent { get; set; }//消息发送成功之后执行的代理。
+
+        public MessageFailure OnMessageFailure { get; set; }//消息发送失败执行的代理。
+
+        public StatusOnline OnStatusOnline { get; set; }//当前用户的关注的人上线了所执行的代理（类似QQ好友上线了的敲门的声音）
+
+        public StatusOffline OnStatusOffline { get; set; }//关注的人下线了。
+
+        public PeersWatched OnPeersWatched { get; set; }//关注成功了所执行的代理（类似QQ好友通过验证之后，加为好友）
+
+        public PeersUnwatched OnPeersUnwatched { get; set; }//取消关注之后所执行的代理。
+
+        public Error OnError { get; set; }//发生错误时所执行的代理，例如抛出一些异常。
+
+  }
+```
+这样只要2边同时运行，就可以 UserB 就可以收到来自 UserA 发来的信息。
+
+以上代码和逻辑顺序能够很好的理解的话，关于 `IAVSessionListener` 这个接口的作用也一目了然，它所承担的职责就是帮助开发者用自己的代码与 SDK 进行交互，比如 `OnSessionOpen`：
+
+```
+每一次创建了一个 AVSession，只要连接创建成功，都会激发 OnSessionOpen 代理。
+```
+以此类推，根据开发者不同的需求需要对不同的代理做出相应的处理。也正因为如此，SDK 中只定义了接口，并没有定义一个强类型的类去给开发者使用，接口很方便于开发者将现有的一些功能类集成一下 `IAVSessionListener`。
+
+**注意：在任何时候创建了 `AVSession` 之后一定要主动并且显式的调用一下 `AVSession.SetListener` 方法，讲代理设置成开发者自己定义的代理类，这一点是**必须做的**。
+
+### 目前 Windows Phone 8 SDK 所支持的
+目前尚在公测版，仅支持单聊的操作，群组聊天以及聊天记录，签名授权等都会尽快推出，欢迎开发者一起参与。
+
 
 ##  JS SDK
 
