@@ -2,7 +2,7 @@
 
 除了实时的消息推送服务外，LeanCloud 从 2.5.9 版本开始提供实时的点对点消息服务，这意味着，你将可以通过我们的服务开发实时的用户间聊天、游戏对战等互动功能。截至目前，我们提供 Android 和 iOS 两个主要平台的客户端SDK。
 
-我们也提供了两个平台下的 Demo， [Android Chat Demo ](https://github.com/avoscloud/Android-SDK-demos/tree/master/keepalive)， [iOS Chat Demo](https://github.com/avoscloud/iOS-SDK-demos/tree/master/KeepAlive) 。
+我们也提供了两个平台下的 Demo， [Android Chat Demo ](https://github.com/avoscloud/Android-SDK-demos/tree/master/keepalive)， [iOS Chat Demo](https://github.com/avoscloud/iOS-SDK-demos/tree/master/KeepAlive) 和一个完整的社交应用 [LeanChat](https://github.com/leancloud/leanchat-android)。
 
 ## 核心概念
 
