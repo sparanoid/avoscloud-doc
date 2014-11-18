@@ -2,7 +2,37 @@
 
 除了实时的消息推送服务外，LeanCloud 从 2.5.9 版本开始提供实时的点对点消息服务，这意味着，你将可以通过我们的服务开发实时的用户间聊天、游戏对战等互动功能。截至目前，我们提供 Android 和 iOS 两个主要平台的客户端SDK。
 
-我们也提供了两个平台下的 Demo， [Android Chat Demo ](https://github.com/avoscloud/Android-SDK-demos/tree/master/keepalive)， [iOS Chat Demo](https://github.com/avoscloud/iOS-SDK-demos/tree/master/KeepAlive) 和一个完整的社交应用 [LeanChat](https://github.com/leancloud/leanchat-android)。
+我们也提供了两个平台下的 Demo， [Android Chat Demo
+](https://github.com/avoscloud/Android-SDK-demos/tree/master/keepalive)
+， [iOS Chat
+Demo](https://github.com/avoscloud/iOS-SDK-demos/tree/master/KeepAlive)
+和一个完整的社交应用
+[LeanChat](https://github.com/leancloud/leanchat-android)。
+
+## 功能和特性
+
+为刺激你读下去的兴趣，请允许我先介绍一下实时通信服务的功能和特性，加粗
+的条目是最新添加的：
+
+* 登录，通过签名与你的用户系统集成
+* 单个设备多个帐号，单个帐号多个设备，实时消息同步到所有设备
+* 单聊（发给一个人），群发（发给多个人），群聊（发给一个群）
+* 自定义消息解析；基于 AVFile 可以实现图片、音频和视频等丰富格式
+* 通过签名控制关注权限和参与对话权限
+* 上下线通知
+* 群组管理，创建、加入、离开、邀请、踢出、查询、成员变动通知。
+* 消息时间戳
+* 离线消息
+* 离线推送通知：iOS, Windows Phone
+* 支持平台（排名不分先后）：
+  * iOS
+  * Android
+  * Browser JavaScript
+  * Windows Phone
+  * Server-side Nodejs
+* 消息记录 REST API
+* 未读消息数 REST API
+* **消息到达回执**
 
 ## 核心概念
 
@@ -58,7 +88,19 @@ Session 中的几个动词：
 
 ## 权限和认证
 
-为了满足开发者对权限和认证的需求，我们设计了签名的概念。你可以在 LeanCloud 应用控制台、设置、应用选项中强制启用签名。启用后，所有的 Session open 和 watch 行为都需要包含签名，这样你可以对用户的登录以及他可以关注哪些用户，进而可以给哪些用户发消息进行充分的控制。
+为了满足开发者对权限和认证的需求，我们设计了签名的概念。你可以在
+LeanCloud 应用控制台、设置、应用选项中强制启用签名。启用后，所有的
+Session open 和 watch 行为都需要包含签名，这样你可以对用户的登录以及他
+可以关注哪些用户，进而可以给哪些用户发消息进行充分的控制。
+
+### 云代码签名范例
+
+我们提供了一个运行在 LeanCloud [云代码](https://cn.avoscloud.com/docs/cloud_code_guide.html)上的
+[签名范例程序](https://github.com/leancloud/realtime-messaging-signature-cloudcode)
+，他提供了基于 Web Hosting 和 Cloud Function 两种方式的签名实现，你可以根据实际情况选
+择自己的实现。
+
+### 签名方法
 
 签名采用**Hmac-sha1**算法，输出字节流的十六进制字符串(hex dump)，签名的消息格式如下
 
@@ -78,7 +120,7 @@ app_id:peer_id:watch_peer_ids:timestamp:nonce
 
 开发者可以实现自己的SignatureFactory，调用远程的服务器的签名接口获得签名。如果你没有自己的服务器，可以直接在我们的云代码上通过 Web Hosting 动态接口实现自己的签名接口。在移动应用中直接做签名是**非常危险**的，它可能导致你的**master key**泄漏。
 
-签名的 python 代码范例
+使用蟒蛇大法的签名范例：
 
 ```python
 import hmac, hashlib
