@@ -633,7 +633,7 @@ AVStatus.getUnreadStatusesCountInBackground(AVStatus.INBOX_TYPE.TIMELINE.toStrin
 * `:user_id` 表示发起关注动作的用户的 objectId，(如果设置了`X-AVOSCloud-Session-Token`头, 可以为`self`表示当前登录用户)
 * `:target_id` 表示想要关注的目标用户的 objectId
 
-例如，让当前登录用户关注目标用户 `51e3a334e4b0b3eb44adbe1a`：
+例如，让当前用户 `51fa6886e4b0cc0b5a3792e9` 关注目标用户 `51e3a334e4b0b3eb44adbe1a`：
 
 ```
 curl -X POST \
