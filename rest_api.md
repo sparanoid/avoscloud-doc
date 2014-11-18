@@ -2560,6 +2560,6 @@ curl -X GET \
 }
 ```
 
-### 事件流 API
+## 事件流 API
 
 参考 [事件流 REST API](./status_system.html#rest-api)。
