@@ -619,19 +619,18 @@ AVStatus.getUnreadStatusesCountInBackground(AVStatus.INBOX_TYPE.TIMELINE.toStrin
 
 本节介绍事件流的 REST API。
 
-## 用户关系 API
+### 用户关系 API
 
 使用这里的 API 来建立用户关系，你可以关注、取消关注某个用户。
 
-* **self表示当前登录用户**
-* 这里的3个查询API都遵循我们的 REST API 规范，支持`where,order,skip,limit,count,include`等。如果没有特殊说明，返回的结果都是`{results: [数组结果]}`
-* 用户在`_Follower`和`_Followee`表中都存储为pointer类型，因此如果要查询出用户信息，应该加上include 指定字段。
+* 这里的3个查询API都遵循我们的 REST API 规范，支持 `where,order,skip,limit,count,include` 等。如果没有特殊说明，返回的结果都是`{results: [数组结果]}`，跟其他查询 API 保持一致。
+* 用户在`_Follower`和`_Followee`表中都存储为 pointer 类型，因此如果要查询出用户信息，应该加上include 指定字段。
 
-## 关注和取消关注用户 API
+#### 关注和取消关注用户 API
 
 通过操作 `/users/:user_id/friendship/:target_id` 资源可以关注或者取消关注某个用户，其中：
   
-* `:user_id`(可以为self) 表示当前用户的 objectId
+* `:user_id` 表示发起关注动作的用户的 objectId，(如果设置了`X-AVOSCloud-Session-Token`头, 可以为`self`表示当前登录用户)
 * `:target_id` 表示想要关注的目标用户的 objectId
 
 例如，让当前登录用户关注目标用户 `51e3a334e4b0b3eb44adbe1a`：
@@ -641,7 +640,7 @@ curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
-  https://leancloud.cn/1.1/users/self/friendship/51e3a334e4b0b3eb44adbe1a
+  https://leancloud.cn/1.1/users/51fa6886e4b0cc0b5a3792e9/friendship/51e3a334e4b0b3eb44adbe1a
 ```
 
 关注后，`_Follower`和`_Followee`都会多出一条记录，如果选择了自动互相关注选项，会各多出两条记录。
@@ -653,7 +652,7 @@ curl -X DELETE \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
-  https://leancloud.cn/1.1/users/self/friendship/51e3a334e4b0b3eb44adbe1a
+  https://leancloud.cn/1.1/users/51fa6886e4b0cc0b5a3792e9/friendship/51e3a334e4b0b3eb44adbe1a
 ```
 
 关注还可以增加一些属性：
@@ -663,13 +662,13 @@ curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
-  -d '{"score": 100}'
-  https://leancloud.cn/1.1/users/self/friendship/51e3a334e4b0b3eb44adbe1a
+  -d '{"score": 100}' \
+  https://leancloud.cn/1.1/users/51fa6886e4b0cc0b5a3792e9/friendship/51e3a334e4b0b3eb44adbe1a
 ```
 
 那么`score`字段将同时出现在`_Follower`和`_Followee`表，可以作为查询或者排序条件。
 
-## 查询粉丝或者关注者列表 API
+#### 查询粉丝或者关注者列表 API
 
 查询粉丝列表（也就是关注我的人），可以通过：
 
@@ -678,7 +677,7 @@ curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
-  https://leancloud.cn/1.1/users/self/followers
+  https://leancloud.cn/1.1/users/51fa6886e4b0cc0b5a3792e9/followers
 ```
 
 返回的用户列表是 Pointer 类型，如果想要将用户信息也返回，需要 include:
@@ -690,10 +689,10 @@ curl -X GET \
   -H "Content-Type: application/json" \
   -G \
   --data-urlencode 'include=follower' \
-  https://leancloud.cn/1.1/users/self/followers
+  https://leancloud.cn/1.1/users/51fa6886e4b0cc0b5a3792e9/followers
 ```
 
-查询自己关注的用户列表：
+查询关注的用户列表：
 
 ```
 curl -X GET \
@@ -702,7 +701,7 @@ curl -X GET \
   -H "Content-Type: application/json" \
   -G \
   --data-urlencode 'include=followee' \
-  https://leancloud.cn/1.1/users/self/followees
+  https://leancloud.cn/1.1/users/51fa6886e4b0cc0b5a3792e9/followees
 ```
 
 同时查询粉丝和关注的人：
@@ -714,7 +713,7 @@ curl -X GET \
   -H "Content-Type: application/json" \
   -G \
   --data-urlencode 'include=followee' \
-  https://leancloud.cn/1.1/users/self/followersAndFollowees
+  https://leancloud.cn/1.1/users/51fa6886e4b0cc0b5a3792e9/followersAndFollowees
 ```
 
 结果返回：
@@ -733,10 +732,10 @@ curl -X GET \
   -G \
   --data-urlencode 'include=followee' \
   --data-urlencode 'count=1' \
-  https://leancloud.cn/1.1/users/self/followersAndFollowees
+  https://leancloud.cn/1.1/users/51fa6886e4b0cc0b5a3792e9/followersAndFollowees
 ```
 
-## 状态 API
+### 状态 API
 
 再次解释下术语定义：
 
@@ -744,7 +743,7 @@ curl -X GET \
 * target  Status 的目标接收者，也就是 inbox 的 owner。
 * inbox   target 的收件箱，拥有 owner,inboxType 两个属性表示所有者和收件箱类型
 
-### 发布 Status API
+#### 发布 Status API
 
 调用 API 如下：
 
@@ -761,31 +760,46 @@ POST /statuses
 * data  status的数据json对象，用户自定义。如果包含source（指向发送者的pointer），并且inboxType设定为default，这status会同时往发送者的inbox投递。
 * inboxType  字符串，指定接收这条status的inbox类型，可为空，默认为`default`。
 
-**示例1，往我的粉丝群体发送一条status**：
+示例1，往 dennis 的粉丝群体发送一条status：
+
+```
+curl -X POST \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  -H "Content-Type: application/json" \
+  -d '{
+         "data": {
+            "image": "paas-files.qiniudn.comwQUf3WohbJpyuXutPjKHPmkSj4gbiYMeNJmTulNo.jpg",
+            "message": "AVOS Cloud is great!"
+         },
+         "inboxType": "default",
+         "query": {
+             "className": "_Follower",
+             "key": "follower",
+             "where": {
+                 "user": {
+                     "__type": "Pointer",
+                     "className": "_User",
+                     "objectId": "dennis'id"
+                 }
+              }
+         }
+      }' \
+   https://leancloud.cn/1.1/statuses
+```
+
+这条状态的内容是 data 指定的，并且设定 inboxType 是 `default`：
 
 ```
 {
-    "data": {
-        "image": "paas-files.qiniudn.com/wQUf3WohbJpyuXutPjKHPmkSj4gbiYMeNJmTulNo.jpg",
-        "message": "AVOS Cloud is great!"
-    },
-    "inboxType": "default",
-    "query": {
-        "className": "_Follower",
-        "key": "follower",
-        "where": {
-            "user": {
-                "__type": "Pointer",
-                "className": "_User",
-                "objectId": "dennis'id"
-            }
-        }
-    }
+     "image": "paas-files.qiniudn.comwQUf3WohbJpyuXutPjKHPmkSj4gbiYMeNJmTulNo.jpg",
+      "message": "AVOS Cloud is great!"
 }
+```      
 
-```
+这条状态的目标用户群体是 query 指定的查询条件，查询的是`_Follower`表中 `dennis id`的粉丝用户。   
 
-**示例2，dennis向catty发送私信**
+示例2，dennis向catty发送私信的请求类似：
 
 ```
 {
@@ -802,7 +816,7 @@ POST /statuses
 }
 ```
 
-### 查询发出的status
+#### 查询发出的status API
 
 ```
 GET /statuses
@@ -816,19 +830,21 @@ GET /statuses
 GET /statuses/:status_id
 ```
 
-### 删除status
+#### 删除status API
 
 ```
 DELETE /statuses/:status_id
 ```
 
-### 查询已经关注的“人”的status聚合列表
+#### 查询已经关注的用户的status聚合列表 API
+
+查询我关注的用户发出来的状态聚合而成的列表，也就是查询自己的收件箱，通过
 
 ```
 GET /subscribe/statuses
 ```
 
-接收参数（参数都必须经过urlencode）：
+接收参数（参数都必须经过url encode）：
 
 * owner JSON序列化后的owner字符串，表示inbox所有者。
 * inboxType  inbox的类型，默认为`default`，可为空。
@@ -839,42 +855,50 @@ GET /subscribe/statuses
 * limit 最多返回多少条status，默认100，最大100。
 * count 默认为空，设置为"1"表示在结果中带上status的count计数。
 
-**示例1，查询我的home timeline**:
+我们来看一些例子
+
+* 示例1，查询我的主页 timeline:
 
 ```
---data-urlencode 'owner={"__type":"Pointer", "className":"_User", "objectId":"dennis"}'
+curl -X GET \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  -H "Content-Type: application/json" \
+  -G \
+  --data-urlencode 'owner={"__type":"Pointer","className":"_User","objectId":"dennis id"}' \
+  https://leancloud.cn/1.1/subscribe/statuses
 ```
 
-**示例2，查询我的最新私信列表**
+* 示例2，查询我的最新私信列表
 
 ```
---data-urlencode 'owner={"__type":"Pointer", "className":"_User", "objectId":"dennis"}'
---data-urlencode 'inboxType=private'
+    --data-urlencode 'owner={"__type":"Pointer","className":"_User","objectId":"dennis"}' \
+    --data-urlencode 'inboxType=private'
 ```
 
-**示例3，假设上次返回的最大messageId是99，查询从mesageId为99开始最新的status**:
+* 示例3，假设上次返回的最大messageId是99，查询从mesageId为99开始最新的status:
 
 ```
---data-urlencode 'owner={"__type":"Pointer", "className":"_User", "objectId":"dennis"}'
---data-urlencode 'sinceId=99'
+    --data-urlencode 'owner={"__type":"Pointer", "className":"_User","objectId":"dennis"}' \
+    --data-urlencode 'sinceId=99'
 ```
 
-**示例4，查询messageId在99到199之间的status**
+* 示例4，查询messageId在99到199之间的status：
 
 ```
---data-urlencode 'owner={"__type":"Pointer", "className":"_User", "objectId":"dennis"}'
---data-urlencode 'sinceId=99'
---data-urlencode 'maxId=199'
+    --data-urlencode 'owner={"__type":"Pointer","className":"_User","objectId":"dennis"}' \
+    --data-urlencode 'sinceId=99' \
+    --data-urlencode 'maxId=199'
 ```
 
-**示例5，查询最新的status，并且status的image属性存在，也就是查询包含图片的最新status**:
+* 示例5，查询最新的status，并且status的image属性存在，也就是查询包含图片的最新status:
 
 ```
---data-urlencode 'owner={"__type":"Pointer", "className":"_User", "objectId":"dennis"}'
---data-urlencode 'where={"image":{"$exists":true }}'
+    --data-urlencode 'owner={"__type":"Pointer","className":"_User","objectId":"dennis"}' \
+    --data-urlencode 'where={"image":{"$exists":true }}'
 ```
 
-### 查询status计数
+#### 查询status计数 API
 
 * 查询inbox总消息数目和未读消息数目：
 
@@ -887,10 +911,16 @@ GET "/subscribe/statuses/count
  * owner JSON序列化后的owner字符串，表示inbox所有者。
  * inboxType inbox类型，默认为`default`，可为空
 
-**示例1,查询我的未读消息数目**
+示例1,查询我的未读消息数目
 
 ```
---data-urlencode 'owner={"__type":"Pointer", "className":"_User", "objectId":"dennis"}'
+curl -X GET \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  -H "Content-Type: application/json" \
+  -G \
+  --data-urlencode 'owner={"__type":"Pointer","className":"_User","objectId":"dennis"}' \
+  https://leancloud.cn/1.1/subscribe/statuses/count
 ```
 
 返回：
@@ -899,9 +929,16 @@ GET "/subscribe/statuses/count
 { "total": 100, "unread":20}
 ```
 
-**示例2，查询私信消息数目**:
+示例2，查询私信消息数目：
 
 ```
---data-urlencode 'owner={"__type":"Pointer", "className":"_User", "objectId":"dennis"}'
---data-urlencode 'inboxType=private'
+curl -X GET \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  -H "Content-Type: application/json" \
+  -G \
+   --data-urlencode 'owner={"__type":"Pointer","className":"_User","objectId":"dennis"}' \
+   --data-urlencode 'inboxType=private' \
+   https://leancloud.cn/1.1/subscribe/statuses/count
 ```
+
