@@ -93,238 +93,204 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
 
 ## Android 实时通信服务
 
-从一个聊天应用的开发角度，最核心的问题是消息的收发功能实现。只要能够完成一次最简单的消息收发流程，整个实时通信服务就基本上能够理解了。您可以通过下载我们的聊天Demo来了解如何使用实时通信服务来搭建一个[聊天应用](https://github.com/avoscloud/Android-SDK-demos/tree/master/keepalive)。
-
-**注:如果您是第一次阅读LeanCloud的文档，您可能还需要知道如何去[初始化 LeanCloud SDK](https://leancloud.cn/docs/android_guide.html#应用程序) **
-
-在Android的SDK中，你只需要运用两个类及其相关的方法，就可以轻松完成这些工作。
-
-第一个类是`SessionManager`，这个类是你主动与服务器交流的唯一接口，从session的打开，消息的发送，到关注\取消Peer Id，都是通过这个类去调用。
-
-第二个类是`AVMessageReceiver`，这个类是一个抽象类，通过继承这个类，并且实现他的抽象方法，它将成为你获取服务器返回的唯一接口，从别人发送给你的消息，到session的状态变化，再到Peer Id的上下线状态等都是通过它来获取的。
-
-### 打开Session
-打开Session其实非常简单，只需要通过SessionManager获取对象，调用open接口即可
-```
-    SessionManager session =
-                SessionManager.getInstance(selfId);//获取SessionManager实例，以便于后续的操作
-    session.open(watchedIds); //打开Session，同时关注一些peer Id
-```
-
-### 实现签名（可选）
-
-如果你使用了签名认证，你需要实现`SignatureFactory`接口，并在`Session.open`前设置签名.
-
-```java
-session.setSignatureFactory(new SomeSignatureFactory(AVOSCloud.applicationId));
-```
-
-在 `SignatureFacotry#createSignature` 中，你需要从远程服务器获取签名。如果获取签名失败，比如请求被拒绝，可以抛出自定义的`RuntimeException`。
-
-成功返回的签名对象需要包含四个字段：
-
-* 签名
-* 时间戳
-* 随机字符串 nonce
-* 签名通过的可关注的 signedPeerIds
-
-### 关注、取消关注
-
-关注和取消关注可以通过`session.watchPeers`和`session.unwatchPeers`实现。
-
-```java
-session.watchPeers(peerIds);
-session.unwatchPeers(peerIds);
-```
-
-### 发送消息
-调用 `session.sendMessage` 可以向其他 peers 发送消息msg，注意：必须先关注才可以给 peer 发送消息，否则消息将无法送达。
+###初始化
+和其他的LeanCloud服务一样，实时聊天系统的初始化也是在Application的onCreate方法中进行的：
 
 ```
- session.sendMessage(new AVMessage(msg, peers, isTransient));
- //isTransient表示的是否是一个即时消息，如果是true，则表示只有当接收方为在线才能看到这个消息；如为false，则接收方可以通过推送，离线消息等方式收到这则消息
-```
-
-### 接收消息
-
-以上关于SessionManager所有的操作几乎都是异步（除`session.setSignatureFactory`）的方法；与一般的Android异步方法调用不同，实时通信SDK的异步回调并没有通过Callback或者类似onPostExecute方法来执行。而是通过继承`AVMessageReceiver`，实现以下方法来处理来自服务器端的响应或异常：
-
-```
-  /**
-   * 当服务器成功与客户端打开session时产生本次回调。在session.open调用成功以后会
-   *
-   * @param session
-   */
-  public abstract void onSessionOpen(Context context, Session session);
-
-  /**
-   * 在session 暂停时调用，一般都是由网络连接丢失导致的隐性调用
-   *
-   * @param session
-   */
-  public abstract void onSessionPaused(Context context, Session session);
-
-  /**
-   * Session 恢复时，一般都是网络连接恢复以后的
-   *
-   * 恢复之后可以通知UI，尝试重发失败消息等
-   * @param session
-   */
-  public abstract void onSessionResumed(Context context, Session session);
-
-  /**
-   * 从某个Peer接收到消息时，会收到一次调用
-   *
-   * @param session
-   * @param msg 　包含更多信息，包括来自服务器的timestamp，表示消息发送时间
-   */
-  public abstract void onMessage(Context context, Session session,AVMessage msg);
-
-  /**
-   * 服务器反馈消息已经成功发送时，会收到调用
-   *
-   * @param session
-   * @param msg
-   * @param receivers
-   */
-  public abstract void onMessageSent(Context context, Session session,AVMessage msg);
-
-  /**
-   * 在消息发送失败时，产生的调用
-   *
-   * @param session
-   * @param msg
-   * @param receivers
-   */
-  public abstract void onMessageFailure(Context context, Session session,AVMessage msg);
-
-  /**
-   * 当关注的一些peers上线时，产生的调用
-   *
-   * @param session
-   * @param peerIds
-   */
-  public abstract void onStatusOnline(Context context, Session session, List<String> peerIds);
-
-  /**
-   * 当关注的一些peers下线时，产生的调用
-   *
-   * @param session
-   * @param peerIds
-   */
-  public abstract void onStatusOffline(Context context, Session session, List<String> peerIds);
-
-  /**
-   * 当与服务器发生交互的过程中的任何错误，都在这里被返回
-   *
-   * @param session
-   * @param e
-   */
-  public abstract void onError(Context context, Session session, Throwable e);
-```
-
-正如上面的代码中看到的，如果想要获得别人发送过来的消息，并不需要太多的代码，只要在`onMessage`方法中实现当别人消息发送过来以后要如何处理的业务逻辑即可，可以是发送给某个特定的UI组件，也可以是通过统一的消息中心去重新分配这些消息。
-
-### 聊天室功能
-很多用户在使用实时通信模块的时候，提及了聊天室的功能。之前的Android demo版本正是一个通过关注所有用户来实现的一个简单聊天室。
-这种实现有一个明显的问题在于，客户端想要发送一条消息，保证群内的每一个人都能够收到，则需要在客户端本地维护群内的组员关系。然而从逻辑上来说，参加一个聊天室应该是，客户端对一个聊天室对象发送消息，而所以监听这个聊天室的其他客户端，都能够收到这个消息；中间有一个聊天室的抽象存在，并不是由每一个客户端去保存维护当前群内的成员状态。
-鉴于这种实用的场景，我们推出了相应的功能。
-
-#### 基本组成
-与 `Session` 相类似的，聊天组的实现构成非常简单，主要涉及的类只有3个：
-
-`Group` 来作为所有的聊天操作的接口类
-
-`SignatureFactory`中多加入一个createGroupSignature方法来实现聊天室签名相关
-
-`AVGroupMessageReceiver` 抽象类来接收所有的服务器反馈的聊天组消息
-
-#### 加入一个聊天室
-由于整个实时通信功能都是建立在Session的基础上，所以您要加入一个聊天室也需要建立在一个已经打开的Session上。
-当您已经打开一个Session以后，可以通过一下操作来加入一个Group
-```
-        Group group = SessionManager.getInstance(selfId).getGroup();//新建一个聊天室
-        //Group group = SessionManager.getInstance(selfId).getGroup(groupId);　加入一个已经存在的聊天室
-        group.join();
-```
-
-加入成功以后您实现的`AVGroupMessageReceiver`子类中的 onJoined方法就会被调用。
-
-#### 查询聊天室组员
-在应用管理的数据中心的 `AVOSRealtimeGroups` 表中，记录所有聊天室基本信息。当你知道一个聊天室的groupId的时候，您就可以通过AVObject接口来查看这个聊天室的组员情况。
-```
-        AVObject groupObject = AVObject.createWithoutData("AVOSRealtimeGroups",groupId);
-        groupObject.fetch();//如果您在UI进程中，请使用异步方法调用
-        List groupMembers= groupObject.getList("m");
+ public class MyApplication extends Application{
+ 
+ public void onCreate(){
+ 
+ AVOSCloud.initialize(this,"YourAppId","YourAppKey");
+ }
+}
 
 ```
-当然您也可以使用AVQuery来查询。
 
-#### 管理聊天室组员
-在查询到聊天室组员以后，您可以邀请一些您的朋友加入，或者踢出一些"可怕"的组员。
-```
-        Group group = SessionManager.getInstance(selfId).getGroup(groupId);
-        List<String> toInvite = Arrays.asList("peerId1","peerId2","peerId3");
-        group.inviteMember(toInvite);
-        List<String> toKickOff = Arrays.asList("badBoy1","badBoy2");
-        group.kickMembers(toKickOff);
-```
-成功以后，操作人客户端内您实现的`AVGroupMessageReceiver`子类中 `onMemberJoin`或`onMemberLeft`会被调用。
-
-而被邀请的人或者被踢的人的客户端中，相应的`onInvited`或`onKicked`会被调用。
-
-#### 发送消息
-
-通过如下代码您就可以向对应的聊天室发送代码:
-```
-        Group group = SessionManager.getInstance(selfId).getGroup(groupId);
-        group.sendMessage(new AVGroupMessage("hello world"));
-```
-发送成功后，操作人客户端内您实现的`AVGroupMessageReceiver`子类中 `onMessageSent`方法会被调用。
-而聊天室内的其他组员的客户端，则会有 `onMessage`方法会被调用，也就是接收到来自聊天室的消息。onMessage方法中你得到的AVGroupMessage对象中会包含更多信息，包括来自服务器的消息发送时间。
-
-#### 签名(可选)
-
-在群组功能中，我们对**加群**，**邀请**和**踢出群**这三个动作也允许加入签名，他的签名格式是：
+并且在AndroidManifest.xml中间声明：
 
 ```
-app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
+<manifest ...
+
+ <application
+        android:name=".MyApplication"
+        ....>
+</application>
+</manifest>
 ```
 
-其中：
-
-* `app_id`, `peer_id`, `timestamp` 和 `nonce` 同上
-* `group_id` 是此次行为关联的群组 ID，对于创建群尚没有id的情况，`group_id`是空字符串
-* `group_peer_ids` 是`:`分隔的 peer id，即邀请和踢出的 peer_id，对加入群的情况，这里是空字符串
-* `action` 是此次行为的动作，三种行为分别对应常量 `join`, `invite` 和 `kick`
-
-###聊天记录查询
-聊天记录的查询的基本方法跟AVQuery类似但是略有不同。
-针对Session的聊天记录和聊天室Group的聊天记录查询略有不同，但是基本都是一样：
+###登录
+以一个最简单的聊天系统的原型来分析实现Android的实时通信，这样的一个聊天系统最主要的有两个模块：用户系统，对话的发送接收。
+在每一个用户系统中间，用户一定有一个唯一表示的符号来标识他们与别人的区别，比如：userId或者email或者手机号码或者AVUser的objectId；同时这个符号也需要能够通过某种方式（登录）而正确获取。
+由于考虑到很多开发者在接入实时通信系统时，可能已经有现成的用户系统，所以我们在设计实时通信模块的时候，并没有强制将用户系统的登录状态与实时通信的登录状态绑定到一起，而是通过一种更为开放的方式去控制实时通信的登录状态。当一个用户需要登录实时通信模块的时候，我们需要:
 ```
-           SessionManager sm = SessionManager.getInstance(selfId);
-           AVHistroyMessageQuery sessionHistoryQuery = sm.getHistroyMessageQuery();
-           sessionHistoryQuery.setLimit(1000);//设置查询结果大小
-           sessionHistoryQuery.setTimestamp(1413184345686);//查询从时间片1413184345686以后开始的聊天记录
-           sessionHistoryQuery.findInBackground(new HistoryMessageCallback() {
-
-                 @Override
-                 public void done(List<AVHistoryMessage> messages, AVException error) {
-                      System.out.println(messages.size());
-                 }
-           });//查询session里的聊天记录
-           Group group = sm.getGroup("140a534fd092809500e6d651e73400c7");
-           AVHistroyMessageQuery groupHistoryQuery = group.getHistoryMessageQuery();//获取AVHistoryMessageQuery对象来查询聊天室的聊天记录
-           groupHistoryQuery.findInBackground(new HistoryMessageCallback(){
-
-                @Override
-                public void done(List<AVHistoryMessage> messages,AVException error){
-                  for(AVHistoryMessage msg:messages){
-                     System.out.println(msg.getMessage());
-                  }
-                }
-           })
+   AVUser.logInInBackground("用户名","password",new LogInCallback<AVUser>(){
+      @Override
+      public void done(AVUser user, AVException e){
+            String selfId = user.getObjectId();//此处的selfId就是之前提到的用户的唯一标识符,也可以替换成你现有用户系统中的唯一标识符
+            Session session = SessionManager.getInstance(selfId);
+            List<String> yourFriends = new List<String>();
+            .... //add your friends' peerIds 
+            session.open(yourFriends);
+      }
+   });
 ```
+
+这样你就向服务器发起了一个实时通信的登录请求。但是至今为止还不能发送消息，因为实时通信的所有请求都是异步的，只有当你接收到异步请求对应的成功回调时，你才能进行下一步操作。
+要接收异步请求对应的回调，你需要实现继承AVMessageReceiver的Receiver，并且注册到AndroidManifest.xml。
+
+```
+public class ChatDemoMessageReceiver extends AVMessageReceiver{
+  ...实现抽象方法,比如：
+  @Override
+  public void onSessionOpen(Context context, Session session) {
+    System.out.println("用户成功登录上实时聊天服务器了");
+  }
+}
+```
+
+并且在AndroidManifest.xml中间声明:
+
+```
+        <receiver android:name=".ChatDemoMessageReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="com.avoscloud.session.action" />
+            </intent-filter>
+        </receiver>
+```
+至此，就完成了用户的登录环节。
+不管你接下来的操作是单聊还是群聊，你都需要实现之前的所有步骤才能进行下一步的操作。
+
+###单聊
+单聊的情景相对也是比较简单的，用户可也选择向已经watch过的人发送相应的消息
+
+####添加好友
+正如上文提到了，实时聊天系统在发送消息前需要保证发送的对象是被watch过的。对于已有的好友列表，你可以如上文提到的方法，在登录实时通信系统的时候放在参数中间；对于新的好友，你可以通过如下代码进行添加：
+
+```
+  Session session = SessionManager.getInstance(selfId);
+  session.watch(Arrays.asList("friend1","friend2"));
+```
+
+之后添加是否成功则可以通过Receiver中的回调的方式来获悉：
+
+```
+public class ChatDemoMessageReceiver extends AVMessageReceiver{
+
+  @Override
+  public void onPeersWatched(Context context, Session session, List<String> peerIds) {
+     ...//已经watch
+  }
+}
+```
+
+在任何一个时候你也可以通过以下代码来判断是否已经watch过某个用户：
+
+```
+  Session session = SessionManager.getInstance(selfId);
+  session.isWatching("friend1");
+```
+
+####发送消息
+在用户成功登录实时消息系统以后，用户就可以进行消息的发送接收等。
+
+```
+   Session session = SessionManager.getInstance(selfId);
+   AVMessage msg = new AVMessage();
+   msg.setMessage("这是一个普通的消息");
+   msg.setToPeerIds(Arrays.asList(friendId));//friendId是指想要发送消息的目标用户在你选用的用户系统中的唯一标识符
+   session.sendMessage(msg);
+```
+
+正如上文提到的，实时通信中所有的操作都是异步操作，发送消息也是一样，针对于消息发送的结果，我们需要在之前提到的Receiver中实现对应的方法：
+
+```
+public class ChatDemoMessageReceiver extends AVMessageReceiver{
+
+  @Override
+  public void onMessageSent(Context context, Session session, AVMessage msg) {
+     System.out.println("消息发送成功了，发送成功时间是"+msg.getTimestamp());//这个时间是来自服务器端的时间，这样即便是多台设备中间也不会出现时间的混乱
+  }
+
+  @Override
+  public void onMessageFailure(Context context, Session session, AVMessage msg) {
+     System.out.println("消息发送失败了，可能需要在app端进行重试等");
+  }
+}
+
+```
+
+##### 在线消息
+有些特别的应用可能会有指定消息是否是只有用户在线才能收到消息的需求，我们在系统中间也进行了支持。
+
+```
+   Session session = SessionManager.getInstance(selfId);
+   AVMessage transientMsg = new AVMessage();
+   transientMsg.setMessage("这是一个在线消息，只有对方正在线才能收到");
+   transientMsg.setTransient(true);
+   transientMsg.setToPeerIds(Arrays.asList(friendId));
+   session.sendMessage(transientMsg);
+
+   AVMessage msg = new AVMessage();
+   msg.setMessage("这是一个离线消息，对方当时不在线，重新上线也能够收到");
+   msg.setTransient(false);//如果不设置，默认是false
+   msg.setToPeerIds(Arrays.asList(friendId));
+   session.sendMessage(msg);
+```
+
+##### 消息回执
+由于离线消息的存在，消息的发送成功与真正对方收到消息，可能在时间上存在一定的先后消息。有一些App需要明确知道消息的到达，我们也通过消息回执的形势来支持这样的操作：
+
+```
+   Session session = Session.getInstance(selfId);
+   AVMessage msg = new AVMessage();
+   msg.setMessage("这是一个带有消息回执的消息");
+   msg.setRequestReceipt(true);
+   msg.setToPeerIds(Arrays.asList(friendId));
+```
+
+针对消息回执，我们会产生额外的回调：
+
+```
+public class ChatDemoMessageReceiver extends AVMessageReceiver{
+
+  @Override
+  public void onMessageDelivered(Context context, Session session, AVMessage msg) {
+    System.out.println(msg.getMessage() + "delivered at " + msg.getReceiptTimestamp());
+  } 
+}
+```
+**注:消息回执的功能仅仅能够在单聊中使用，消息接收者不能多于一人，并且要求消息不能是在线消息。**
+
+##### 多媒体消息
+实时聊天系统已经不在是多年以前的聊天室，用户往往会通过更多更丰富的多媒体内容来进行有效的交互，比如：图片，短视频，语音，地理位置等等。开发者可以通过将AVMessage中的message当做一个相对复杂的数据结构的形势来实现这样的消息内容。
+
+```
+    //示范一个简单的带图片的消息{"type":"file","content":"https://cn.avoscloud.com/images/static/partner-iw.png"}
+    HashMap<String, Object> params = new HashMap<String, Object>();
+    params.put("type", "file");
+    params.put("content", "https://cn.avoscloud.com/images/static/partner-iw.png");
+    AVMessage msg = new AVMessage(JSON.toJSONString(params));    
+```
+
+#### 接收消息
+一个客户端在实时通信系统中间不仅仅会扮演简单的发送者的概念，同时也会需要扮演接收者的角色。和之前的所有回调一样，消息的接收也是通过继承的Receiver来接收的：
+
+```
+public class ChatDemoMessageReceiver extends AVMessageReceiver{
+
+  @Override
+  public void onMessage(Context context, Session session, AVMessage msg) {
+    ...处理接收到的消息
+  }
+}
+```
+
+###群聊
+
+
+
 
 ## iOS 实时通信服务
 
