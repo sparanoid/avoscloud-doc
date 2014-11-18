@@ -755,6 +755,7 @@ AV.Cloud.define("Logger", function(request, response) {
 
 如果你想为您的App绑定一个独立域名，需要您用注册的邮箱发送下列信息到我们的支持邮箱`support@avoscloud.com`提出申请或者从`帮助菜单`里的技术支持系统提出 Ticket：
 
+* 您已经绑定的avosapps.com二级子域名（请参考设置域名）
 * 您想要绑定的域名（必须是您名下的域名，并且您也已经将CNAME或者A记录指向了avosapps.com）
 * 您的注册邮箱（必须与发送者的邮箱一致）
 * 您想要绑定的App Id（该应用必须位于注册邮箱的用户名下）
