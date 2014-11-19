@@ -288,9 +288,50 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
 ```
 
 ###群聊
+#### 创建群组
+当你想要创建一个群组的时候，你可以通过以下代码来创建一个新的群组：
+
+```
+   Session session = SessionManager.getInstance(selfId);
+   Group group = session.getGroup();
+   group.join();
+```
+
+正如上文所说的，所有的请求都是异步的，群组的创建和加入也需要通过Receiver的回调来获取成功的结果。但是群组需要一个额外的Receiver：
+
+```
+public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
+    @Override
+    public void onJoined(Context context, Group group){
+       ...在这里来处理加入成功以后的回调
+    }
+}
+```
+
+#### 加入群组
+有时候用户并不需要自己创建一个单独的群组，而是想要加入一个现存的群组。
+所有app内的群组都被放在了AVOSRealtimeGroups表中。你可以通过AVQuery获取对象对应的objectId作为groupId:
+
+```
+   Session session = SessionManager.getInstance(selfId);
+   Group group = session.getGroup(groupId);
+   group.join();
+```
+对于之前已经加入过的群组，只要没有显式调用过quit()，并不需要在重新上线以后反复join。只要在session.open以后，就能收到来自群组的消息。
+
+#### 发送消息
 
 
+#### 退出群组
 
+#### 群成员管理
+##### 查询群成员
+##### 邀请成员
+##### 剔除成员
+
+###　权限管理
+
+###　消息处理帮助
 
 ## iOS 实时通信服务
 
