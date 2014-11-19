@@ -38,7 +38,8 @@ Demo](https://github.com/avoscloud/iOS-SDK-demos/tree/master/KeepAlive)
 
 ### Peer
 
-实时通信服务中的每一个终端称为 Peer。Peer 拥有一个在应用内唯一标识自己的ID。系统中的每一条消息都来自于一个 Peer，发送到一个或多个 Peer。
+实时通信服务中的每一个终端称为 Peer。Peer 拥有一个在应用内唯一标识自己
+的ID。这个 ID 由应用自己定义，是不少于50个字符的字符串。系统中的每一条消息都来自于一个 Peer，发送到一个或多个 Peer。
 
 LeanCloud 的通信服务允许一个 Peer ID 在多个不同的设备上登录，也允许一个设备上有多个 Peer ID 同时登录。开发者可以根据自己的应用场景选择ID。
 
