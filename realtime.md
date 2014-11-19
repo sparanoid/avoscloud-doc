@@ -307,6 +307,16 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
     }
 }
 ```
+同时你需要在AndroidManifest.xml中间注册这个Receiver:
+
+```
+        <receiver android:name=".DemoGroupMessageReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="com.avoscloud.group.action" />
+            </intent-filter>
+        </receiver>
+```
 
 #### 加入群组
 有时候用户并不需要自己创建一个单独的群组，而是想要加入一个现存的群组。
@@ -320,18 +330,147 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 对于之前已经加入过的群组，只要没有显式调用过quit()，并不需要在重新上线以后反复join。只要在session.open以后，就能收到来自群组的消息。
 
 #### 发送消息
+群组的消息发送几乎与单聊的消息发送相同，只是发送的对象不再是session而是group:
 
+```
+  Session session = SessionManager.getInstance(selfId);
+  Group group = session.getGroup(groupId);
+  AVMessage message = new AVMessage();
+  message.setMessage("这是一段群消息示范");
+  group.sendMessage(message);
+```
+和单聊的发送消息一样，发送是否成功需要在Receiver中间加入对应的回调：
 
-#### 退出群组
+```
+public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
+
+ @Override
+  public void onMessageSent(Context context, Group group, AVMessage message) {
+    System.out.println(message.getMessage() + " sent");
+  }
+
+  @Override
+  public void onMessageFailure(Context context, Group group, AVMessage message) {
+    System.out.println(message.getMessage() + " failure");
+  }
+}
+```
+在群组中间支持在线消息，但是却不支持消息回执
+
+#### 接收消息
+和单聊时一样，接收消息也是通过Receiver来获取的：
+
+```
+public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
+
+ @Override
+  public void onMessage(Context context, Group group, AVMessage msg){
+  ...处理接收到的消息
+  }
+}
+```
 
 #### 群成员管理
+
+与单聊不同的是，群的概念是集成在LeanCloud中的，所以从用户的标识符到群组间的关系都被维护在LeanCloud中。相应的群组成员管理的功能也都可以在LeanCloud的实时聊天系统进行操作。
+
 ##### 查询群成员
+不管用户是需要邀请更多用户进入群组还是想要剔除部分用户，都需要知道当前群组内已经有哪些用户了。开发者可以通过下面的代码来实现群组内成员列表的查询：
+
+```
+    Session session = Session.getInstance(selfId);
+    Group group = session.getGroup(groupId);
+    group.getMembersInBackground(new GroupMemberQueryCallback(){
+     @Override
+     public abstract void done(List<String> groupMembers, AVException exception){
+     
+     }
+    })
+```
 ##### 邀请成员
+当你进入一个群组以后，你可以邀请一些你的好友进入这个群组，进而进行进一步的讨论：
+
+```
+    Session session = Session.getInstance(selfId);
+    Group group = session.getGroup(groupId);
+    group.inviteMember(Arrays.asList("friend1","friend2","friend3"....));
+```
+
+而邀请是否成功的回调，同样也在对应的Receiver中获取：
+
+```
+public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
+
+  @Override
+  public void onInvited(Context context, Group group, List<String> invitedPeers) {
+    LogUtil.avlog.d("you've invited " + invitedPeers + " to " + group.getGroupId());
+  }
+
+  @Override
+  public void onReject(Context context, Group group, String op, List<String> targetIds){
+    //假如之前的操作由于权限问题（后文会介绍）而无法成功，回调就在本方法中产生。
+    //邀请失败时，对应的op是"invite"
+  }
+
+}
+
+```
+
 ##### 剔除成员
+
+除了能够邀请成员以外，群组成员也可以剔除现在在群组内的用户：
+
+```
+    Session session = Session.getInstance(selfId);
+    Group group = session.getGroup(groupId);
+    group.kickMember(Arrays.asList("friend1","friend2","friend3"....));
+```
+
+与邀请对应的，剔除对应回调代码也在Receiver中，对应如下:
+
+```
+public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
+
+  @Override
+  public void onKicked(Context context, Group group, List<String> kickededPeers) {
+    LogUtil.avlog.d("you've kiced " + kickedPeers + " from " + group.getGroupId());
+  }
+
+  @Override
+  public void onReject(Context context, Group group, String op, List<String> targetIds){
+    //假如之前的操作由于权限问题（后文会介绍）而无法成功，回调就在本方法中产生。
+    //邀请失败时，对应的op是"kick"
+  }
+
+}
+```
+
+#### 退出群组
+退出群组的代码也相对比较简单:
+
+```
+    Session session = Session.getInstance(selfId);
+    Group group = session.getGroup(groupId);
+    group.quit();//你有你的，我有我的方向
+
+```
+如果你想要监听是否真正成功退组，你可以在Receiver中进行检测：
+
+```
+public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
+
+  @Override
+  public void onQuit(Context context, Group group) {
+    LogUtil.avlog.d(group.getGroupId() + " quit");
+  }
+
+}
+```
 
 ###　权限管理
 
 ###　消息处理帮助
+在实际使用中间，很多用户表示这种从Receiver与Activity（或者说UI组件）分开开的交互方式比Callback的方式更为奇怪，关联起来也相对比较困难。在LeanCloud的开发过程中间，我们也有一点小小的经验可以与大家分享一下，如何将Receiver与具体的Activity结合起来使用。
 
 ## iOS 实时通信服务
 
