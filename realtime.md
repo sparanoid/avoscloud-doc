@@ -768,14 +768,14 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
 
 ```
   AVSession session = new AVSession("UserA");//Step1
-  session.WatchPeer("UserB");//Step1
+  session.Open("UserB");//Step2
   session.SendMessage("Hello,B!", "UserB", true);//Step3
 ```
 这是UserA需要做的事情，UserB 想要实现接受的话需要如下几步：
 
 ```
   AVSession session = new AVSession("UserB");Step4
-  session.WatchPeer("UserA");//Step5
+  session.Open("UserA");//Step5
   session.SetListener(new SampleAVSessionListener()
             {
                 OnMessage = (s, msg) =>
@@ -830,8 +830,70 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
 
 **注意：在任何时候创建了 `AVSession` 之后一定要主动并且显式的调用一下 `AVSession.SetListener` 方法，讲代理设置成开发者自己定义的代理类，这一点是**必须做的**。
 
+### 实现签名（可选）
+签名作为安全认证的一部分，阅读下面的内容之前请确保您已经阅读过本文之前所介绍[权限和认证](https://cn.avoscloud.com/docs/realtime.html#权限和认证)。
+
+假如开发者在控制台够选了
+
+```
+聊天服务签名认证
+```
+那么在调用 `AVSession.Open` 的**之前**，必须显式的设置签名方法实现的类，如下代码：
+
+```
+session.SignatureFactory = new SampleSignatureFactory();
+```
+其中 `SampleSignatureFactory` 是一个实现了 `ISignatureFactory` 接口的一个类，这个类的名字以及功能完全由开发者自己定义，本文给出的只是一个与云代码相结合进行签名的简单的实例，所以想通过本文的实例代码一次性联调顺利的话，开发者必须把[权限和认证](https://cn.avoscloud.com/docs/realtime.html#权限和认证)中的[云代码](https://cn.avoscloud.com/docs/cloud_code_guide.html)上的
+[签名范例程序](https://github.com/leancloud/realtime-messaging-signature-cloudcode)部署到自己的应用当中。
+
+下面给出 `SampleSignatureFactory` 的实例代码为：
+
+```
+public class SampleSignatureFactory : ISignatureFactory
+    {
+        public Task<Signature> CreateSignature(string peerId, IList<string> watchIds)
+        {
+            var data = new Dictionary<string, object>();
+            
+            data.Add("self_id", peerId);//当前用户的 PeerId 作为self id 作为签名的参数。
+            data.Add("watch_ids", watchIds);//关注的 Peer 作为签名的参数。
+            
+            //调用云代码进行签名。
+            return AVCloud.CallFunctionAsync<IDictionary<string, object>>("sign", data).ContinueWith<Signature>(t =>
+            {
+                var result = t.Result;
+                Signature signature = new Signature();
+                signature.Nonce = result["nonce"].ToString();
+                signature.SignatureContent = result["signature"].ToString();
+                signature.SignedPeerIds = ((List<object>)result["watch_ids"]).Select(s => (string)s).ToList();
+                signature.Timestamp = (long)result["timestamp"];
+                return signature;//拼装成一个 Signature 对象
+            });
+            
+            //以上这段代码，开发者无需手动调用，只要开发者对一个 AVSession 设置了 SignatureFactory，SDK 会在Open Session 的时候主动调用这个方法进行签名。
+        }
+
+        public Task<Signature> CreateGroupSignature(string groupId, string peerId, IList<string> targetPeerIds, string action)
+        {
+            throw new NotImplementedException();//群组聊天 WP8 暂时不支持，无需实现。
+        }
+    }
+```
+
+***以上代码的实例与云代码联合使用，这样就可以节省开发者自己的服务器资源，当然如果应用场景有特定的签名需求，那么完全可以通过修改云代码来实现，又或者开发者有自己的服务器资源，只要在SampleSignatureFactory类中实现CreateSignature方法的时候去开发者自己的服务器上进行算法的签名运算也可以实现***
+
+另外，关于签名的重要细节有以下几点：
+
+```
+* 服务端进行签名是为了避免一些恶意的操作
+* 签名也有控制好友关系的作用。假如应用本身有好友系统，不是好友不能相互之间通信，比如A想 Watch B，但是 B 并不是 A 的好友（类似QQ，微信），此时在业务需求的情况下，只要服务端返回一个错误的签名，LeanCloud 的服务端就不会在服务端为A和B建立聊天的长连接，A 发送的信息就不会送到给 B，这样也是为了帮助开发者实现轻量的垃圾消息规避，当然我们本身的服务是没有这种好友系统的，因为这是应用本身的业务需求。
+* 签名方法所存放的服务端最好要做好访问认证，比如我们云代码在访问的时候必须在 Https 请求头包含AppId 以及AppKey，这样才能避免一旦服务器地址被暴露，恶意的被其他人利用去做签名，对应用本身的聊天系统产生脏数据以及恶意广告的散发。
+```
+
+签名是认证的一种方式，这种方式有助于开发者去自由掌控自己的系统又不会付出过多的代码做一些跟业务逻辑本身无关的事情，LeanCloud 一直致力于减少应用开发者在服务端的工作量，并且希望开发者能够对应用开发的整体流程有着自己独到的把控，这样的应用才是高质量的。
+
 ### 目前 Windows Phone 8 SDK 所支持的
-目前尚在公测版，仅支持单聊的操作，群组聊天以及聊天记录，签名授权等都会尽快推出，欢迎开发者一起参与。
+目前尚在公测版，仅支持单聊和签名的操作，群组聊天以及聊天记录等都会尽快推出，欢迎开发者一起参与。
 
 
 ##  JS SDK
