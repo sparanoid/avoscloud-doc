@@ -925,6 +925,16 @@ app.use(function(req, res, next){
 
 这将渲染views下面的404模板页面。
 
+### 获取客户端 IP
+
+因为我们的云代码服务在 Nginx 之后，因此不能通过`req.connection.remoteAddress`这样的 API 来获取客户端的真实 IP，需要通过
+
+```
+var ip = req.headers['x-real-ip']
+```
+
+来获取。
+
 ### 上传文件
 
 在Cloud Code里上传文件也很容易，首先配置app使用bodyParser中间件，它会将上传表单里的文件存放到临时目录并构造一个文件对象放到request.files里：
