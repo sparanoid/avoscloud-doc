@@ -32,6 +32,8 @@ Demo](https://github.com/avoscloud/iOS-SDK-demos/tree/master/KeepAlive)
   * Server-side Nodejs
 * 消息记录 REST API
 * 未读消息数 REST API
+* 敏感词过滤
+* 异常数据报警
 * **消息到达回执**
 
 ## 核心概念
