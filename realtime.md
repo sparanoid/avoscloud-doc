@@ -2,15 +2,50 @@
 
 除了实时的消息推送服务外，LeanCloud 从 2.5.9 版本开始提供实时的点对点消息服务，这意味着，你将可以通过我们的服务开发实时的用户间聊天、游戏对战等互动功能。截至目前，我们提供 Android 和 iOS 两个主要平台的客户端SDK。
 
-我们也提供了两个平台下的 Demo， [Android Chat Demo ](https://github.com/avoscloud/Android-SDK-demos/tree/master/keepalive)， [iOS Chat Demo](https://github.com/avoscloud/iOS-SDK-demos/tree/master/KeepAlive) 。
+我们也提供了两个平台下的 Demo， [Android Chat Demo
+](https://github.com/avoscloud/Android-SDK-demos/tree/master/keepalive)
+， [iOS Chat
+Demo](https://github.com/avoscloud/iOS-SDK-demos/tree/master/KeepAlive)
+和一个完整的社交应用
+[LeanChat](https://github.com/leancloud/leanchat-android)。
+
+## 功能和特性
+
+为刺激你读下去的兴趣，请允许我先介绍一下实时通信服务的功能和特性，加粗
+的条目是最新添加的：
+
+* 登录，通过签名与你的用户系统集成
+* 单个设备多个帐号，单个帐号多个设备，实时消息同步到所有设备
+* 单聊（发给一个人），群发（发给多个人），群聊（发给一个群）
+* 自定义消息解析；基于 AVFile 可以实现图片、音频和视频等丰富格式
+* 通过签名控制关注权限和参与对话权限
+* 上下线通知
+* 群组管理，创建、加入、离开、邀请、踢出、查询、成员变动通知。
+* 消息时间戳
+* 离线消息
+* 离线推送通知：iOS, Windows Phone
+* 支持平台（排名不分先后）：
+  * iOS
+  * Android
+  * Browser JavaScript
+  * Windows Phone
+  * Server-side Nodejs
+* 消息记录 REST API
+* 未读消息数 REST API
+* 敏感词过滤
+* 异常数据报警
+* **消息到达回执**
 
 ## 核心概念
 
 ### Peer
 
-实时通信服务中的每一个终端称为 Peer。Peer 拥有一个在应用内唯一标识自己的ID。系统中的每一条消息都来自于一个 Peer，发送到一个或多个 Peer。
+实时通信服务中的每一个终端称为 Peer。Peer 拥有一个在应用内唯一标识自己
+的ID。这个 ID 由应用自己定义，是不少于50个字符的字符串。系统中的每一条消息都来自于一个 Peer，发送到一个或多个 Peer。
 
 LeanCloud 的通信服务允许一个 Peer ID 在多个不同的设备上登录，也允许一个设备上有多个 Peer ID 同时登录。开发者可以根据自己的应用场景选择ID。
+
+为了做到细粒度的权限控制，Peer 需要先 watch 对方方可给对方发送消息，你可以在 watch 动作上增加签名认证来控制权限，防止骚扰。Super Peer（超级用户）可以在不 watch 的状态下给任意 Peer 发送消息，不过 Super Peer 的登录需要服务器端签名控制，目前仅服务器端的 NodeJS SDK 支持 Super Peer。
 
 ### Session
 
@@ -56,9 +91,33 @@ Session 中的几个动词：
 
 ## 权限和认证
 
-为了满足开发者对权限和认证的需求，我们设计了签名的概念。你可以在 LeanCloud 应用控制台、设置、应用选项中强制启用签名。启用后，所有的 Session open 和 watch 行为都需要包含签名，这样你可以对用户的登录以及他可以关注哪些用户进行充分的控制。
+为了满足开发者对权限和认证的需求，我们设计了签名的概念。你可以在
+LeanCloud 应用控制台、设置、应用选项中强制启用签名。启用后，所有的
+Session open 和 watch 行为都需要包含签名，这样你可以对用户的登录以及他
+可以关注哪些用户，进而可以给哪些用户发消息进行充分的控制。
 
-签名采用**Hmac-sha1**算法，输出字节流的十六进制字符串(hex dump)，签名的消息各式如下
+![image](images/signature.png)
+
+1. 客户端发起 session open 或 watch 等操作，SDK 会调用
+SignatureFactory 的实现，并携带用户信息和用户行为（登录、关注或群组操
+作）请求签名；
+2. 应用自有的权限系统，或应用在云代码上的签名程序收到请求，进行权限验
+证，如果通过则利用下文所述的签名算法生成时间戳、随机字符串和签名返回给
+客户端；
+3. 客户端获得签名后，编码到请求中，发给实时通信服务器；
+4. 实时通信服务器通过请求的内容和签名做一遍验证，确认这个操作是经由服
+务器允许的，进而执行后续的实际操作。
+
+### 云代码签名范例
+
+我们提供了一个运行在 LeanCloud [云代码](https://cn.avoscloud.com/docs/cloud_code_guide.html)上的
+[签名范例程序](https://github.com/leancloud/realtime-messaging-signature-cloudcode)
+，他提供了基于 Web Hosting 和 Cloud Function 两种方式的签名实现，你可以根据实际情况选
+择自己的实现。
+
+### 签名方法
+
+签名采用**Hmac-sha1**算法，输出字节流的十六进制字符串(hex dump)，签名的消息格式如下
 
 ```
 app_id:peer_id:watch_peer_ids:timestamp:nonce
@@ -76,6 +135,19 @@ app_id:peer_id:watch_peer_ids:timestamp:nonce
 
 开发者可以实现自己的SignatureFactory，调用远程的服务器的签名接口获得签名。如果你没有自己的服务器，可以直接在我们的云代码上通过 Web Hosting 动态接口实现自己的签名接口。在移动应用中直接做签名是**非常危险**的，它可能导致你的**master key**泄漏。
 
+使用蟒蛇大法的签名范例：
+
+```python
+import hmac, hashlib
+
+### 签名函数 hmac-sha1 hex dump
+def sign(msg, k):
+    return hmac.new(k, msg, hashlib.sha1).digest().encode('hex')
+
+### 签名的消息和 key
+sign("app_id:peer_id:watch_peer_ids:timestamp:nonce", "master key")
+```
+
 ### 群组功能的签名
 
 在群组功能中，我们对**加群**，**邀请**和**踢出群**这三个动作也允许加入签名，他的签名格式是：
@@ -90,6 +162,17 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
 * `group_id` 是此次行为关联的群组 ID，对于创建群尚没有id的情况，`group_id`是空字符串
 * `group_peer_ids` 是`:`分隔的**升序排序**的 peer id，即邀请和踢出的 peer_id，对加入群的情况，这里是空字符串
 * `action` 是此次行为的动作，三种行为分别对应常量 `join`, `invite` 和 `kick`
+
+### Super Peer
+
+为了方便用户的特殊场景，我们设计了超级用户（Super Peer）的概念。超级用户可以无需 watch 某一个用户就给对方发送消息。超级用户的使用需要强制签名认证。
+
+签名格式是在普通用户的签名消息后加常量 `su`。
+
+
+```
+app_id:peer_id:watch_peer_ids:timestamp:nonce:su
+```
 
 ## Android 实时通信服务
 
@@ -406,6 +489,7 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
     LogUtil.avlog.d("you've invited " + invitedPeers + " to " + group.getGroupId());
   }
 
+<<<<<<< HEAD
   @Override
   public void onReject(Context context, Group group, String op, List<String> targetIds){
     //假如之前的操作由于权限问题（后文会介绍）而无法成功，回调就在本方法中产生。
@@ -526,6 +610,34 @@ public class KeepAliveSignatureFactory implements SignatureFactory {
    return null;
   }
 }
+
+###聊天记录查询
+聊天记录的查询的基本方法跟AVQuery类似但是略有不同。
+针对Session的聊天记录和聊天室Group的聊天记录查询略有不同，但是基本都是一样：
+
+```
+           SessionManager sm = SessionManager.getInstance(selfId);
+           AVHistroyMessageQuery sessionHistoryQuery = sm.getHistroyMessageQuery();
+           sessionHistoryQuery.setLimit(1000);//设置查询结果大小
+           sessionHistoryQuery.setTimestamp(1413184345686);//查询从时间片1413184345686以后开始的聊天记录
+           sessionHistoryQuery.findInBackground(new HistoryMessageCallback() {
+
+                 @Override
+                 public void done(List<AVHistoryMessage> messages, AVException error) {
+                      System.out.println(messages.size());
+                 }
+           });//查询session里的聊天记录
+           Group group = sm.getGroup("140a534fd092809500e6d651e73400c7");
+           AVHistroyMessageQuery groupHistoryQuery = group.getHistoryMessageQuery();//获取AVHistoryMessageQuery对象来查询聊天室的聊天记录
+           groupHistoryQuery.findInBackground(new HistoryMessageCallback(){
+
+                @Override
+                public void done(List<AVHistoryMessage> messages,AVException error){
+                  for(AVHistoryMessage msg:messages){
+                     System.out.println(msg.getMessage());
+                  }
+                }
+           })
 ```
 
 ## iOS 实时通信服务
@@ -796,139 +908,163 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
 - (AVSignature *)signatureForGroupWithPeerId:(NSString *)peerId groupId:(NSString *)groupId groupPeerIds:(NSArray *)groupPeerIds action:(NSString *)action
 ```
 
-## JS 开发指南
-
-###  方法
-#### new AVChatClient(settings)
-```
-settings:{
-  appId: 应用ID,
-  peerId: 当前用户的PeerID,
-  auth: 私聊签名函数(当平台设置启动签名后，需要传递),
-  groupAuth: 群组聊天签名函数(当平台设置启动签名后，需要传递),
-  watchingPeerIds: (非必须)
-}
-```
-具体签名函数 需要类似下面的示例格式，基于 Promise 的异步操作。
+###聊天记录查询
+聊天记录的查询使用AVHistoryMessageQuery实现。可以通过不同参数构造不同类型的查询：
+#### 通用查询
 
 ```
-function auth(peerId, watchingPeerIds){
-  // 类似
-  /*
-  return new Promise(resolve,reject){
++ (instancetype)query;
++ (instancetype)queryWithTimestamp:(int64_t)timestamp limit:(int)limit;
+```
 
-    //这里放ajax auth code
-    resolve({
-      watchingPeerIds: ajax返回值
-    });
+#### 查询指定ConversationId的记录
+
+```
++ (instancetype)queryWithConversationId:(NSString *)conversationId;
++ (instancetype)queryWithConversationId:(NSString *)conversationId timestamp:(int64_t)timestamp limit:(int)limit;
+```
+
+#### 查询来自指定peerId的记录
+
+```
++ (instancetype)queryWithFromPeerId:(NSString *)fromPeerId;
++ (instancetype)queryWithFromPeerId:(NSString *)fromPeerId timestamp:(int64_t)timestamp limit:(int)limit;
+```
+
+#### 查询两个peerId之间的记录
+
+```
++ (instancetype)queryWithFirstPeerId:(NSString *)firstPeerId secondPeerId:(NSString *)secondPeerId;
++ (instancetype)queryWithFirstPeerId:(NSString *)firstPeerId secondPeerId:(NSString *)secondPeerId timestamp:(int64_t)timestamp limit:(int)limit;
+```
+
+#### 查询指定群组的记录
+
+```
++ (instancetype)queryWithGroupId:(NSString *)groupId;
++ (instancetype)queryWithGroupId:(NSString *)groupId timestamp:(int64_t)timestamp limit:(int)limit;
+```
+
+#### 实例
+查询早于timestamp的 MyPeerId 和 TheOtherPeerId 之间的10条聊天记录
+
+```
+    AVHistoryMessageQuery *query = [AVHistoryMessageQuery queryWithFirstPeerId:@"MyPeerId" secondPeerId:@"TheOtherPeerId" timestamp:timestamp limit:10];
+    [query findInBackgroundWithCallback:^(NSArray *objects, NSError *error) {
+        if(!error) {
+            //do something
+        } else {
+            NSLog(@"%@", error);
+        }
+    }];
+```
+
+查询群组 MyGroupId 的所有聊天记录
+
+```
+    AVHistoryMessageQuery *query = [AVHistoryMessageQuery queryWithGroupId:@"MyGroupId"];;
+    [query findInBackgroundWithCallback:^(NSArray *objects, NSError *error) {
+        if(!error) {
+            //do something
+        } else {
+            NSLog(@"%@", error);
+        }
+    }];
+```
+
+## Windows Phone 8.0 SDK
+### 安装
+为了支持实时聊天，我们依赖了一个开源的第三方的 WebSocket 的库，所以推荐开发者从[Nuget](https://www.nuget.org/packages/AVOSCloud.Phone/1.2.3.1-beta)上下载我们的 SDK。
+
+为了更方便开发者阅读和理解 SDK 里面的各种抽象概念，我们先从一个应用场景来简单地剖析实时聊天组件在 Windows Phone 8.0 SDK 中如何使用。
+
+### 场景设定
+* 应用场景：参考微信单聊，微博私信
+* 实现需求：用户A（UserA）想与用户B（UserB）进行单独聊天
+* 实现步骤：
+
+```
+  Step1.UserA 创建 AVSession 与 LeanCloud 服务端建立长连接
+  Step2.UserA 告诉 LeanCloud 服务端我要关注（Watch）UserB
+  Step3.UserA 发送消息给 LeanCloud 服务端，因为在第二步的时候，已经关注了 UserB，LeanCloud 服务端就会把这条信息发送给 UserB
+  Step4.UserB 想接受到别人发的消息，也需要创建 AVSession 与 LeanCloud 服务端建立长连接
+  Step5.UserB 告诉 LeanCloud 服务端我也要关注（Watch）UserA
+  Step6.UserB 就能收到第3步，由 UserA 发来的消息了。
+```
+
+以上逻辑是一个最基本的聊天系统应该有的逻辑交互，在 LeanCloud 中，实现以上步骤需要如下代码：
+
+```
+  AVSession session = new AVSession("UserA");//Step1
+  session.WatchPeer("UserB");//Step1
+  session.SendMessage("Hello,B!", "UserB", true);//Step3
+```
+这是UserA需要做的事情，UserB 想要实现接受的话需要如下几步：
+
+```
+  AVSession session = new AVSession("UserB");Step4
+  session.WatchPeer("UserA");//Step5
+  session.SetListener(new SampleAVSessionListener()
+            {
+                OnMessage = (s, msg) =>
+                {
+                    var content = msg.Message;
+                    MessageBox.Show(content);
+                }
+            });
+  ///最后这一步要做详细的解释。
+  ///SampleAVSessionListener 是一个实现了接口 IAVSessionListener 简单的类，它实现了 IAVSessionListener 代理，
+  ///这些代理的主要作用就是用来监听 SDK 所发出的具体的事件的响应。
+```
+附上`SampleAVSessionListener`的代码，开发者可以讲如下代码拷贝到 Visual Studio 中：
+
+```
+ public class SampleAVSessionListener : IAVSessionListener
+ {
+        public SessionOpen OnSessionOpen { get; set; }//AVSession打开时执行的代理。
+
+        public SessionPaused OnSessionPaused { get; set; }//AVSession 与服务端断开连接时执行的代理，一般都是因为 WP 手机锁屏或者应用被切换至后台了，所执行的代理。
+
+        public SessionResumed OnSessionResumed { get; set; }//AVSession 重连成功之后执行的代理。
+
+        public SessionClosed OnSessionClosed { get; set; }//关闭 AVSession 之后执行的代理。
+
+        public Message OnMessage { get; set; }//接受到消息时执行的代理。
+
+        public MessageSent OnMessageSent { get; set; }//消息发送成功之后执行的代理。
+
+        public MessageFailure OnMessageFailure { get; set; }//消息发送失败执行的代理。
+
+        public StatusOnline OnStatusOnline { get; set; }//当前用户的关注的人上线了所执行的代理（类似QQ好友上线了的敲门的声音）
+
+        public StatusOffline OnStatusOffline { get; set; }//关注的人下线了。
+
+        public PeersWatched OnPeersWatched { get; set; }//关注成功了所执行的代理（类似QQ好友通过验证之后，加为好友）
+
+        public PeersUnwatched OnPeersUnwatched { get; set; }//取消关注之后所执行的代理。
+
+        public Error OnError { get; set; }//发生错误时所执行的代理，例如抛出一些异常。
 
   }
-  */
-  //这里实现了一个空函数
-  return Promise.resolve({
-    watchingPeerIds: watchingPeerIds||[]
-  });
-}
-function groupAuth(peerId, groupId, action, groupPeerIds){
-  return Promise.resolve({
-    groupPeerIds: groupPeerIds || []
-  });
-}
+```
+这样只要2边同时运行，就可以 UserB 就可以收到来自 UserA 发来的信息。
+
+以上代码和逻辑顺序能够很好的理解的话，关于 `IAVSessionListener` 这个接口的作用也一目了然，它所承担的职责就是帮助开发者用自己的代码与 SDK 进行交互，比如 `OnSessionOpen`：
 
 ```
-实例化一个 消息客户端
-#### open()
-打开链接，需要先执行上面的 new,
-
+每一次创建了一个 AVSession，只要连接创建成功，都会激发 OnSessionOpen 代理。
 ```
- open().then(function(data){
-  //打开成功
-})
-```
+以此类推，根据开发者不同的需求需要对不同的代理做出相应的处理。也正因为如此，SDK 中只定义了接口，并没有定义一个强类型的类去给开发者使用，接口很方便于开发者将现有的一些功能类集成一下 `IAVSessionListener`。
 
-所有方法都会返回promise then,因为都是异步执行，这样可以确认成功失败。
-#### close()
-关闭链接
-#### send(msg, to, transient)
- 发送私聊消息
- 参数：msg:消息内容, to:发送目标 PeerId, transient（非必须):为true时代表无需离线，默认为支持离线发送。
+**注意：在任何时候创建了 `AVSession` 之后一定要主动并且显式的调用一下 `AVSession.SetListener` 方法，讲代理设置成开发者自己定义的代理类，这一点是**必须做的**。
 
-```
- send().then(function(data){
-  //success full send callback
-  },function(err){
-  //error callback
-})
-```
-#### watch(peers)
-参数：peers:单个peerId 或数组。
-#### unwatch(peers)
-参数：peers:单个peerId 或数组。
-#### getStatus(peers)
-查询 peer 在线或离线状态。适应于非 watch 情况下。
-参数：peers:单个peerId 或数组。
-#### on(name, func)
-监听时间
-参数：name:事件名称,func:事件处理函数
-
-###  事件
-
-#### close
- 链接关闭
-#### online
-上线
-当关注的人上线时触发
-#### offline
-下线
-当关注的人下线时触发
-#### message
-收到消息时触发
-
-### 群组方法
-#### joinGroup(groupId)
-创建或加入群组
-groupId: 群组Id,创建时无需传递。
-#### sendToGroup(msg, groupId, transient)
-发送消息到指定群组
-msg:消息内容,grouipId:群组ID, transient（非必须):为true时代表无需离线，默认为支持离线发送。
-#### inviteToGroup(groupId, groupPeerIds)
-邀请加入群组
-groupId:群组ID,groupPeerIds:单个或数组群组ID
-#### kickFromGroup(groupId, groupPeerIds)
-踢出群组
-groupId:群组ID,groupPeerIds:单个或数组群组ID
-#### leaveGroup(groupId)
-离开群组
-groupId:群组ID
-
-### 群组事件
-
-#### membersJoined
-有成员加入群
-#### membersLeft
-有成员离开群
-#### joined
-自己加入了群
-#### left
-自己离开了群
-
-### 运行DEMO
-直接启动一个 web 服务器 即可运行 demo。
-对于不支持 websocket的浏览器 参考demo做法。
-依赖   <a href="https://github.com/gimite/web-socket-js">web-socket-js</a> 可以用flash做 gateway
+### 目前 Windows Phone 8 SDK 所支持的
+目前尚在公测版，仅支持单聊的操作，群组聊天以及聊天记录，签名授权等都会尽快推出，欢迎开发者一起参与。
 
 
-### 浏览器端环境依赖：
-1. jQuery (非必须)  用于 jsonp 方式请求 (请求 socket 服务器信息)，主要是针对 ie9 以下浏览器的跨域支持。如果没有 jQuey 会根据 XMLHttpRequest 创建ajax跨域请求。
-2. es6-promise (非必须) 当需要签名认证的时候需要，是一个 promise 接口。
-3.  /lib/flash/swfobject.js web_socket.js (非必须) 用于跨浏览器支持 websocket.针对 不支持 websocket 的浏览器。 参照 <a href="https://github.com/gimite/web-socket-js">web-socket-js</a>
+##  JS SDK
 
-### 浏览器端 lib 生成
-
-browserify chat.js -o  lib/chat.js --exclude xmlhttprequest --exclude ws -s AVChatClient
-
-### node 环境
-npm install lean-cloud-chat
+我们已经开源 JS Messaging SDK 了， 见 [Git Repo](https://github.com/leancloud/realtime-messaging-jssdk) 。
 
 
 ## FAQ
@@ -961,6 +1097,10 @@ iOS在应用退出前台后即离线，这时收到消息会触发一个APNS的�
 * 按应用查询，你可以查到自己应用中所有的消息，以时间排序。
 
 参考消息记录的 [REST API](rest_api.html#实时通信-api)。
+
+### 未读消息数
+
+你可以调用 [REST API](rest_api.html#实时通信-api) 获得某个用户的未读消息数。
 
 ### 黑名单
 
