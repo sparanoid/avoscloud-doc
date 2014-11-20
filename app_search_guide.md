@@ -95,6 +95,7 @@ https://leancloud.cn/1.1/go/{your uri scheme}/
 以我们的 Todo Demo 为例，我们启用了 Todo 的应用内搜索功能，选择了开放字段`content`，设定数据模板（消除了css）为：
 
 <div ng-non-bindable>
+
 ```
 	<div class="wrap">
   		<div class="section section-open">
@@ -131,6 +132,7 @@ https://leancloud.cn/1.1/go/{your uri scheme}/
 	</div>
   </div>
 ```
+
 </div>
 在 LeanCloud 索引完成数据后，您应当可以通过下列URL访问到一条数据，如果在安装了 Todo Demo 应用的移动设备上访问下面这个URL，应该会打开应用展现这条 Todo 的内容:
 
