@@ -184,7 +184,7 @@ app_id:peer_id:watch_peer_ids:timestamp:nonce:su
  
  public void onCreate(){
  
- AVOSCloud.initialize(this,{{appId}},{{appKey}});
+ AVOSCloud.initialize(this,"{{appId}}","{{appKey}}");
  }
 }
 
