@@ -420,3 +420,126 @@ searchQuery.setSortBuilder(builder);
 ```
 
 
+## 搜索 API
+
+
+我们提供一个 `/1.1/search/select` 来做应用内搜索，前提是您参考前面的文档，启用了应用内搜索。
+
+假设你对 GameScore 类启用了应用内搜索，您就可以尝试传入关键字来搜索，比如查询关键字`dennis`，限定返回结果 200 个，并且按照`score`降序排序：
+
+```
+curl -X GET \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  "https://leancloud.cn/1.1/search/select?q=dennis&limit=200&clazz=GameScore&order=-score" 
+```
+
+返回类似：
+
+```
+{
+results: [
+  {
+    _app_url: "http://stg.pass.com//1/go/com.avoscloud/classes/GameScore/51e3a334e4b0b3eb44adbe1a",
+    _deeplink: "com.avoscloud.appSearchTest://avoscloud/classes/GameScore/51e3a334e4b0b3eb44adbe1a"
+    updatedAt: "2011-08-20T02:06:57.931Z",
+    playerName: "Sean Plott",
+    objectId: "51e3a334e4b0b3eb44adbe1a",
+    createdAt: "2011-08-20T02:06:57.931Z",
+    cheatMode: false,
+    score: 1337
+  },
+  ……
+],
+sid: "cXVlcnlUaGVuRmV0Y2g7Mzs0NDpWX0NFUmFjY1JtMnpaRDFrNUlBcTNnOzQzOlZfQ0VSYWNjUm0yelpEMWs1SUFxM2c7NDU6Vl9DRVJhY2NSbTJ6WkQxazVJQXEzZzswOw=="
+}
+```
+
+查询的参数支持：
+
+* limit 返回集合大小，默认100，最大1000
+* sid: 第一次查询结果中返回的 sid 值，用于分页，对应于elasticsearch中的scoll id，可选
+* q: 查询文本，支持类似google的搜索语法，必须
+* fields: 逗号隔开的字段列表，可选，查询的字段列表
+* highlights: 高亮字段，可以是通配符 `*`，也可以是字段列表逗号隔开的字符串，可选。如果加入，返回结果会多出_highlight属性，表示高亮的搜索结果内容，关键字用`em`标签括起来。
+* clazz: 类名，可选，如果没有指定，则搜索所有启用了应用内搜索的 class
+* order: 排序字段，形如`-score,createdAt`逗号隔开的字段，负号表示倒序，可以多个字段组合排序，可选。
+* sort: 复杂排序字段，例如地理位置信息排序，见下文描述。
+
+返回结果属性介绍：
+
+* results 符合查询条件的结果文档。
+* hits  符合查询条件的文档总数
+* sid 标记本次查询结果，下次查询继续传入这个 sid 用于查找后续的数据，用来支持翻页查询。
+
+
+返回结果 results 列表里是一个一个的对象，字段是你在应用内搜索设置里启用的字段列表，并且有两个特殊字段：
+
+* `_app_url`: 应用内搜索结果在网站上的链接。
+* `_deeplink`: 应用内搜索的程序调用 URL，也就是 deeplink。
+
+
+最外层的`sid`用来标记本次查询结果，下次查询继续传入这个 sid 将翻页查找后 200 条数据：
+
+```
+curl -X GET \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  "https://leancloud.cn/1.1/search/select?q=dennis&limit=200&clazz=GameScore&order=-score&sid=cXVlcnlUaGVuRmV0Y2g7Mzs0NDpWX0NFUmFjY1JtMnpaRDFrNUlBcTNnOzQzOlZfQ0VSYWNjUm0yelpEMWs1SUFxM2c7NDU6Vl9DRVJhY2NSbTJ6WkQxazVJQXEzZzswOw" 
+```
+直到返回结果为空。
+
+
+### 复杂排序
+
+
+假设你要排序的字段是一个数组，比如分数数组`scores`，你想根据平均分来倒序排序，并且没有分数的排最后，那么可以传入：
+
+```
+ --data-urlencode 'sort={"scores":{"order":"desc","mode":"avg","missing":"_last"}}'
+```
+
+也就是 `sort` 可以是一个 JSON 数据结构：
+
+```
+{"scores":{"order":"desc","mode":"avg","missing":"_last"}}
+```
+排序的字段作为key，字段可以设定下列选项：
+
+* order  `asc`表示升序，`desc`表示降序
+* mode 如果该字段是多值属性或者数组，那么可以选择按照最小值(`min`)、最大值(`max`)、总和(`sum`)或者平均值(`sum`)来排序。
+* missing 决定缺失该字段的文档排序在开始还是最后，可以选择`_last`或者`_first`，或者指定一个默认值。
+
+多个字段排序就类似：
+
+```
+{
+ "scores":{"order":"desc","mode":"avg","missing":"_last"},
+ "updatedAt": {"order":"asc"}
+ }
+```
+
+
+### 地理位置信息查询
+
+
+如果 class 里某个列是 `GeoPoint`类型，那么可以根据这个字段的地理位置远近来排序，例如假设字段 `location` 保存的是 `GeoPoint`类型，那么查询 `[-70, 40]` 附近的玩家可以通过设定 sort 为：
+
+```
+{
+  "_geo_distance" : {
+                "location" : [-70, 40],
+                "order" : "asc",
+                "unit" : "km",
+                "mode" : "min",
+   }
+}
+```
+
+`order` 和  `mode` 含义跟上述复杂排序里的一致，`unit`用来指定距离单位，例如`km`表示千米，`m`表示米，`cm`表示厘米等。
+
+
+
+
+
+
