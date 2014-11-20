@@ -2563,3 +2563,7 @@ curl -X GET \
 ## 事件流 API
 
 参考 [事件流 REST API](./status_system.html#rest-api)。
+
+## 应用内搜索 API
+
+参考 [搜索 API](./app_search_guide.html#搜索-api)。
