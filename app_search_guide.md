@@ -85,7 +85,7 @@ https://leancloud.cn/1.1/go/{your uri scheme}/
 * 选择开放的列 -- 您可以选择哪些字段将加入索引引擎，这些字段将可以被外部用户看到（前提是 ACL 允许）。请慎重选择开放的字段。默认情况下，`objectId,createdAt,updatedAt`三个字段将无条件加入开放字段列表。
 * 数据模板 -- 设置这个 Class 的数据展现模板，当外部调用无法打开应用（通常是用户没有安装应用）的时候，将渲染这个模板并展现给用户，默认的模板的只是渲染一些下载链接，您可以自定义这个模板的样式，比如加入您的应用 Logo， 添加 CSS 等。
 
-数据模板的语法支持[ handlebars 模板](http://handlebarsjs.com/)语法，支持的变量（使用两个大括号包起来`{{{var}}}`）包括：
+数据模板的语法支持[ handlebars 模板](http://handlebarsjs.com/)语法，支持的变量（使用两个大括号包起来 <code ng-non-bindable>{{{var}}}</code>）包括：
 
 * app_uri 字符串 --  打开应用的URL，就是前面提到的`{URL Scheme} : // { URL Host} / { Resource Path}`。
 * applinks 对象 -- 应用内搜索配置对象，包括这些属性：`app_name,android_phone_link,android_pad_link,iphone_link,ipad_link`等，也就是应用名称，和各种平台应用的下载链接。
@@ -111,7 +111,7 @@ https://leancloud.cn/1.1/go/{your uri scheme}/
    <div class="section section-download">
 	<div class="section-inner">
 	  <p>或者下载应用:</p>
-	  <div>
+	  <div ng-non-bindable>
 		{{#if applinks.iphone_link}}
 		  <p><a href='{{applinks.iphone_link}}'>iPhone 应用</a></p>
 		{{/if}}
@@ -431,7 +431,7 @@ searchQuery.setSortBuilder(builder);
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
-  "https://leancloud.cn/1.1/search/select?q=dennis&limit=200&clazz=GameScore&order=-score" 
+  "https://leancloud.cn/1.1/search/select?q=dennis&limit=200&clazz=GameScore&order=-score"
 ```
 
 返回类似：
@@ -485,7 +485,7 @@ sid: "cXVlcnlUaGVuRmV0Y2g7Mzs0NDpWX0NFUmFjY1JtMnpaRDFrNUlBcTNnOzQzOlZfQ0VSYWNjUm
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
-  "https://leancloud.cn/1.1/search/select?q=dennis&limit=200&clazz=GameScore&order=-score&sid=cXVlcnlUaGVuRmV0Y2g7Mzs0NDpWX0NFUmFjY1JtMnpaRDFrNUlBcTNnOzQzOlZfQ0VSYWNjUm0yelpEMWs1SUFxM2c7NDU6Vl9DRVJhY2NSbTJ6WkQxazVJQXEzZzswOw" 
+  "https://leancloud.cn/1.1/search/select?q=dennis&limit=200&clazz=GameScore&order=-score&sid=cXVlcnlUaGVuRmV0Y2g7Mzs0NDpWX0NFUmFjY1JtMnpaRDFrNUlBcTNnOzQzOlZfQ0VSYWNjUm0yelpEMWs1SUFxM2c7NDU6Vl9DRVJhY2NSbTJ6WkQxazVJQXEzZzswOw"
 ```
 直到返回结果为空。
 
