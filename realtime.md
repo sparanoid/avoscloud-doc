@@ -468,9 +468,65 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 ```
 
 ###　权限管理
+在LeanCloud中间的权限管理与传统的token机制略有不同，我们通过签名服务来实现实时通信过程中间部分操作的权限管理。
+在阅读下面的代码前，你可能需要先了解一下有关LeanCloud权限管理的基本感念[权限和认证](https://cn.avoscloud.com/docs/realtime.html#权限和认证)。
 
-###　消息处理帮助
-在实际使用中间，很多用户表示这种从Receiver与Activity（或者说UI组件）分开开的交互方式比Callback的方式更为奇怪，关联起来也相对比较困难。在LeanCloud的开发过程中间，我们也有一点小小的经验可以与大家分享一下，如何将Receiver与具体的Activity结合起来使用。
+在实时聊天系统中间，很多操作是需要有权限控制才能操作成功的,比如：单聊的添加好友，群组的邀请、剔除操作等，都需要做一定权限认证。
+客户端传一些参数给自有用户系统或者云代码（统称权限管理服务器），权限管理服务器端根据一定的逻辑判断操作是否合法，如果该操作是合法的，则返回一个正确的签名；如果是非法的，就返回一个错误的签名。之后在实时通信的过程中就会将返回的签名带在通信的请求中，LeanCloud的实时通信服务器会比对自己算出来的签名与客户端传递过来的签名是否一致来获知该操作是否合法。
+
+完成一个简单的权限管理认证系统，你需要以下几个步骤：
+1. 部署云代码[签名范例](https://github.com/leancloud/realtime-messaging-signature-cloudcode)代码到LeanCloud的云代码服务器
+2. 在LeanCloud中你的项目对应的网页控制台的`设置`->`应用选项`->`聊天推送`中打开`聊天服务签名认证`
+3. 在SDK中间实现SignatureFactory抽象类
+
+```
+public class KeepAliveSignatureFactory implements SignatureFactory {
+ @Override
+ public Signature createSignature(String peerId, List<String> watchIds) {
+   Map<String,Object> params = new HashMap<String,Object>();
+   params.put("self_id",peerId);
+   params.put("watch_ids",watchIds);
+   
+   try{
+     Object result =  AVCloud.callFunction("sign",params);
+     if(result instanceof Map){
+       Map<String,Object> serverSignature = (Map<String,Object>) result;
+       Signature signature = new Signature();     
+       signature.setSignature((String)serverSignature.get("signature"));
+       signature.setTimestamp((Long)serverSignature.get("timestamp"));
+       signature.setNonce((String)serverSignature.get("nonce"));
+       signature.setSignedPeerIds((List<String>)serverSignature.get("watch_ids"));
+       return signature;
+     }
+   }catch(Exception e){
+   }
+   return null;
+ }
+
+  @Override
+  public Signature createGroupSignature(String groupId, String peerId, List<String> targetPeerIds,String action){
+   Map<String,Object> params = new HashMap<String,Object>();
+   params.put("self_id",peerId);
+   params.put("group_id",groupId);
+   params.put("group_peer_ids",targetPeerIds);
+   params.put("action",action);
+   
+   try{
+     Object result = AVCloud.callFunction("group_sign",params);
+     if(result instanceof Map){
+        Map<String,Object> serverSignature = (Map<String,Object>) result;
+        Signature signature = new Signature();     
+        signature.setSignature((String)serverSignature.get("signature"));
+        signature.setTimestamp((Long)serverSignature.get("timestamp"));
+        signature.setNonce((String)serverSignature.get("nonce"));
+        signature.setSignedPeerIds((List<String>serverSignature.get("group_peer_ids")));
+        return signature;
+     }
+   }catch(Exception e){}
+   return null;
+  }
+}
+```
 
 ## iOS 实时通信服务
 
