@@ -986,7 +986,7 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
 + (instancetype)queryWithConversationId:(NSString *)conversationId timestamp:(int64_t)timestamp limit:(int)limit;
 ```
 
-conversationId的含义参考 [构建对话 ID](https://cn.avoscloud.com/docs/rest_api.html#构建对话-id)
+conversationId的含义参考 [构建对话 ID](./rest_api.html#构建对话-id)
 
 #### 查询来自指定peerId的记录
 
