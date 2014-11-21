@@ -1128,11 +1128,8 @@ var task = push.SendAsync();
 
 ```
  AVPush push = new AVPush();
-<<<<<<< HEAD
  push.Alert = "message to public channel.";
-=======
- push.Alert = "message to android only!";
->>>>>>> wp v1.1.0  doc and unity doc.
+
  push.Query = new AVQuery<AVInstallation>().WhereEqualTo("channels", "public");
  var task = push.SendAsync();
 ```
