@@ -214,10 +214,10 @@ app_id:peer_id:watch_peer_ids:timestamp:nonce:su
    AVUser.logInInBackground("用户名","password",new LogInCallback<AVUser>(){
       @Override
       public void done(AVUser user, AVException e){
-            //此处的peerId就是之前提到的用户的唯一标识符,
+            //此处的selfId就是之前提到的用户的唯一标识符 Peer ID,
             //应该替换成你现有用户系统中的唯一标识符，这里以我们提供的的用户系统为例            
-            String peerId = user.getObjectId();
-            Session session = SessionManager.getInstance(peerId);
+            String selfId = user.getObjectId();
+            Session session = SessionManager.getInstance(selfId);
             List<String> yourFriends = new List<String>();
             .... //add your friends' peerIds 
             session.open(yourFriends);
@@ -261,7 +261,7 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
 正如上文提到了，实时聊天系统在发送消息前需要保证发送的对象是被watch过的。对于已有的好友列表，你可以如上文提到的方法，在登录实时通信系统的时候放在参数中间；对于新的好友，你可以通过如下代码进行添加：
 
 ```
-  Session session = SessionManager.getInstance(peerId);
+  Session session = SessionManager.getInstance(selfId);
   session.watch(Arrays.asList("friend1","friend2"));
 ```
 
@@ -283,7 +283,7 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
 在任何一个时候你也可以通过以下代码来判断是否已经 watch 过某个用户：
 
 ```
-  Session session = SessionManager.getInstance(peerId);
+  Session session = SessionManager.getInstance(selfId);
   boolean watched = session.isWatching("friend1");
 ```
 
@@ -292,7 +292,7 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
 在用户成功登录实时消息系统以后，用户就可以进行消息的发送接收等。
 
 ```
-   Session session = SessionManager.getInstance(peerId);
+   Session session = SessionManager.getInstance(selfId);
    AVMessage msg = new AVMessage();
    msg.setMessage("这是一个普通的消息");
    //friendId是指目标用户的 peer id，也就是想接收这条消息的用户。
@@ -324,7 +324,7 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
 有些应用可能会有指定消息是否是只有用户在线才能接收，我们在系统中间也进行了支持。将消息设置为 `transient`，那么消息只会发送给在线用户，如果用户不在线，也不会作为离线消息存储，而是直接丢弃。
 
 ```
-   Session session = SessionManager.getInstance(peerId);
+   Session session = SessionManager.getInstance(selfId);
    AVMessage transientMsg = new AVMessage();
    transientMsg.setMessage("这是一个 transient 消息，只有对方当时在线才能收到");
    transientMsg.setTransient(true);
@@ -402,7 +402,7 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
 当你想要创建一个群组的时候，你可以通过以下代码来创建一个新的群组：
 
 ```
-   Session session = SessionManager.getInstance(peerId);
+   Session session = SessionManager.getInstance(selfId);
    Group group = session.getGroup();
    group.join();
 ```
@@ -435,7 +435,7 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 
 ```
    //通过 AVQuery 查找到群组的 objectId 作为 groupId
-   Session session = SessionManager.getInstance(peerId);
+   Session session = SessionManager.getInstance(selfId);
    Group group = session.getGroup(groupId);
    group.join();
 ```
@@ -448,7 +448,7 @@ AVQuery 查询参考 [Android 指南](./android_guide.html#查询)。
 群组的消息发送几乎与单聊的消息发送相同，只是发送的调用对象不再是 session 而是 group:
 
 ```
-  Session session = SessionManager.getInstance(peerId);
+  Session session = SessionManager.getInstance(selfId);
   Group group = session.getGroup(groupId);
   AVMessage message = new AVMessage();
   message.setMessage("这是一段群消息示范");
@@ -497,7 +497,7 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 不管用户是需要邀请更多用户进入群组还是想要剔除部分用户，都需要知道当前群组内已经有哪些用户了。开发者可以通过下面的代码来实现群组内成员列表的查询：
 
 ```
-    Session session = Session.getInstance(peerId);
+    Session session = Session.getInstance(selfId);
     Group group = session.getGroup(groupId);
     group.getMembersInBackground(new GroupMemberQueryCallback(){
      @Override
@@ -512,7 +512,7 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 当你进入一个群组以后，你可以邀请一些你的好友进入这个群组，进行进一步的讨论：
 
 ```
-    Session session = Session.getInstance(peerId);
+    Session session = Session.getInstance(selfId);
     Group group = session.getGroup(groupId);
     group.inviteMember(Arrays.asList("friend1","friend2","friend3"....));
 ```
@@ -541,7 +541,7 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 除了能够邀请成员以外，群组成员也可以剔除现在在群组内的用户：
 
 ```
-    Session session = Session.getInstance(peerId);
+    Session session = Session.getInstance(selfId);
     Group group = session.getGroup(groupId);
     group.kickMember(Arrays.asList("friend1","friend2","friend3"....));
 ```
@@ -663,7 +663,7 @@ public class KeepAliveSignatureFactory implements SignatureFactory {
 
 ```
  //查询 Session 里的聊天记录
- SessionManager sm = SessionManager.getInstance(peerId);
+ SessionManager sm = SessionManager.getInstance(selfId);
  AVHistroyMessageQuery sessionHistoryQuery = sm.getHistroyMessageQuery();
  sessionHistoryQuery.setLimit(1000);//设置查询结果大小
  //查询 unix 时间戳 1413184345686 之后的消息，单位毫秒
