@@ -258,7 +258,7 @@ final SNSCallback myCallback = new SNSCallback() {
         //绑定第三方的授权信息
           AVUser.AVThirdPartyUserAuth auth =
               new AVUser.AVThirdPartyUserAuth(plat.getDb().getToken(), String.valueOf(plat.getDb()
-                  .getExpiresTime()), SinaWeibo.NAME, plat.getDb()
+                  .getExpiresTime()), AVUser.AVThirdPartyUserAuth.SNS_SINA_WEIBO, plat.getDb()
                   .getUserId());
           AVUser.loginWithAuthData(auth, new LogInCallback<AVUser>() {
 
