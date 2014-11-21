@@ -57,6 +57,16 @@
 
 您可以根据您的实际发布渠道，修改上述的android:value中对应的值，比如将LeanCloud改为Your Channel，重新打包后发布。(请不要修改android:name="Channel ID"字段，以免影响使用)
 
+由于很多用户反映在部分第三方发布平台中间，不允许出现meta-data中间的key出现空格字符，我们在2.6.8以后，增加了一个等效的key:`leancloud`。
+以下代码也可以用于指定渠道了，但是请不要反复定义
+
+```
+    <application  ...>
+        ...
+        <meta-data android:name="leancloud" android:value="LeanCloud"/>
+    </application>
+```
+
 ## 添加使用代码
 
 添加引用:
