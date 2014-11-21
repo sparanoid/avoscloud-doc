@@ -643,7 +643,7 @@ public class KeepAliveSignatureFactory implements SignatureFactory {
         return signature;
      }
    }catch(Exception e){}
-   return ""null"";
+   return null;
   }
 }
 ```
