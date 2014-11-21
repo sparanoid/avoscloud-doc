@@ -1125,7 +1125,7 @@ conversationId的含义参考 [构建对话 ID](https://cn.avoscloud.com/docs/re
 ### 实现签名（可选）
 签名作为安全认证的一部分，阅读下面的内容之前请确保您已经阅读过本文之前所介绍[权限和认证](https://cn.avoscloud.com/docs/realtime.html#权限和认证)。
 
-假如开发者在控制台够选了
+假如开发者在控制台勾选了
 
 ```
 聊天服务签名认证
