@@ -648,7 +648,7 @@ public class KeepAliveSignatureFactory implements SignatureFactory {
 }
 ```
 
-4. 在Session第一次打开时，设置SignatureFactory:
+最后， 在Session第一次打开时，设置SignatureFactory:
 
 ```
    Session session = SessionManager.getInstance(selfId);
