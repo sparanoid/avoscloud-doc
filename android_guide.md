@@ -1394,7 +1394,7 @@ AVUser.requestPasswordResetInBackground("myemail@example.com", new RequestPasswo
         user.signUp();
 
         //如果你的账号需要重新发送短信请参考下面的代码
-        AVUser.requestMobilePhoneVerifyInrequestMobilePhoneVerifyInBackground("13613613613",new RequestMobileCodeCallback() {
+        AVUser.requestMobilePhoneVerifyInBackground("13613613613",new RequestMobileCodeCallback() {
 
       @Override
       public void done(AVException e) {
