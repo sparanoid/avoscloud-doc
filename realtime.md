@@ -190,7 +190,7 @@ app_id:peer_id:watch_peer_ids:timestamp:nonce:su
 
 ##  JavaScript 开发指南
 
-我们已经开源 JS Messaging SDK 了， 见 [Git Repo](https://github.com/leancloud/realtime-messaging-jssdk) 。
+我们已经开源 JS Messaging SDK 了， 见 [leancloud/realtime-messaging-jssdk](https://github.com/leancloud/realtime-messaging-jssdk) 。
 
 
 ## FAQ
