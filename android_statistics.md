@@ -1,4 +1,3 @@
-
 # Android 统计 SDK 开发指南
 
 ## 建立 LeanCloud app，下载 SDK

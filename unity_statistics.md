@@ -7,7 +7,7 @@ LeanCloud Unity SDK 提供一套接口方便开发者可以对了解游戏在客
 
 ## 使用统计功能
 在使用统计SDK之前需要初始化应用的参数，参数包括App ID以及App Key ，您可以在[设置](app.html?appid={{appid}}#/key)查询到这2个参数，如果在应用的其他地方已经进行初始化了，无需重复。
-```
+```javascript
 AVClient.Initialize("{{appid}}", "{{appkey}}");
 ```
 
@@ -23,7 +23,7 @@ AVClient.Initialize("{{appid}}", "{{appkey}}");
 
 比如在主界面点击“进入副本”按钮，开始加载副本场景：
 
-```
+```javascript
 void OnGUI()//Home场景中的一个Behaviour中的OnGUI事件
 {
 	if (GUI.Button (new Rect (50, 50, 200, 50), "进入副本"))
@@ -37,7 +37,7 @@ void OnGUI()//Home场景中的一个Behaviour中的OnGUI事件
 
 同样的，在副本结束之后，在副本场景中的页面上，点击“离开副本”的按钮返回主界面：
 
-```
+```javascript
 void OnGUI()//BT场景中的一个Behaviour中的OnGUI事件
 {
 	if (GUI.Button (new Rect (50, 50, 200, 50), "离开副本"))
@@ -54,14 +54,14 @@ void OnGUI()//BT场景中的一个Behaviour中的OnGUI事件
 
 ### 基本简单事件
 
-```
+```javascript
 public static void TrackEvent(string name);
 ```
 
 除了基本统计分析功能外，LeanCloud Unity SDK 还支持您自定义的事件分析，例如您可以统计玩家在游戏中点击商店的动作，购买东西的动作。
 
 
-```
+```javascript
 if (GUI.Button (new Rect (100, 600, 200, 50), "商店"))
 {
 	AVAnalytics.TrackEvent("进入商店");
@@ -72,12 +72,12 @@ GUI.Label (new Rect (100, 400, 200, 50), words);
 ```
 
 ### 多标签事件
-```
+```javascript
 public static void TrackEvent(string name, IDictionary<string, object> dimensions);
 ```
 实际上在很多游戏中简单的进入商店，或者与某NPC对话这些简单的事件未必能满足数据分析的需求，假如需要统计玩家进入商店购买了那些东西，花了多少时间，这些如果能跟一个事件关联一起来，在做数据分析的时候就有足够采样价值。
 
-```
+```javascript
 bool stepedInshop=false;
 private string words=string.Empty;
 private DateTime stepedInShopTime=DateTime.MinValue;

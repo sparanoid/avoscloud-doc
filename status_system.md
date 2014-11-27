@@ -18,12 +18,12 @@
 
 AV.User新增两个方法`follow`和`unfollow`来建立用户关系，你可以关注某个用户：
 
-```
+```javascript
 AV.User.current().follow('52f9be45e4b035debf88b6e2').then(function(){
-    //关注成功
+  //关注成功
 }, function(err){
-    //关注失败
-    console.dir(err);
+  //关注失败
+  console.dir(err);
 });
 ```
 
@@ -31,22 +31,22 @@ follow方法接收一个AV.User对象或者User对象的objectId（通过user.id
 
 取消关注使用unfollow方法：
 
-```
+```javascript
 AV.User.current().unfollow('52f9be45e4b035debf88b6e2').then(function(){
-    //取消关注成功
+  //取消关注成功
 }, function(err){
-    //取消关注失败
-    console.dir(err);
+  //取消关注失败
+  console.dir(err);
 });
 ```
 
 关注后，可以查询自己关注的用户列表，使用`AV.User#followeeQuery`得到一个`AV.Query`对象来查询关注的用户列表：
 
-```
+```javascript
 var query = AV.User.current().followeeQuery();
 query.include('followee');
 query.find().then(function(followees){
-   //关注的用户列表followees
+  //关注的用户列表followees
 });
 ```
 
@@ -54,11 +54,11 @@ followee是一个Pointer类型，通过include将它的所有信息查询包括�
 
 查询自己的粉丝（他人关注了我，他人就是我的粉丝），可以通过`followerQuery`方法：
 
-```
+```javascript
 var query = AV.User.current().followerQuery();
 query.include('follower');
 query.find().then(function(followers){
-   //粉丝列表followers
+  //粉丝列表followers
 });
 ```
 
@@ -74,15 +74,15 @@ followerQuery和followerQuery方法返回的AV.Query对象可以像普通的[AV.
 当前登录用户发送一条状态给关注他的粉丝：
 的粉丝：
 
-```
+```javascript
 var status = new AV.Status('视频url', '我喜欢了视频xxxx.');
 status.set('sound', 'sound.wmv');
 AV.Status.sendStatusToFollowers(status).then(function(status){
-    //发布状态成功，返回状态信息
-	console.dir(status);
+  //发布状态成功，返回状态信息
+  console.dir(status);
 }, function(err){
-    //发布失败
-    console.dir(err);
+  //发布失败
+  console.dir(err);
 });
 ```
 
@@ -103,13 +103,13 @@ AV.Status对象包含下列属性：
 
 我还可以发送一条私信给单独某个用户：
 
-```
+```javascript
 var status = new AV.Status(null, '秘密消息');
 AV.Status.sendPrivateStatus(status,'52f9be45e4b035debf88b6e2').
   then(function(status){
-    //发送成功呢
-	console.dir(status);
-   }, function(err){
+    //发送成功
+    console.dir(status);
+  }, function(err){
     //发布失败
     console.dir(err);
 });
@@ -121,7 +121,7 @@ AV.Status.sendPrivateStatus(status,'52f9be45e4b035debf88b6e2').
 
 通过send方法还可以自定义inboxType:
 
-```
+```javascript
 var query = ... //一个AV.Query对象，定义接收者。
 var status = new AV.Status(null, '我读了《clojure编程乐趣》');
 //定义一个book收件箱
@@ -136,7 +136,7 @@ status.send().then(function(status){
 
 查询我的timeline收件箱，可以通过`AV.Status.inboxQuery`方法：
 
-```
+```javascript
 var query = AV.Status.inboxQuery(AV.User.current());
 query.find().then(function(statuses){
   //查询成功，返回状态列表，每个对象都是AV.Status
@@ -155,7 +155,7 @@ query.find().then(function(statuses){
 
 * 查询本次查询之后新增的status（向后翻页刷新）:
 
-```
+```javascript
 //假设messageId是上次查询返回的status的最大messageId编号
 var messageId = ...
 var query = AV.Status.inboxQuery(AV.User.current());
@@ -171,7 +171,7 @@ query.find().then(function(statuses){
 
 * 查询本次查询的前一页（也就是更老的status，向前翻页）:
 
-```
+```javascript
 //假设messageId是上次查询返回的status的最大messageId编号
 var messageId = ...
 var query = AV.Status.inboxQuery(AV.User.current());
@@ -181,7 +181,7 @@ query.maxId(messageId);
 
 `AV.Status.inboxQuery`还可以指定收件箱的类型，默认是查询timeline收件箱，也可以查询私信收件箱：
 
-```
+```javascript
 var query = AV.Status.inboxQuery(AV.User.current(), 'private');
 ```
 
@@ -189,11 +189,11 @@ var query = AV.Status.inboxQuery(AV.User.current(), 'private');
 
 使用`AV.Status.countUnreadStatuses`可以查询某个收件箱的未读状态数目和总数目：
 
-```
+```javascript
 AV.Status.countUnreadStatuses(AV.User.current()).then(function(result){
-	console.dir(result);
-	var total = result.total;
-	var unread  = result.unread;
+  console.dir(result);
+  var total = result.total;
+  var unread  = result.unread;
 }, function(err){
     //查询失败
 });
@@ -203,7 +203,7 @@ AV.Status.countUnreadStatuses(AV.User.current()).then(function(result){
 
 查询我发出去的状态信息，可以通过`statusQuery`方法：
 
-```
+```javascript
 var query = AV.Status.statusQuery(AV.User.current());
 query.find().then(function(statuses){
   //查询成功，返回状态列表，每个对象都是AV.Object
@@ -240,47 +240,48 @@ query.find().then(function(statuses){
     [[AVUser currentUser] unfollow:userObjectId andCallback:^(BOOL succeeded, NSError *error) {
 
     }];
-    
-如果您在应用设置的应用选项里勾选了`自动互相关注（事件流）`，那么在当前用户关注某个人，那个人也会自动关注当前用户。  
+
+如果您在应用设置的应用选项里勾选了`自动互相关注（事件流）`，那么在当前用户关注某个人，那个人也会自动关注当前用户。
 
 从 2.6.7 版本开始，我们允许在 follow 的时候同时传入一个 attribute 列表，用于设置关系的属性，这些属性都将在 `_Follower` 和 `_Followee` 表同时存在:
 
-```
+```objc
    NSDictionary * attrs = ……
    [[AVUser currentUser] follow:userObjectId userDictionary:attrs andCallback:^(BOOL succeeded, NSError *error) {
 	    //处理结果
     }];
 
-``` 
+```
 
 #### 获取粉丝/关注列表
 
 有2个特殊的`AVQuery`:
 
-	//粉丝列表查询
-	AVQuery *query= [AVUser followerQuery:@"USER_OBJECT_ID"];
+```objc
+//粉丝列表查询
+AVQuery *query= [AVUser followerQuery:@"USER_OBJECT_ID"];
 
-	//关注列表查询
-	AVQuery *query= [AVUser followeeQuery:@"USER_OBJECT_ID"];
-	
-
+//关注列表查询
+AVQuery *query= [AVUser followeeQuery:@"USER_OBJECT_ID"];
+```
 
 `followerQuery` 和 `followeeQuery` 返回的 AVQuery 可以增加其他查询条件，只要在`_Followee`和`_Follower` 表里存在的属性都可以作为查询或者排序条件。
-     
 
 **注：默认的查询得到的AVUser对象仅仅有ObjectId数据，如果需要整个AVUser对象所有属性，则需要调用include方法**。例如
 
-	AVQuery *query= [AVUser followeeQuery:@"USER_OBJECT_ID"];
-	[query includeKey:@"followee"];
-
+```objc
+AVQuery *query= [AVUser followeeQuery:@"USER_OBJECT_ID"];
+[query includeKey:@"followee"];
+```
 
 是分别获得某个用户的粉丝和关注, 我们也可以同时取得这这两种:
 
-    [[AVUser currentUser] getFollowersAndFollowees:^(NSDictionary *dict, NSError *error) {
-        NSArray *followers=dict[@"followers"];
-        NSArray *followees=dict[@"followees"];
-    }];
-
+```objc
+[[AVUser currentUser] getFollowersAndFollowees:^(NSDictionary *dict, NSError *error) {
+    NSArray *followers=dict[@"followers"];
+    NSArray *followees=dict[@"followees"];
+}];
+```
 
 ### 状态
 
@@ -288,14 +289,16 @@ query.find().then(function(statuses){
 
 发布一条时间线状态, 即发一条我的粉丝可以看到的状态
 
-    AVStatus *status=[[AVStatus alloc] init];
+```objc
+AVStatus *status=[[AVStatus alloc] init];
 
-    status.data=@{@"text":@"data type change"};
+status.data=@{@"text":@"data type change"};
 
-    [AVUser logInWithUsername:@"travis" password:@"123456"];
-    [AVStatus sendStatusToFollowers:status andCallback:^(BOOL succeeded, NSError *error) {
-        NSLog(@"============ Send %@", [status debugDescription]);
-    }];
+[AVUser logInWithUsername:@"travis" password:@"123456"];
+[AVStatus sendStatusToFollowers:status andCallback:^(BOOL succeeded, NSError *error) {
+    NSLog(@"============ Send %@", [status debugDescription]);
+}];
+```
 
 其中`status.data`可以任意指定NSDictionary数据. **注意: 这个字典中的source字段不可用，内部保留**
 
@@ -304,31 +307,35 @@ query.find().then(function(statuses){
 
 给某个用户发私信也非常简单
 
-    AVStatus *status=[[AVStatus alloc] init];
-    status.data=@{@"text":@"this is a private message"};
+```objc
+AVStatus *status=[[AVStatus alloc] init];
+status.data=@{@"text":@"this is a private message"};
 
-    NSString *userObjectId=@"XXXXXXXXXXXXX";
+NSString *userObjectId=@"XXXXXXXXXXXXX";
 
-    [AVStatus sendPrivateStatus:status toUserWithID:userObjectId andCallback:^(BOOL succeeded, NSError *error) {
-        NSLog(@"============ Send %@", [status debugDescription]);
-    }];
+[AVStatus sendPrivateStatus:status toUserWithID:userObjectId andCallback:^(BOOL succeeded, NSError *error) {
+    NSLog(@"============ Send %@", [status debugDescription]);
+}];
+```
 
 #### 自定义状态
 
 除了上面常见两种场景, 自定义状态可以通过设置**受众群体和发送者** 来实现更加灵活的功能
 
-    AVStatus *status=[[AVStatus alloc] init];
-    [status setData:@{@"text":@"we have new website, take a look!",@"link":@"http://leancloud.cn"}];
+```objc
+AVStatus *status=[[AVStatus alloc] init];
+[status setData:@{@"text":@"we have new website, take a look!",@"link":@"http://leancloud.cn"}];
 
-    status.type=@"system";
+status.type=@"system";
 
-    AVQuery *query=[AVUser query];
-    [query whereKey:@"age" equalTo:@(20)];
-    [status setQuery:query];
+AVQuery *query=[AVUser query];
+[query whereKey:@"age" equalTo:@(20)];
+[status setQuery:query];
 
-    [status sendInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+[status sendInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
 
-    }];
+}];
+```
 
 上面是系统广播的基本实现. 因为指定了一个AVUser查询,所以会发送给所有`age=20`的用户, 指定了`type`是`system`或者任意字符串, 则所有用户会在查询这个类型的状态中看到这一条.
 
@@ -336,20 +343,22 @@ query.find().then(function(statuses){
 
 下面代码会获取用户时间线上的50条状态
 
-    AVStatusQuery *query=[AVStatus inboxQuery:kAVStatusTypeTimeline];
+```objc
+AVStatusQuery *query=[AVStatus inboxQuery:kAVStatusTypeTimeline];
 
-    //限制50条
-    query.limit=50;
+//限制50条
+query.limit=50;
 
-    //限制1397这个messageId上次查询的最大messageId, 如果不设置,默认为最新的
-    query.maxId=1397;
+//限制1397这个messageId上次查询的最大messageId, 如果不设置,默认为最新的
+query.maxId=1397;
 
-    //需要同时附带发送者的数据
-    [query includeKey:@"source"];
+//需要同时附带发送者的数据
+[query includeKey:@"source"];
 
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        //获得AVStatus数组
-    }];
+[query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+    //获得AVStatus数组
+}];
+```
 
 同理, 可以获得用户的私信,只要把参数改为`kAVStatusTypePrivateMessage`。返回的`AVStatus`对象有一个`messageId`属性，用于唯一表示这条Status在这个inbox里的标示符。可以用这个id结合query做分页查询。
 
@@ -364,63 +373,65 @@ query.find().then(function(statuses){
 
 下面的代码是某个用户发送出去的状态,**请注意,查询发送出去的状态,是无法用messageId(sinceId,maxId)来做分片查询的,因为messageId只是相对于某个用户的Inbox才有意义, 同时返回的状态中也没有messageId的数据**
 
-	AVStatusQuery *query=[AVStatus statusQuery];
+```objc
+AVStatusQuery *query=[AVStatus statusQuery];
 
-	//设置查询某个用户, 默认是查询当前用户
-    [query whereKey:@"source" equalTo:<AVUser>];
+//设置查询某个用户, 默认是查询当前用户
+[query whereKey:@"source" equalTo:<AVUser>];
 
-    //限制条数
-    query.limit=20;
+//限制条数
+query.limit=20;
 
-    //设置消息类型
-    query.inboxType=kAVStatusTypeTimeline;
+//设置消息类型
+query.inboxType=kAVStatusTypeTimeline;
 
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        //获得AVStatus数组
-    }];
+[query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+    //获得AVStatus数组
+}];
+```
 
 ## Android SDK中的使用方法
 
  Android的事件流已经正式发布，欢迎尝试！
- 
+
 ### 好友关系
 
 #### 关注和取消关注
 
 登陆的用户可以关注其他用户，成为他们的粉丝，例如：
 
-    //关注
-    AVUser.getCurrentUser().followInBackground(userObjectId, new FollowCallback() {
-            @Override
-            public void done(AVObject object, AVException e) {
-                if (e == null) {
-                    Log.i(TAG, "follow succeed.");
-                } else if (e.getCode() == AVException.DUPLICATE_VALUE) {
-                    Log.w(TAG, "Already followed.");
-                }
+```java
+//关注
+AVUser.getCurrentUser().followInBackground(userObjectId, new FollowCallback() {
+        @Override
+        public void done(AVObject object, AVException e) {
+            if (e == null) {
+                Log.i(TAG, "follow succeed.");
+            } else if (e.getCode() == AVException.DUPLICATE_VALUE) {
+                Log.w(TAG, "Already followed.");
             }
-        });
+        }
+    });
 
-
-    //取消关注
-    AVUser.getCurrentUser().unfollowInBackground("the user object id", new FollowCallback() {
-            @Override
-            public void done(AVObject object, AVException e) {
-                if (e == null) {
-                    Log.i(TAG, "unfollow succeed.");
-                } else {
-                    Log.w(TAG, "unfollow failed.");
-                }
+//取消关注
+AVUser.getCurrentUser().unfollowInBackground("the user object id", new FollowCallback() {
+        @Override
+        public void done(AVObject object, AVException e) {
+            if (e == null) {
+                Log.i(TAG, "unfollow succeed.");
+            } else {
+                Log.w(TAG, "unfollow failed.");
             }
-        });
-
+        }
+    });
+```
 
 如果您在应用设置的应用选项里勾选了`自动互相关注（事件流）`，那么在当前用户关注某个人，那个人也会自动关注当前用户。
 
 
 从 2.6.7 版本开始，我们允许在 follow 的时候同时传入一个 attribute 列表，用于设置关系的属性，这些属性都将在 `_Follower` 和 `_Followee` 表同时存在:
 
-```
+```java
 Map<String, Object> attributes = ......
 AVUser.getCurrentUser().followInBackground("target user objectId", attributes, new FollowCallback{
             @Override
@@ -434,65 +445,70 @@ AVUser.getCurrentUser().followInBackground("target user objectId", attributes, n
 
 您可以使用followerQuery/followeeQuery来查询您的粉丝/关注列表，这样可以设置更多的查询条件，比如
 
-        // 其中userA是AVUser对象，您也可以使用AVUser的子类化对象进行查询
-        //vhaxun粉丝
-        AVQuery<AVUser> followerQuery = userA.followerQuery(AVUser.class);
-        //AVQuery<AVUser> followerQuery = AVUser.followerQuery(userA.getObjectId(),AVUser.class); 也可以使用这个静态方法来获取非登陆用户的好友关系
-        followerQuery.findInBackground(new FindCallback<AVUser>() {
-            @Override
-            public void done(List<AVUser> parseObjects, AVException parseException) {
-                // parseObjects包含了userA的粉丝列表
-            }
-        });
+```java
+// 其中userA是AVUser对象，您也可以使用AVUser的子类化对象进行查询
+//vhaxun粉丝
+AVQuery<AVUser> followerQuery = userA.followerQuery(AVUser.class);
+//AVQuery<AVUser> followerQuery = AVUser.followerQuery(userA.getObjectId(),AVUser.class); 也可以使用这个静态方法来获取非登陆用户的好友关系
+followerQuery.findInBackground(new FindCallback<AVUser>() {
+    @Override
+    public void done(List<AVUser> parseObjects, AVException parseException) {
+        // parseObjects包含了userA的粉丝列表
+    }
+});
 
-		//查询关注者
-        AVQuery<AVUser> followeeQuery = AVUser.followeeQuery(userB.getObjectId(), AVUser.class);
-        //AVQuery<AVUser> followeeQuery = userB.followeeQuery(AVUser.class);
-        followeeQuery.findInBackground(new FindCallback<AVUser>() {
-            @Override
-            public void done(List<AVUser> parseObjects, AVException parseException) {
-                //parseObjects就是用户的关注用户列表
- 
-            }
-        });
+//查询关注者
+AVQuery<AVUser> followeeQuery = AVUser.followeeQuery(userB.getObjectId(), AVUser.class);
+//AVQuery<AVUser> followeeQuery = userB.followeeQuery(AVUser.class);
+followeeQuery.findInBackground(new FindCallback<AVUser>() {
+    @Override
+    public void done(List<AVUser> parseObjects, AVException parseException) {
+        //parseObjects就是用户的关注用户列表
+
+    }
+});
+```
 
 通过AVQuery，您也可以增加skip或者limit操作来分页查询，比如
 
-            AVQuery<AVUser> followerSkipQuery = AVUser.followerQuery(userA.getObjectId(), AVUser.class);
-            followerSkipQuery.setLimit(50);
-            followerSkipQuery.skip(100);
-            followerSkipQuery.findInBackground(new FindCallback<AVUser>() {
-                @Override
-                public void done(List<AVUser> parseObjects, AVException parseException) {
-                    // parseObjects.size() == 1
-                }
-            });
+```java
+    AVQuery<AVUser> followerSkipQuery = AVUser.followerQuery(userA.getObjectId(), AVUser.class);
+    followerSkipQuery.setLimit(50);
+    followerSkipQuery.skip(100);
+    followerSkipQuery.findInBackground(new FindCallback<AVUser>() {
+        @Override
+        public void done(List<AVUser> parseObjects, AVException parseException) {
+            // parseObjects.size() == 1
         }
+    });
+}
+```
 
 您也可以查找某个特定的粉丝，比如
 
-        AVQuery<AVUser> followerNameQuery = userA.followerQuery(userA.getObjectId(), AVUser.class);
-        followerNameQuery.whereEqualTo("follower", userC);
-        followerNameQuery.findInBackground(new FindCallback<AVUser>() {
-            @Override
-            public void done(List<AVUser> parseObjects, AVException parseException) {
-                // parseObjects中应当只包含userC
-            }
-        });
-        
+```java
+AVQuery<AVUser> followerNameQuery = userA.followerQuery(userA.getObjectId(), AVUser.class);
+followerNameQuery.whereEqualTo("follower", userC);
+followerNameQuery.findInBackground(new FindCallback<AVUser>() {
+    @Override
+    public void done(List<AVUser> parseObjects, AVException parseException) {
+        // parseObjects中应当只包含userC
+    }
+});
+```
+
 总之 `followerQuery` 和 `followeeQuery` 返回的 AVQuery 可以增加其他查询条件，只要在`_Followee`和`_Follower` 表里存在的属性都可以作为查询或者排序条件。
-     
+
 
 **注：默认的得到的AVUser对象仅仅有ObjectId数据，如果需要整个AVUser对象所有属性，则需要调用include方法**。例如
 
-```
-        AVQuery<AVUser> followerNameQuery = AVUser.followerQuery(userA.getObjectId(), AVUser.class);
-        followerNameQuery.include("follower");
+```java
+AVQuery<AVUser> followerNameQuery = AVUser.followerQuery(userA.getObjectId(), AVUser.class);
+followerNameQuery.include("follower");
 
-        AVQuery<AVUser> followeeNameQuery = AVUser.followeeQuery(userA.getObjectId(), AVUser.class);
-        followerNameQuery.include("followee");
+AVQuery<AVUser> followeeNameQuery = AVUser.followeeQuery(userA.getObjectId(), AVUser.class);
+followerNameQuery.include("followee");
 ```
-
 
 ### 状态
 
@@ -500,22 +516,23 @@ AVUser.getCurrentUser().followInBackground("target user objectId", attributes, n
 
 发布一条时间线状态, 即发一条我的粉丝可以看到的状态
 
-    AVStatus status= new AVStatus();
-    // 或者您也可以使用静态方法
-    // AVStatus status = AVStatus.createStatus("my image", "my message");
-    status.setImageUrl("myImageUrl");
-    status.setMessage("myMessage");
-    // 或者您也可以使用方法
-    // setData(Map<String, Object> data)
+```java
+AVStatus status= new AVStatus();
+// 或者您也可以使用静态方法
+// AVStatus status = AVStatus.createStatus("my image", "my message");
+status.setImageUrl("myImageUrl");
+status.setMessage("myMessage");
+// 或者您也可以使用方法
+// setData(Map<String, Object> data)
 
-    AVUser.logIn("myUserName", "myPassword");
-    AVStatus.sendStatusToFollowersInBackgroud(status, new SaveCallback() {
-        @Override
-        public void done(AVException parseException) {
-            Log.i(TAG, "Send status finished.");
-        }
-    });
-
+AVUser.logIn("myUserName", "myPassword");
+AVStatus.sendStatusToFollowersInBackgroud(status, new SaveCallback() {
+    @Override
+    public void done(AVException parseException) {
+        Log.i(TAG, "Send status finished.");
+    }
+});
+```
 
 其中`status.setData`可以任意指定Map<String, Object>数据. **注意: 这个map中的source字段不可用**
 
@@ -525,51 +542,53 @@ AVUser.getCurrentUser().followInBackground("target user objectId", attributes, n
 给某个用户发私信也非常简单
 
 
-    AVStatus status = AVStatus.createStatus("test image", "test message");
-    AVStatus.sendPrivateStatusInBackgroud(status, "user object id", new SaveCallback() {
-        @Override
-        public void done(AVException parseException) {
-            Log.i(TAG, "Send private status finished.");
-        }
-    });
-
+```java
+AVStatus status = AVStatus.createStatus("test image", "test message");
+AVStatus.sendPrivateStatusInBackgroud(status, "user object id", new SaveCallback() {
+    @Override
+    public void done(AVException parseException) {
+        Log.i(TAG, "Send private status finished.");
+    }
+});
+```
 
 #### 自定义Status
 
 除了上面常见两种场景, 自定义Status可以通过设置**受众群体和发送者**来实现更加灵活的功能
 
-    Map<String, Object> data = new HashMap<String, Object>();
-    data.put("text", "we have new website, take a look!");
-    data.put("link", "http://leancloud.cn");
-    AVStatus status = AVStatus.createStatusWithData(data);
-    status.setInboxType("system");
+```java
+Map<String, Object> data = new HashMap<String, Object>();
+data.put("text", "we have new website, take a look!");
+data.put("link", "http://leancloud.cn");
+AVStatus status = AVStatus.createStatusWithData(data);
+status.setInboxType("system");
 
-        status.sendInBackgroundWithBlock(new SaveCallback() {
-            @Override
-            public void done(AVException e) {
-                Log.i(TAG, "Send finished");
+    status.sendInBackgroundWithBlock(new SaveCallback() {
+        @Override
+        public void done(AVException e) {
+            Log.i(TAG, "Send finished");
 
-            }
-        });
+        }
+    });
+```
 
 上面是系统广播的基本实现. 因为指定了一个无条件的AVUser查询,所以会发送给所有的用户, 指定了`inboxType`是`system`或者任意字符串, 则所有用户会在查询这个类型的状态中看到这一条.我们在SDK中间为您准备两种预定的类型:`AVStatus.INBOX_TYPE.TIMELINE`和`AVStatus.INBOX_TYPE.PRIVATE`。
-
 
 #### 获取收件箱状态
 
 下面代码会获取用户收件箱内时间线上的50条状态
 
+```java
+AVStatusQuery<AVStatus> inboxQuery = AVStatus.inboxQuery(AVStatus.class, userB,AVStatus.INBOX_TYPE.TIMELINE.toString());
+inboxQuery.setLimit(50);  //设置最多返回50条状态
+inboxQuery.setSinceId(0);  //查询返回的status的messageId必须大于sinceId，默认为0
+inboxQuery.findInBackground(new InboxStatusFindCallback(){
+  @Override
+  public void done(final List<AVStatus> parseObjects, final AVException parseException) {
 
-      AVStatusQuery<AVStatus> inboxQuery = AVStatus.inboxQuery(AVStatus.class, userB,AVStatus.INBOX_TYPE.TIMELINE.toString());
-      inboxQuery.setLimit(50);  //设置最多返回50条状态
-      inboxQuery.setSinceId(0);  //查询返回的status的messageId必须大于sinceId，默认为0
-      inboxQuery.findInBackground(new InboxStatusFindCallback(){
-        @Override
-        public void done(final List<AVStatus> parseObjects, final AVException parseException) {
-
-        }
-      });
-
+  }
+});
+```
 
 同理, 可以获得用户收件箱的私信,只要把type参数改为`AVStatus.INBOX_TYPE.PRIVATE.toString()`即可
 
@@ -586,7 +605,7 @@ AVUser.getCurrentUser().followInBackground("target user objectId", attributes, n
 
 使用`AVStatus.getUnreadStatusesCountInBackground`方法可以查询收件箱的未读status数目和总status数目：
 
-```
+```java
 AVStatus.getUnreadStatusesCountInBackground(AVStatus.INBOX_TYPE.TIMELINE.toString(), new CountCallback() {
         public void done(int count, AVException e) {
             if (e == null) {
@@ -602,18 +621,18 @@ AVStatus.getUnreadStatusesCountInBackground(AVStatus.INBOX_TYPE.TIMELINE.toStrin
 
 下面的代码能够查询当前用户发件箱内已经发送的50条状态
 
+```java
+AVStatusQuery<AVStatus> query = AVStatus.statusQuery(AVStatus.class,AVUser.getCurrentUser());
+query.setLimit(50);    //设置最多返回50条状态
+query.setSinceId(0);   //查询返回的status的messageId必须大于sinceId，默认为0
+//query.setInboxType(AVStatus.INBOX_TYPE.TIMELINE.toString()); 此处可以通过这个方法来添加查询的状态条件，当然这里你也可以用你自己定义的状态类型，因为这里接受的其实是一个字符串类型。
+query.findInBackground(new FindCallback<AVStatus>(){
+  @Override
+  public void done(final List<AVStatus> parseObjects,final AVException parseException) {
 
-      AVStatusQuery<AVStatus> query = AVStatus.statusQuery(AVStatus.class,AVUser.getCurrentUser());
-      query.setLimit(50);    //设置最多返回50条状态
-      query.setSinceId(0);   //查询返回的status的messageId必须大于sinceId，默认为0
-      //query.setInboxType(AVStatus.INBOX_TYPE.TIMELINE.toString()); 此处可以通过这个方法来添加查询的状态条件，当然这里你也可以用你自己定义的状态类型，因为这里接受的其实是一个字符串类型。
-      query.findInBackground(new FindCallback<AVStatus>(){
-        @Override
-        public void done(final List<AVStatus> parseObjects,final AVException parseException) {
-
-        }
-      });
-
+  }
+});
+```
 
 ## REST API
 
@@ -629,13 +648,13 @@ AVStatus.getUnreadStatusesCountInBackground(AVStatus.INBOX_TYPE.TIMELINE.toStrin
 #### 关注和取消关注用户 API
 
 通过操作 `/users/:user_id/friendship/:target_id` 资源可以关注或者取消关注某个用户，其中：
-  
+
 * `:user_id` 表示发起关注动作的用户的 objectId，(如果设置了`X-AVOSCloud-Session-Token`头, 可以为`self`表示当前登录用户)
 * `:target_id` 表示想要关注的目标用户的 objectId
 
 例如，让当前用户 `51fa6886e4b0cc0b5a3792e9` 关注目标用户 `51e3a334e4b0b3eb44adbe1a`：
 
-```
+```sh
 curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
@@ -647,7 +666,7 @@ curl -X POST \
 
 取消关注通过:
 
-```
+```sh
 curl -X DELETE \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
@@ -657,7 +676,7 @@ curl -X DELETE \
 
 关注还可以增加一些属性：
 
-```
+```sh
 curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
@@ -672,7 +691,7 @@ curl -X POST \
 
 查询粉丝列表（也就是关注我的人），可以通过：
 
-```
+```sh
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
@@ -682,7 +701,7 @@ curl -X GET \
 
 返回的用户列表是 Pointer 类型，如果想要将用户信息也返回，需要 include:
 
-```
+```sh
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
@@ -694,7 +713,7 @@ curl -X GET \
 
 查询关注的用户列表：
 
-```
+```sh
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
@@ -706,7 +725,7 @@ curl -X GET \
 
 同时查询粉丝和关注的人：
 
-```
+```sh
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
@@ -718,13 +737,13 @@ curl -X GET \
 
 结果返回：
 
-```
+```json
 {followers: [粉丝列表], followees: [关注用户列表]}
 ```
 
 如果指定count=1，则返回结果里加上followers_count和followees_count 表示粉丝数目和关注者数目：
 
-```
+```sh
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
@@ -762,7 +781,7 @@ POST /statuses
 
 示例1，往 dennis 的粉丝群体发送一条status：
 
-```
+```sh
 curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
@@ -790,18 +809,18 @@ curl -X POST \
 
 这条状态的内容是 data 指定的，并且设定 inboxType 是 `default`：
 
-```
+```json
 {
      "image": "paas-files.qiniudn.comwQUf3WohbJpyuXutPjKHPmkSj4gbiYMeNJmTulNo.jpg",
       "message": "AVOS Cloud is great!"
 }
-```      
+```
 
-这条状态的目标用户群体是 query 指定的查询条件，查询的是`_Follower`表中 `dennis id`的粉丝用户。   
+这条状态的目标用户群体是 query 指定的查询条件，查询的是`_Follower`表中 `dennis id`的粉丝用户。
 
 示例2，dennis向catty发送私信的请求类似：
 
-```
+```json
 {
     "data": {
         "message": "hello catty!"
@@ -859,7 +878,7 @@ GET /subscribe/statuses
 
 * 示例1，查询我的主页 timeline:
 
-```
+```sh
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
@@ -871,21 +890,21 @@ curl -X GET \
 
 * 示例2，查询我的最新私信列表
 
-```
+```sh
     --data-urlencode 'owner={"__type":"Pointer","className":"_User","objectId":"dennis"}' \
     --data-urlencode 'inboxType=private'
 ```
 
 * 示例3，假设上次返回的最大messageId是99，查询从mesageId为99开始最新的status:
 
-```
+```sh
     --data-urlencode 'owner={"__type":"Pointer", "className":"_User","objectId":"dennis"}' \
     --data-urlencode 'sinceId=99'
 ```
 
 * 示例4，查询messageId在99到199之间的status：
 
-```
+```sh
     --data-urlencode 'owner={"__type":"Pointer","className":"_User","objectId":"dennis"}' \
     --data-urlencode 'sinceId=99' \
     --data-urlencode 'maxId=199'
@@ -893,7 +912,7 @@ curl -X GET \
 
 * 示例5，查询最新的status，并且status的image属性存在，也就是查询包含图片的最新status:
 
-```
+```sh
     --data-urlencode 'owner={"__type":"Pointer","className":"_User","objectId":"dennis"}' \
     --data-urlencode 'where={"image":{"$exists":true }}'
 ```
@@ -907,13 +926,13 @@ GET "/subscribe/statuses/count
 ```
 
 可指定的条件：
- 
+
  * owner JSON序列化后的owner字符串，表示inbox所有者。
  * inboxType inbox类型，默认为`default`，可为空
 
 示例1,查询我的未读消息数目
 
-```
+```sh
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
@@ -925,13 +944,13 @@ curl -X GET \
 
 返回：
 
-```
+```json
 { "total": 100, "unread":20}
 ```
 
 示例2，查询私信消息数目：
 
-```
+```sh
 curl -X GET \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
@@ -941,4 +960,3 @@ curl -X GET \
    --data-urlencode 'inboxType=private' \
    https://leancloud.cn/1.1/subscribe/statuses/count
 ```
-
