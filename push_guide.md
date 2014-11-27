@@ -45,7 +45,7 @@ Installation 表示一个允许推送的设备的唯一标示，对应[数据管
 
 在保存installation前，要先通过下列代码获取用户推送权限：
 
-```
+```objc
 // Before iOS 8:
 - (BOOL)application:(UIApplication *)application
 didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -58,7 +58,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     ...
 }
 ```
-```
+```objc
 //For iOS 8:
 - (BOOL)application:(UIApplication *)application
 didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -75,7 +75,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
 在iOS设备中，Installation的类是AVInstallation，并且是AVObject的子类，使用同样的API存储和查询。如果要访问当前应用的Installation对象，可以通过`[AVInstallation currentInstallation]`方法。当你第一次保存AVInstallation的时候，它会插入`_Installation`表，你可以在[数据管理](/data.html?appid={{appid}})平台看到和查询。当deviceToken一被保存，你就可以向这台设备推送消息了。
 
-```
+```objc
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     AVInstallation *currentInstallation = [AVInstallation currentInstallation];
     [currentInstallation setDeviceTokenFromData:deviceToken];
@@ -102,7 +102,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
 订阅"Giants"频道：
 
-```
+```objc
 // When users indicate they are Giants fans, we subscribe them to that channel.
 AVInstallation *currentInstallation = [AVInstallation currentInstallation];
 [currentInstallation addUniqueObject:@"Giants" forKey:@"channels"];
@@ -113,7 +113,7 @@ AVInstallation *currentInstallation = [AVInstallation currentInstallation];
 
 退订：
 
-```
+```objc
 // When users indicate they are no longer Giants fans, we unsubscribe them.
 AVInstallation *currentInstallation = [AVInstallation currentInstallation];
 [currentInstallation removeObject:@"Giants" forKey:@"channels"];
@@ -122,7 +122,7 @@ AVInstallation *currentInstallation = [AVInstallation currentInstallation];
 
 获取所有订阅的频道：
 
-```
+```objc
 NSArray *subscribedChannels = [AVInstallation currentInstallation].channels;
 ```
 
@@ -130,7 +130,7 @@ NSArray *subscribedChannels = [AVInstallation currentInstallation].channels;
 
 例如，发送消息到刚才订阅的"Giants"频道：
 
-```
+```objc
 // Send a notification to all devices subscribed to the "Giants" channel.
 AVPush *push = [[AVPush alloc] init];
 [push setChannel:@"Giants"];
@@ -140,7 +140,7 @@ AVPush *push = [[AVPush alloc] init];
 
 如果你想发送到多个频道，可以指定channels数组:
 
-```
+```objc
 NSArray *channels = [NSArray arrayWithObjects:@"Giants", @"Mets", nil];
 AVPush *push = [[AVPush alloc] init];
 
@@ -160,7 +160,7 @@ AVPush *push = [[AVPush alloc] init];
 
 为AVInstallation添加三个新字段：
 
-```
+```objc
 // Store app language and version
 AVInstallation *installation = [AVInstallation currentInstallation];
 [installation setObject:@(YES) forKey:@"scores"];
@@ -173,7 +173,7 @@ AVInstallation *installation = [AVInstallation currentInstallation];
 
 设置，你可以给Installation添加owner属性，比如当前的登陆用户：
 
-```
+```objc
 // Saving the device's owner
 AVInstallation *installation = [AVInstallation currentInstallation];
 [installation setObject:[AVUser currentUser] forKey:@"owner"];
@@ -185,7 +185,7 @@ AVInstallation *installation = [AVInstallation currentInstallation];
 一旦Installation保存了你的应用数据，你可以使用`AVQuery`来查询出设备的一个子集做推送。Installation的查询跟其他对象的查询没有什么不同，只是使用特殊的静态方法
 `[AVInstallation query]`创建查询对象：
 
-```
+```objc
 // Create our Installation query
 AVQuery *pushQuery = [AVInstallation query];
 [pushQuery whereKey:@"injuryReports" equalTo:@(YES)];
@@ -199,7 +199,7 @@ AVPush *push = [[AVPush alloc] init];
 
 你也可以在查询中添加channels的条件：
 
-```
+```objc
 // Create our Installation query
 AVQuery *pushQuery = [AVInstallation query];
 [pushQuery whereKey:@"channels" equalTo:@"Giants"]; // Set channel
@@ -214,7 +214,7 @@ AVPush *push = [[AVPush alloc] init];
 
 如果你在Installation还保存了其他对象的关系，我们同样可以在查询条件中使用这些数据，例如，向靠近北京大学的设备推送消息：
 
-```
+```objc
 // Find users near a given location
 AVQuery *userQuery = [AVUser query];
 [userQuery whereKey:@"location"
@@ -250,7 +250,7 @@ AVPush *push = [[AVPush alloc] init];
 
 例如，递增badge数字，并播放声音可以这样做:
 
-```
+```objc
 NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
     @"The Mets scored! The game is now tied 1-1!", @"alert",
     @"Increment", @"badge",
@@ -264,7 +264,7 @@ AVPush *push = [[AVPush alloc] init];
 
 当然，你还可以添加其他自定义的数据。你会在接收推送一节看到，当应用通过推送打开你的App的时候，你就可以访问这些数据。当你要在用户打开通知的时候显示一个不同的view controller的时候，这特别有用。
 
-```
+```objc
 NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys:
     @"Ricky Vaughn was injured in last night's game!", @"alert",
     @"Vaughn", @"name",
@@ -284,7 +284,7 @@ AVPush *push = [[AVPush alloc] init];
 
 AVPush提供了两个方法来设置通知的过期日期，首先是expireAtDate：接收NSDate来告诉LeanCloud 不要再去发送通知。
 
-```
+```objc
 NSDateComponents *comps = [[NSDateComponents alloc] init];
 [comps setYear:2013];
 [comps setMonth:10];
@@ -303,7 +303,7 @@ AVPush *push = [[AVPush alloc] init];
 
 这个方法有个隐患，因为设备的时钟是无法保证精确的，你可能得到错误的结果。因此，AVPush还提供了expireAfterTimeInterval方法，接收NSTimeInterval对象。通知将在指定间隔时间后失效：
 
-```
+```objc
 // Create time interval
 NSTimeInterval interval = 60*60*24*7; // 1 week
 
@@ -321,7 +321,7 @@ AVPush *push = [[AVPush alloc] init];
 
 跨平台的应用，可能想指定发送的平台，比如ios或者android:
 
-```
+```objc
 AVQuery *query = [AVInstallation query];
 [query whereKey:@"channels" equalTo:@"suitcaseOwners"];
 
@@ -352,7 +352,7 @@ AVPush *iOSPush = [[AVPush alloc] init];
 
 由于Apple的对消息大小的限制，请尽量缩小要发送的数据大小，否则可能被截断：
 
-```
+```objc
 NSDictionary *data = @{
   @"alert": @"James commented on your photo!",
   @"p": @"vmRZXZ1Dvo" // Photo's object id
@@ -367,7 +367,7 @@ AVPush *push = [[AVPush alloc] init];
 
 当应用是被通知打开的时候，, 你可以通过`application:didFinishLaunchingWithOptions: `方法的launchOptions dictionary访问到数据：
 
-```
+```objc
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   . . .
   // Extract the notification data
@@ -391,7 +391,7 @@ AVPush *push = [[AVPush alloc] init];
 
 如果当通知到达的时候，你的应用已经在运行，那么你可以通过`application:didReceiveRemoteNotification:fetchCompletionHandler:`方法的userInfo dictionary访问到数据：
 
-```
+```objc
 - (void)application:(UIApplication *)application
       didReceiveRemoteNotification:(NSDictionary *)userInfo
             fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {
@@ -422,7 +422,7 @@ AVPush *push = [[AVPush alloc] init];
 
 通过AVAnalytics你可以跟踪通知和应用的打开情况。添加下列代码到上面例子中的`application:didFinishLaunchingWithOptions: `方法来收集打开信息：
 
-```
+```objc
 if (application.applicationState != UIApplicationStateBackground) {
   // Track an app open here if we launch with a push, unless
   // "content_available" was used to trigger a background push (introduced
@@ -451,7 +451,7 @@ Application opens and push-related open rates will be available in your applicat
 
 如果应用在后台，并且用户点击了通知，那么应用将被带到前台可视，为了跟踪这种通过通知打开应用的情况，你需要在跟踪代码里多作一个检查：
 
-```
+```objc
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
   if (application.applicationState == UIApplicationStateActive) {
     // 此处可以写上应用激活状态下接收到通知的处理代码，如无需处理可忽略
@@ -463,7 +463,7 @@ Application opens and push-related open rates will be available in your applicat
 }
 ```
 如果使用iOS7 push的新特性（包括新的"content-available" 功能），你需要实现iOS7新加的方法：
-```
+```objc
 - (void)application:(UIApplication *)application
         didReceiveRemoteNotification:(NSDictionary *)userInfo
         fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
@@ -483,7 +483,7 @@ Application opens and push-related open rates will be available in your applicat
 
 清除Badge数字的最好时机是打开App的时候。 设置当前installation的badge属性并保存到服务器:
 
-```
+```objc
 - (void)applicationDidBecomeActive:(UIApplication *)application {
   AVInstallation *currentInstallation = [AVInstallation currentInstallation];
   if (currentInstallation.badge != 0) {
@@ -516,7 +516,7 @@ Android 消息推送有专门的Demo，请见[AVOSCloud-Push](https://github.com
 您可以通过以下代码保存您的installation id。如果您的系统之前还没有installation id, 系统会为您自动生成一个。如果您的app卸载后，installation id也将会被删除。
 
 
-```
+```java
 AVInstallation.getCurrentInstallation().saveInBackground();
 
 ```
@@ -525,23 +525,23 @@ AVInstallation.getCurrentInstallation().saveInBackground();
 
 你的App可以订阅某个频道的消息，只要在保存Installation之前调用`PushService.subscribe`方法：
 
-```
-        // set a default callback. It's necessary for current SDK.
-        // 在v2.0以后的版本请务必添加这段代码，以避免推送无法成功达到客户端的问题
-        PushService.setDefaultPushCallback(this, PushDemo.class);
-        PushService.subscribe(this, "public", PushDemo.class);
-        PushService.subscribe(this, "private", Callback1.class);
-        PushService.subscribe(this, "protected", Callback2.class);
+```java
+// set a default callback. It's necessary for current SDK.
+// 在v2.0以后的版本请务必添加这段代码，以避免推送无法成功达到客户端的问题
+PushService.setDefaultPushCallback(this, PushDemo.class);
+PushService.subscribe(this, "public", PushDemo.class);
+PushService.subscribe(this, "private", Callback1.class);
+PushService.subscribe(this, "protected", Callback2.class);
 ```
 
 第一个参数是当前的context，第二个参数是频道名称，第三个参数是回调对象的类，回调对象是指用户点击通知栏的通知进入的Activity页面。
 
 退订频道也很简单：
 
-```
-  PushService.unsubscribe(context, "protected");
-  //退订之后需要重新保存Installation
-  AVInstallation.getCurrentInstallation().saveInBackground();
+```java
+PushService.unsubscribe(context, "protected");
+//退订之后需要重新保存Installation
+AVInstallation.getCurrentInstallation().saveInBackground();
 ```
 
 
@@ -550,32 +550,31 @@ AVInstallation.getCurrentInstallation().saveInBackground();
 #### 配置
 
 请确保您的AndroidManifest.xml 包含如下内容
-```
+```xml
 <service android:name="com.avos.avoscloud.PushService"/>
-
 ```
 
 同时设置了必要的权限
 
-```
-  <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+```xml
+<uses-permission android:name="android.permission.INTERNET"/>
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 ```
 
 为了让App能在关闭的情况下也可以收到push，你需要在`<application>`中加入：
 
-```
-        <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.USER_PRESENT" />
-            </intent-filter>
-        </receiver>
+```xml
+<receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
+    <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="android.intent.action.USER_PRESENT" />
+    </intent-filter>
+</receiver>
 ```
 
 #### 推送给所有的设备
 
-```
+```java
 AVPush push = new AVPush();
 JSONObject object = new JSONObject();
 object.put("alert", "push message to android device directly");
@@ -590,14 +589,13 @@ push.sendInBackground(new SendCallback() {
             // something wrong.
         }
     });
-
 ```
 
 #### 发送给特定的用户
 
 * 发送给public频道的用户
 
-```
+```java
 AVQuery pushQuery = AVInstallation.getQuery();
 pushQuery.whereEqualTo("channels", "public");
 AVPush push = new AVPush();
@@ -614,14 +612,12 @@ push.sendInBackground(new SendCallback() {
         }
     }
 });
-
 ```
 
 
 * 发送给某个installation id的用户，通常来说，你会将AVInstallation关联到设备的登陆用户AVUser上作为一个属性，然后就可以通过下列代码查询installationId的方式来发送消息给特定用户，实现类似私信的功能：
 
-```
-
+```java
 AVQuery pushQuery = AVInstallation.getQuery();
 pushQuery.whereEqualTo("installationId", THE_INSTALLATION_ID);
 AVPush.sendMessageInBackground("message to installation",  pushQuery, new SendCallback() {
@@ -630,11 +626,10 @@ AVPush.sendMessageInBackground("message to installation",  pushQuery, new SendCa
 
     }
 });
-
 ```
 
 在2.6.7以后，我们加入了通过CQL来筛选推送目标的功能，主要代码如下：
-```
+```java
     AVPush push = new AVPush();
     JSONObject data =
         new JSONObject(
@@ -650,14 +645,13 @@ AVPush.sendMessageInBackground("message to installation",  pushQuery, new SendCa
 
       }
     });
-  
 ```
 *注：CQL与AVQuery同时只能设置一个，并且在设置CQL时，请通过CQL来设置目标机器的类型(ios,android,wp)*
 #### 自定义 Receiver
 
 如果您想推送消息，但不显示在Andoid系统的通知栏中，而是执行应用程序预定义的逻辑，则可以发送类似下列这样的请求
 
-```
+```sh
 curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}"          \
   -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
@@ -678,16 +672,15 @@ curl -X POST \
 
 AndroidManifest.xml中声明您的receiver
 
-```
-        <receiver android:name="com.avos.avoscloud.PushDemo.MyCustomReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="com.avos.UPDATE_STATUS" />
-            </intent-filter>
-        </receiver>
-
+```xml
+<receiver android:name="com.avos.avoscloud.PushDemo.MyCustomReceiver">
+    <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="android.intent.action.USER_PRESENT" />
+        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+        <action android:name="com.avos.UPDATE_STATUS" />
+    </intent-filter>
+</receiver>
 ```
 
 其中 com.avos.avoscloud.PushDemo.MyCustomReceiver 是您的android的receiver类。
@@ -698,7 +691,7 @@ AndroidManifest.xml中声明您的receiver
 您的receiver可以按照如下方式实现
 
 
-```
+```java
 public class MyCustomReceiver extends BroadcastReceiver {
     private static final String TAG = "MyCustomReceiver";
 
@@ -725,7 +718,7 @@ public class MyCustomReceiver extends BroadcastReceiver {
 #### 跟踪 Android 推送和 app 的打开情况
 您可以在订阅频道对应的 activity 中添加跟踪 app 打开情况的统计代码，您的 activity 可以按照如下方式实现 `onStart` 方法：
 
-```
+```java
 public class MyActivity extends Activity {
 	@Override
 	protected void onStart() {
@@ -750,7 +743,7 @@ public class MyActivity extends Activity {
 
 Windows Phone 8 的推送较为特殊，因为微软在设计的时候把推送消息定义为一个包含跳转页面信息的载体，比如微信推送：你单击微信发送的 Windows Phone 的 Toast 推送消息，单击进去之后，它不是打开微信的默认首页（假如叫做Main.xaml），而是进入某一个聊天的具体的页面（假如叫做chat.xaml）。这种场景微软是通过在推送消息里面包含了代码逻辑来实现的，比如要实现刚才这一套流程，微信服务端必须向微软的 MPNS 发送一个如下类似的消息（Http或者Https Post 请求）：
 
-```
+```xml
 <?xml version="1.0" encoding="utf-8"?>
     <wp:Notification xmlns:wp="WPNotification">
         <wp:Toast>
@@ -765,17 +758,17 @@ Windows Phone 8 的推送较为特殊，因为微软在设计的时候把推送�
 针对 Windows Phone 8 的特殊性，LeanCloud 采用了统一接口去处理，如下 C# 代码可以实现以上所说的功能：
 在 LeanCloud 所有 .NET 语言 SDK 均可如下进行操作。（注：Unity 暂时不支持.Wait（）方法 和 await 关键字，所以它需要使用任务的链式表达，详情请查看 Unity 的文档。）
 
-```
-  AVPush avPush = new AVPush();
-  avPush.Data = new Dictionary<string, object>();
-  avPush.Data.Add("title", "微信");
-  avPush.Data.Add("alert", "您有一条聊天消息");
-  avPush.Data.Add("wp-param", "/chat.xaml?NavigatedFrom=Toast Notification");
-  await avPush.SendAsync()；
+```javascript
+AVPush avPush = new AVPush();
+avPush.Data = new Dictionary<string, object>();
+avPush.Data.Add("title", "微信");
+avPush.Data.Add("alert", "您有一条聊天消息");
+avPush.Data.Add("wp-param", "/chat.xaml?NavigatedFrom=Toast Notification");
+await avPush.SendAsync()；
 ```
 ### 推送给所有的设备
 
-```
+```javascript
 AVPush push = new AVPush();
 push.Alert = "message to all devices.";
 var task = push.SendAsync();
@@ -786,12 +779,12 @@ await task;
 ### 发送给特定的用户
 发送给public频道的用户：
 
-```
- AVPush push = new AVPush();
- push.Alert = "message to public channel.";
- push.Query = new AVQuery<AVInstallation>().WhereEqualTo("channels", "public");
- var task = push.SendAsync();
- await task;
+```javascript
+AVPush push = new AVPush();
+push.Alert = "message to public channel.";
+push.Query = new AVQuery<AVInstallation>().WhereEqualTo("channels", "public");
+var task = push.SendAsync();
+await task;
 ```
 
 
@@ -808,7 +801,7 @@ await task;
 
 iOS设备通常使用DeviceToken来惟一标识一台设备。
 
-```
+```sh
 curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}"          \
   -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
@@ -827,7 +820,7 @@ curl -X POST \
 
 对于Android设备，AVOS SDK会自动生成uuid作为installId保存到LeanCloud. 您可以使用以下REST API保存Android设备的installation ID.
 
-```
+```sh
 curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}"          \
   -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
@@ -844,7 +837,7 @@ curl -X POST \
 
 ##### 订阅频道
 
-```
+```sh
 curl -X PUT \
   -H "X-AVOSCloud-Application-Id: {{appid}}"          \
   -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
@@ -860,7 +853,7 @@ curl -X PUT \
 ### 推送消息
 
 #### 推送给所有的设备
-```
+```sh
 curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}"          \
   -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
@@ -877,26 +870,26 @@ curl -X POST \
 
 * 发送给public频道的用户
 
-```
-  curl -X POST \
-  -H "X-AVOSCloud-Application-Id: {{appid}}"          \
-  -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
-  -H "Content-Type: application/json" \
-  -d '{
-        "where":{
-          "channels":
-            {"$regex":"\\Qpublic\\E"}
-        },
-        "data": {
-          "alert": "Hello From LeanCloud."
-        }
-      }' \
-  https://leancloud.cn/1.1/push
+```sh
+curl -X POST \
+-H "X-AVOSCloud-Application-Id: {{appid}}"          \
+-H "X-AVOSCloud-Application-Key: {{appkey}}"        \
+-H "Content-Type: application/json" \
+-d '{
+      "where":{
+        "channels":
+          {"$regex":"\\Qpublic\\E"}
+      },
+      "data": {
+        "alert": "Hello From LeanCloud."
+      }
+    }' \
+https://leancloud.cn/1.1/push
 ```
 
 或者更简便的方式
 
-```
+```sh
 curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}"          \
   -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
@@ -913,45 +906,45 @@ curl -X POST \
 
 * 发送给某个installation id的用户
 
-```
-  curl -X POST \
-  -H "X-AVOSCloud-Application-Id: {{appid}}"          \
-  -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
-  -H "Content-Type: application/json" \
-  -d '{
-        "where":{
-            "installationId":"57234d4c-752f-4e78-81ad-a6d14048020d"
-            },
-        "data": {
-          "alert": "Hello From LeanCloud."
-        }
-      }' \
-  https://leancloud.cn/1.1/push
+```sh
+curl -X POST \
+-H "X-AVOSCloud-Application-Id: {{appid}}"          \
+-H "X-AVOSCloud-Application-Key: {{appkey}}"        \
+-H "Content-Type: application/json" \
+-d '{
+      "where":{
+          "installationId":"57234d4c-752f-4e78-81ad-a6d14048020d"
+          },
+      "data": {
+        "alert": "Hello From LeanCloud."
+      }
+    }' \
+https://leancloud.cn/1.1/push
 ```
 
 * 推送给不活跃的用户
 
-```
-  curl -X POST \
-  -H "X-AVOSCloud-Application-Id: {{appid}}"          \
-  -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
-  -H "Content-Type: application/json" \
-  -d '{
-        "where":{
-            "updatedAt":{
-                "$lt":{"__type":"Date","iso":"2013-06-29T11:33:53.323Z"}
-              }
-        },
-        "data": {
-            "alert": "Hello From LeanCloud."
-        }
-      }' \
-  https://leancloud.cn/1.1/push
+```sh
+curl -X POST \
+-H "X-AVOSCloud-Application-Id: {{appid}}"          \
+-H "X-AVOSCloud-Application-Key: {{appkey}}"        \
+-H "Content-Type: application/json" \
+-d '{
+      "where":{
+          "updatedAt":{
+              "$lt":{"__type":"Date","iso":"2013-06-29T11:33:53.323Z"}
+            }
+      },
+      "data": {
+          "alert": "Hello From LeanCloud."
+      }
+    }' \
+https://leancloud.cn/1.1/push
 ```
 
 * 根据查询条件做推送：
 
-```
+```sh
 curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}"          \
   -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
@@ -971,7 +964,7 @@ curl -X POST \
 
 * 根据地理信息位置做推送：
 
-```
+```sh
 curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}"          \
   -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
@@ -1004,18 +997,18 @@ curl -X POST \
 
 上述`where`的查询条件都可以使用 [CQL](./cql_guide.html) 查询替代，例如查询某个设备推送：
 
-```
-  curl -X POST \
-  -H "X-AVOSCloud-Application-Id: {{appid}}"          \
-  -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
-  -H "Content-Type: application/json" \
-  -d '{
-        "cql":"select * from _Installation where installationId='xxxxxxxxxxxxx'",
-        "data": {
-          "alert": "Hello From LeanCloud."
-        }
-      }' \
-  https://leancloud.cn/1.1/push
+```sh
+curl -X POST \
+-H "X-AVOSCloud-Application-Id: {{appid}}"          \
+-H "X-AVOSCloud-Application-Key: {{appkey}}"        \
+-H "Content-Type: application/json" \
+-d '{
+      "cql":"select * from _Installation where installationId='xxxxxxxxxxxxx'",
+      "data": {
+        "alert": "Hello From LeanCloud."
+      }
+    }' \
+https://leancloud.cn/1.1/push
 ```
 
 #### 推送消息属性
@@ -1023,7 +1016,7 @@ curl -X POST \
 ##### 消息过期
 
  过期时间，可以是绝对时间：
-```
+```sh
 curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}"          \
   -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
@@ -1038,7 +1031,7 @@ curl -X POST \
 ```
 
 也可以是相对时间（从推送API调用开始算起，结合push_time做定期推送）:
-```
+```sh
 curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}"          \
   -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
@@ -1055,7 +1048,7 @@ curl -X POST \
 
 ##### 定制消息属性：
 
-```
+```sh
 curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}"          \
   -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
@@ -1079,7 +1072,7 @@ curl -X POST \
 
 * 推送消息，但不显示在Andoid系统的通知栏中，而是执行应用程序预定义的逻辑
 
-```
+```sh
 curl -X POST \
   -H "X-AVOSCloud-Application-Id: {{appid}}"          \
   -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
@@ -1100,27 +1093,24 @@ curl -X POST \
 
 AndroidManifest.xml中声明您的receiver
 
+```xml
+<receiver android:name="com.avos.avoscloud.PushDemo.MyCustomReceiver">
+    <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="android.intent.action.USER_PRESENT" />
+        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+        <action android:name="com.avos.UPDATE_STATUS" />
+    </intent-filter>
+</receiver>
 ```
-        <receiver android:name="com.avos.avoscloud.PushDemo.MyCustomReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="com.avos.UPDATE_STATUS" />
-            </intent-filter>
-        </receiver>
 
-```
+其中 `com.avos.avoscloud.PushDemo.MyCustomReceiver` 是您的android的receiver类。
 
-其中 com.avos.avoscloud.PushDemo.MyCustomReceiver 是您的android的receiver类。
-
-而<action android:name="com.avos.UPDATE_STATUS" /> 需要与push的data中指定的action相对应。
-
+而 `<action android:name="com.avos.UPDATE_STATUS" />` 需要与push的data中指定的action相对应。
 
 您的receiver可以按照如下方式实现
 
-
-```
+```java
 public class MyCustomReceiver extends BroadcastReceiver {
     private static final String TAG = "MyCustomReceiver";
 
@@ -1144,15 +1134,3 @@ public class MyCustomReceiver extends BroadcastReceiver {
     }
 }
 ```
-
-
-
-
-
-
-
-
-
-
-
-
