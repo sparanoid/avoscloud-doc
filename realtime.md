@@ -185,8 +185,8 @@ app_id:peer_id:watch_peer_ids:timestamp:nonce:su
 
 ```
  public class MyApplication extends Application{
- 
-     public void onCreate(){ 
+
+     public void onCreate(){
          AVOSCloud.initialize(this,"{{appId}}","{{appKey}}");
      }
 }
@@ -215,11 +215,11 @@ app_id:peer_id:watch_peer_ids:timestamp:nonce:su
       @Override
       public void done(AVUser user, AVException e){
             //此处的selfId就是之前提到的用户的唯一标识符 Peer ID,
-            //应该替换成你现有用户系统中的唯一标识符，这里以我们提供的的用户系统为例            
+            //应该替换成你现有用户系统中的唯一标识符，这里以我们提供的的用户系统为例
             String selfId = user.getObjectId();
             Session session = SessionManager.getInstance(selfId);
             List<String> yourFriends = new List<String>();
-            .... //add your friends' peerIds 
+            .... //add your friends' peerIds
             session.open(yourFriends);
       }
    });
@@ -296,7 +296,7 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
    AVMessage msg = new AVMessage();
    msg.setMessage("这是一个普通的消息");
    //friendId是指目标用户的 peer id，也就是想接收这条消息的用户。
-   msg.setToPeerIds(Arrays.asList(friendId));   
+   msg.setToPeerIds(Arrays.asList(friendId));
    session.sendMessage(msg);
 ```
 
@@ -308,7 +308,7 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
   @Override
   public void onMessageSent(Context context, Session session, AVMessage msg) {
     //这个时间是来自服务器端的时间，这样即便是多台设备中间也不会出现时间的混乱
-     System.out.println("消息发送成功了，发送成功时间是"+msg.getTimestamp());  
+     System.out.println("消息发送成功了，发送成功时间是"+msg.getTimestamp());
   }
 
   @Override
@@ -362,7 +362,7 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
   public void onMessageDelivered(Context context, Session session, AVMessage msg) {
     //消息真正到达用户了
     System.out.println(msg.getMessage() + "delivered at " + msg.getReceiptTimestamp());
-  } 
+  }
 }
 ```
 
@@ -377,7 +377,7 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
     HashMap<String, Object> params = new HashMap<String, Object>();
     params.put("type", "file");
     params.put("content", "https://cn.avoscloud.com/images/static/partner-iw.png");
-    AVMessage msg = new AVMessage(JSON.toJSONString(params));    
+    AVMessage msg = new AVMessage(JSON.toJSONString(params));
 ```
 
 您也可以采用其他序列化方案，只要中间格式是文本即可。
@@ -571,7 +571,7 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 ```
     Session session = Session.getInstance(selfId);
     Group group = session.getGroup(groupId);
-    group.quit(); 
+    group.quit();
 ```
 
 如果你想要监听是否真正成功退组，你可以在Receiver中进行检测：
@@ -606,12 +606,12 @@ public class KeepAliveSignatureFactory implements SignatureFactory {
    Map<String,Object> params = new HashMap<String,Object>();
    params.put("self_id",peerId);
    params.put("watch_ids",watchIds);
-   
+
    try{
      Object result =  AVCloud.callFunction("sign",params);
      if(result instanceof Map){
        Map<String,Object> serverSignature = (Map<String,Object>) result;
-       Signature signature = new Signature();     
+       Signature signature = new Signature();
        signature.setSignature((String)serverSignature.get("signature"));
        signature.setTimestamp((Long)serverSignature.get("timestamp"));
        signature.setNonce((String)serverSignature.get("nonce"));
@@ -630,12 +630,12 @@ public class KeepAliveSignatureFactory implements SignatureFactory {
    params.put("group_id",groupId);
    params.put("group_peer_ids",targetPeerIds);
    params.put("action",action);
-   
+
    try{
      Object result = AVCloud.callFunction("group_sign",params);
      if(result instanceof Map){
         Map<String,Object> serverSignature = (Map<String,Object>) result;
-        Signature signature = new Signature();     
+        Signature signature = new Signature();
         signature.setSignature((String)serverSignature.get("signature"));
         signature.setTimestamp((Long)serverSignature.get("timestamp"));
         signature.setNonce((String)serverSignature.get("nonce"));
@@ -675,7 +675,7 @@ public class KeepAliveSignatureFactory implements SignatureFactory {
            //messages 即是历史消息记录
     }
   });
-  
+
   //查询群组里的聊天记录
   Group group = sm.getGroup("140a534fd092809500e6d651e73400c7");
   //获取AVHistoryMessageQuery对象来查询聊天室的聊天记录
@@ -1146,10 +1146,10 @@ public class SampleSignatureFactory : ISignatureFactory
         public Task<Signature> CreateSignature(string peerId, IList<string> watchIds)
         {
             var data = new Dictionary<string, object>();
-            
+
             data.Add("self_id", peerId);//当前用户的 PeerId 作为self id 作为签名的参数。
             data.Add("watch_ids", watchIds);//关注的 Peer 作为签名的参数。
-            
+
             //调用云代码进行签名。
             return AVCloud.CallFunctionAsync<IDictionary<string, object>>("sign", data).ContinueWith<Signature>(t =>
             {
@@ -1161,7 +1161,7 @@ public class SampleSignatureFactory : ISignatureFactory
                 signature.Timestamp = (long)result["timestamp"];
                 return signature;//拼装成一个 Signature 对象
             });
-            
+
             //以上这段代码，开发者无需手动调用，只要开发者对一个 AVSession 设置了 SignatureFactory，SDK 会在Open Session 的时候主动调用这个方法进行签名。
         }
 
@@ -1211,7 +1211,12 @@ public class SampleSignatureFactory : ISignatureFactory
 
 当然可以。我们的Android聊天服务是和后台的推送服务共享连接的，所以只要有网络就永远在线，不需要专门做推送。消息达到后，你可以根据用户的设置来 判断是否需要弹出通知。网络断开时，我们为用户保存50条的离线消息。
 
-iOS在应用退出前台后即离线，这时收到消息会触发一个APNS的推送。因为APNS有消息长度限制，且你们的消息正文可能还包含上层协议，所以 我们现在APNS的推送内容是让应用在控制台设置一个静态的APNS json，如“你有新的未读消息” 。
+iOS在应用退出前台后即离线，这时收到消息会触发一个APNS的推送。因为APNS
+有消息长度限制，且你们的消息正文可能还包含上层协议，所以 我们现在APNS
+的推送内容是让应用在控制台设置一个静态的APNS json，如“你有新的未读消
+息” 。
+
+![image](images/rtm-push.png)
 
 ### 聊天记录
 
