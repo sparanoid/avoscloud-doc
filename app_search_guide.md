@@ -95,6 +95,7 @@ https://leancloud.cn/1.1/go/com.avoscloud.todo
 以我们的 Todo Demo 为例，我们启用了 Todo 的应用内搜索功能，选择了开放字段`content`，设定数据模板（消除了css）为：
 
 <div ng-non-bindable>
+
 ```html
 <div class="wrap">
   <div class="section section-open">
@@ -104,35 +105,35 @@ https://leancloud.cn/1.1/go/com.avoscloud.todo
   </div>
   <div class="section section-open">
     <div class="section-inner">
-    <p>已安装 {{applinks.app_name}}？您可以:</p>
-    <p><a href='{{app_uri}}' class="btn">直接打开应用</a></p>
+      <p>已安装 {{applinks.app_name}}？您可以:</p>
+      <p><a href='{{app_uri}}' class="btn">直接打开应用</a></p>
     </div>
   </div>
-   <div class="section section-download">
-  <div class="section-inner">
-    <p>或者下载应用:</p>
-    <div >
-    {{#if applinks.iphone_link}}
-      <p><a href='{{applinks.iphone_link}}'>iPhone 应用</a></p>
-    {{/if}}
+  <div class="section section-download">
+    <div class="section-inner">
+      <p>或者下载应用:</p>
+      <div >
+      {{#if applinks.iphone_link}}
+        <p><a href='{{applinks.iphone_link}}'>iPhone 应用</a></p>
+      {{/if}}
 
-    {{#if applinks.ipad_link}}
-      <p><a href='{{applinks.ipad_link}}'>iPad 应用</a></p>
-    {{/if}}
+      {{#if applinks.ipad_link}}
+        <p><a href='{{applinks.ipad_link}}'>iPad 应用</a></p>
+      {{/if}}
 
-    {{#if applinks.android_phone_link}}
-      <p><a href='{{applinks.android_phone_link}}'>Android 手机应用</a></p>
-    {{/if}}
+      {{#if applinks.android_phone_link}}
+        <p><a href='{{applinks.android_phone_link}}'>Android 手机应用</a></p>
+      {{/if}}
 
-    {{#if applinks.android_pad_link}}
-      <p><a href='{{applinks.android_pad_link}}'>Android 平板应用</a></p>
-    {{/if}}
+      {{#if applinks.android_pad_link}}
+        <p><a href='{{applinks.android_pad_link}}'>Android 平板应用</a></p>
+      {{/if}}
     </div>
   </div>
 </div>
 ```
-</div>
 
+</div>
 在 LeanCloud 索引完成数据后，您应当可以通过下列URL访问到一条数据，如果在安装了 Todo Demo 应用的移动设备上访问下面这个URL，应该会打开应用展现这条 Todo 的内容:
 
 ```
@@ -178,44 +179,44 @@ https://leancloud.cn/1.1/go/com.avoscloud.todo/classes/Todo/5371f3a9e4b02f7aee2c
 
 
 ```java
-Intent intent = getIntent();
-// 通过搜索结果打开
-if (intent.getAction() == Intent.ACTION_VIEW) {
-  // 如果是VIEW action，我们通过getData获取URI
-  Uri uri = intent.getData();
-  String path = uri.getPath();
-  int index = path.lastIndexOf("/");
-  if (index > 0) {
-	// 获取objectId
-	objectId = path.substring(index + 1);
-	Todo todo = new Todo();
-	todo.setObjectId(objectId);
-	// 通过Fetch获取content内容
-	todo.fetchInBackground(new GetCallback<AVObject>() {
-	  @Override
-	  public void done(AVObject todo, AVException arg1) {
-		if (todo != null) {
-		  String content = todo.getString("content");
-		  if (content != null) {
-			contentText.setText(content);
+   Intent intent = getIntent();
+	// 通过搜索结果打开
+	if (intent.getAction() == Intent.ACTION_VIEW) {
+	  // 如果是VIEW action，我们通过getData获取URI
+	  Uri uri = intent.getData();
+	  String path = uri.getPath();
+	  int index = path.lastIndexOf("/");
+	  if (index > 0) {
+		// 获取objectId
+		objectId = path.substring(index + 1);
+		Todo todo = new Todo();
+		todo.setObjectId(objectId);
+		// 通过Fetch获取content内容
+		todo.fetchInBackground(new GetCallback<AVObject>() {
+		  @Override
+		  public void done(AVObject todo, AVException arg1) {
+			if (todo != null) {
+			  String content = todo.getString("content");
+			  if (content != null) {
+				contentText.setText(content);
+			  }
+			}
 		  }
-		}
+		});
 	  }
-	});
-  }
-}
+	}
 ```
 
 
 我们通过 adb 的 am 命令来测试配置是否有效，如果能够正常地调用`CreateTodo`页面，那证明配置正确：
 
-```java
+```sh
 adb shell am start -W -a "android.intent.action.VIEW" -d "yourUri" yourPackageName
 ```
 
 在 Todo 例子里就是：
 
-```java
+```sh
 adb shell am start -W -a "android.intent.action.VIEW"  \
   -d "com.avoscloud.todo://avoscloud/classes/Todo/5371f3a9e4b02f7aee2c9a18" \
   com.avos.demo
@@ -284,9 +285,9 @@ adb shell am start -W -a "android.intent.action.VIEW"  \
 ###### 添加代码实现基础的应用内搜索功能
 
 ```java
-  AVSearchQuery searchQuery = new AVSearchQuery("keyword");
-  SearchActivity.setHighLightStyle("<font color='#E68A00'>");//通过这个方法，您可以像指定html tag一样设定搜索匹配字符的高亮风格
-  searchQuery.search();//即可打开一个显式搜索结果的Activity
+AVSearchQuery searchQuery = new AVSearchQuery("keyword");
+SearchActivity.setHighLightStyle("<font color='#E68A00'>");//通过这个方法，您可以像指定html tag一样设定搜索匹配字符的高亮风格
+searchQuery.search();//即可打开一个显式搜索结果的Activity
 ```
 
 ###### 结果排序
@@ -323,26 +324,26 @@ searchQuery.setSortBuilder(builder);
 由于每个应用的数据、UI展现要求都有很大的差别，所以单一的搜索组件界面仅仅能够满足较为简单的要求，所以我们将数据接口开放出来以便您能够方便的定制属于您自己的应用内搜索结果页面。
 
 ```java
-AVSearchQuery search = new AVSearchQuery("test-query");
-search.setLimit(100);
-search.findInBackgroud(new FindCallback<AVObject>() {
+	  AVSearchQuery search = new AVSearchQuery("test-query");
+	  search.setLimit(100);
+	  search.findInBackgroud(new FindCallback<AVObject>() {
 
-@Override
-public void done(List<AVObject> parseObjects, AVException parseException) {
-  if (parseException == null) {
-	 //你可以使用parseObjects来展现自己的UI
-	 for(AVObject o:parseObjects){
-		//这里可以得到搜索结果和您的应用所对应的AppUrl
-		String appUrl = o.getString(AVConstants.AVSEARCH_APP_URL);
-		//这里可以得到搜索结果对应的语法高亮
-		Map<String,List<String>> resultHighLights = ((Map<String, List<String>>)) o.get(AVConstants.AVSEARCH_HIGHTLIGHT);
-	 }
-	} else {
-	 //Exception happened
-	}
-  }
-}
-});
+		@Override
+		public void done(List<AVObject> parseObjects, AVException parseException) {
+		  if (parseException == null) {
+			 //你可以使用parseObjects来展现自己的UI
+			 for(AVObject o:parseObjects){
+				//这里可以得到搜索结果和您的应用所对应的AppUrl
+				String appUrl = o.getString(AVConstants.AVSEARCH_APP_URL);
+				//这里可以得到搜索结果对应的语法高亮
+				Map<String,List<String>> resultHighLights = ((Map<String, List<String>>)) o.get(AVConstants.AVSEARCH_HIGHTLIGHT);
+			 }
+			} else {
+			 //Exception happened
+			}
+		  }
+		}
+	  });
 ```
 您也可以参考我们的SearchActivity来更好的指定您自己的搜索结果页面。`https://github.com/avoscloud/avoscloud-sdk/blob/master/android/avossearch/src/com/avos/avoscloud/search/SearchActivity.java`
 
@@ -371,7 +372,7 @@ query.setQuery("age:(>=10 AND < 20)");//搜索年龄在[10,20)区间内的数据
 ```
 ###### 模糊搜索
 ```java
-query.setQuery("qu?c*k");//此处?代表一个字符，*代表0个或者多个字符。类似正则表达式通配符
+  query.setQuery("qu?c*k");//此处?代表一个字符，*代表0个或者多个字符。类似正则表达式通配符
 ```
 
 更多更详细的语法资料，您可以参考Elasticsearch文档中[Query-String-Syntax](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax)一节。
@@ -399,7 +400,6 @@ searchQuery.fields = @[@"field1", @"field2"];
     }
 }];
 ```
-
 有关查询语法，可以参考上文 Android 部分的介绍。
 
 对于分页，这里需要特别做出说明。因为每次请求都有 limit 限制，所以一次请求可能并不能获取到所有满足条件的记录。你可以多次调用同一个`AVSearchQuery` 的 `findObjects` 或者 `findInBackground` 获取余下的记录。另外，`hits` 属性用于标示所有满足查询条件的记录数。
@@ -537,3 +537,9 @@ curl -X GET \
 ```
 
 `order` 和  `mode` 含义跟上述复杂排序里的一致，`unit`用来指定距离单位，例如`km`表示千米，`m`表示米，`cm`表示厘米等。
+
+
+
+
+
+
