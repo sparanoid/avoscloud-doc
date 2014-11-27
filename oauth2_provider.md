@@ -1,4 +1,3 @@
-
 # LeanCloud 开放平台
 
 我们提供了标准的 OAuth2 协议，允许第三方接入我们的平台，调用开放 API 获取用户信息、应用信息、创建应用等。
@@ -82,7 +81,7 @@ GET  https://leancloud.cn/1.1/token?grant_type=authorization_code&client_id={{cl
 
 调用成功，LeanCloud 将返回JSON格式数据：
 
-```
+```json
 {
   access_token: "29a3x72flkb3dy8bdsinexemh7n0h7z9",
   expires_in: 86400,
@@ -151,27 +150,27 @@ SHA256 Hmac 签名要求都是采用 16 进制编码，而非 base64 等方式�
 
 下面给一段测试签名的 Ruby 代码：
 
-```
-    require 'openssl'
+```ruby
+require 'openssl'
 
-    timestamp = Time.now.to_i * 1000
-    scope = "client:info app:info"
-    client_id = "jl04l2081eczultsb7drrzxfxc5a30wh"
-    client_secret = "s84rvq98u8j3wnklkznguo38vsvys6vo"
-    email = "test@example.com"
-    username = "dennis"
+timestamp = Time.now.to_i * 1000
+scope = "client:info app:info"
+client_id = "jl04l2081eczultsb7drrzxfxc5a30wh"
+client_secret = "s84rvq98u8j3wnklkznguo38vsvys6vo"
+email = "test@example.com"
+username = "dennis"
 
-    base_url = "/1.1/connect?client_id=#{client_id}&email=#{email}&scope=#{scope}&timestamp=#{timestamp}&username=#{username}"
+base_url = "/1.1/connect?client_id=#{client_id}&email=#{email}&scope=#{scope}&timestamp=#{timestamp}&username=#{username}"
 
-    sign = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('SHA256'), client_secret, base_url)
+sign = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('SHA256'), client_secret, base_url)
 
-    puts base_url
-    puts sign
+puts base_url
+puts sign
 ```
 
 `/1.1/connect`的返回结果跟 OAuth2 的 `/1.1/token` 接口相同：
 
-```
+```json
 {
   access_token: "29a3x72flkb3dy8bdsinexemh7n0h7z9",
   expires_in: 86400,
@@ -204,7 +203,7 @@ SHA256 Hmac 签名要求都是采用 16 进制编码，而非 base64 等方式�
 
 错误信息也以 JSON 格式返回，形如：
 
-```
+```json
 {
    "code": 1,
    "error": "错误信息代码字符串",
@@ -226,11 +225,11 @@ GET  /clients/:uid
 * 需要权限： `client:info`
 * 应答结果：
 
-```
+```json
 {
 username: "xzhuang",
 created: "2013-10-16T21:52:31.000Z",
-email: "xzhuang@avos.com",
+email: "xzhuang@leancloud.cn",
 id: 15
 }
 ```
@@ -244,13 +243,13 @@ GET  /clients/:uid/detail
 * 需要权限： `client:detail`
 * 应答结果：
 
-```
+```json
 {
 client_name: "xzhuang",
 client_type: 1,
 phone: "18xxxxxxxxxxx",
 company_size: 2,
-company_site: "https://leancloud.cn",
+company_site: "http://leancloud.cn/",
 oicq: "xxxxxx"
 ……
 }
@@ -270,7 +269,7 @@ GET /clients/:uid/apps
 * 需要权限： `app:info`
 * 应答结果：
 
-```
+```json
 [
   {
     app_id: "blxzylt2g5e8l09zt875hl82nb8clydmvdjotv7ouudltkhj",
@@ -305,14 +304,14 @@ GET /clients/:uid/apps
 
 ### 获取单个应用信息
 
-```
+```json
 GET /clients/:uid/apps/:app_id
 ```
 * 参数： `uid`就是用户 id，令牌返回`params`值包含了`uid`，也可以用字符串`self`指代授权用户。`app_id`就是应用 id。
 * 需要权限： `app:info`
 * 返回结果：
 
-```
+```json
   {
     app_id: "mxrb5nn3qz7drek0etojy5lh4yrwjnk485lqajnsgjwfxrb5",
     client_id: 15,
@@ -338,7 +337,7 @@ GET /clients/:uid/apps/:app_id/key
 * 需要权限： `app:key`
 * 返回结果：
 
-```
+```json
 {
 app_key: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
 app_id: "blxzylt2g5e8l09zt875hl82nb8clydmvdjotv7ouudltkhj"
@@ -354,7 +353,7 @@ POST /clients/:uid/apps
 * 需要权限：`app:create`
 * 请求内容：
 
-```
+```json
 {
  "name": "应用名称，必须在授权用户帐户内唯一。",
  "description": "可选的描述信息"
@@ -362,8 +361,7 @@ POST /clients/:uid/apps
 ```
 * 应答内容：
 
-```
-{
+```json
 {
   "created":"2014-06-27T16:46:12.000Z",
   "client_id":15,
@@ -382,7 +380,7 @@ DELETE /clients/:uid/apps/:app_id
 * 需要权限： `app:delete`
 * 返回结果：
 
-```
+```json
   {
   }
 ```
