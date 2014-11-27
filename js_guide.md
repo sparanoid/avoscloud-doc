@@ -1,4 +1,3 @@
-
 # JavaScript 指南
 
 如果你还没有设置你的项目,请查看我们的QuickStart.
@@ -37,7 +36,7 @@ Backbone程序是兼容的,只需要在你的代码中做出一点点改变,我�
 
 例如，假设你在记录一局游戏的分数.一个简单的AV.Object可能包含:
 
-```
+```javascript
 score: 1337, playerName: "Sean Plott", cheatMode: false
 ```
 
@@ -59,7 +58,7 @@ Backbone.Model的话,你已经明白如何使用AV.Object了.它本身就是设�
 确认是否误用了该方法。
 
 
-```
+```javascript
 // 创建AV.Object子类.
 var GameScore = AV.Object.extend("GameScore");
 
@@ -74,7 +73,7 @@ var Achievement = AV.Object.extend({
 
 你可以为AV.Object的子类添加任意方法.
 
-```
+```javascript
 // A complex subclass of AV.Object
 var Monster = AV.Object.extend("Monster", {
   //实例方法
@@ -99,7 +98,7 @@ alert(monster.strength());  // Displays 200.
 
 创建对象还可以通过 `AV.Object.new` 方法，子类对象也可以：
 
-```
+```javascript
 //AV.Object
 var gameScore = AV.Object.new('GameScore');
 //子类
@@ -113,7 +112,7 @@ var monster = Monster.new({strength: 20});
 假如你想要在LeanCloud上保存GameScore，方法和Backbone.Model差不多,就用
 save就可以了.
 
-```
+```javascript
 var GameScore = AV.Object.extend("GameScore");
 var gameScore = new GameScore();
 gameScore.set("score", 1337);
@@ -135,7 +134,7 @@ gameScore.save(null, {
 在代码运行以后,你可能会对后端发生了什么有兴趣,为了确认数据被保存了,你可以
 在LeanCloud的[数据管理](/data.html?appid={{appid}})上查看你的数据.你大致可以看到如下的内容:
 
-```
+```javascript
 objectId: "520ca0bbe4b07e8e0e847e31", score: 1337, playerName: "Sean Plott", cheatMode: false,
 createdAt:"2011-06-10T18:33:42Z", updatedAt:"2011-06-10T18:33:42Z"
 ```
@@ -150,7 +149,7 @@ AV.Object中都不会有这些字段.
 
 如果愿意,你也可以在调用save时直接设定属性.
 
-```
+```javascript
 var GameScore = AV.Object.extend("GameScore");
 var gameScore = new GameScore();
 
@@ -176,7 +175,7 @@ gameScore.save({
 在LeanCloud中保存数据是很简单的,获取数据也非常容易。如果事先知道
 objectId的话,你可以用一个AV.Query提取出整个AV.Object:
 
-```
+```javascript
 var GameScore = AV.Object.extend("GameScore");
 var query = new AV.Query(GameScore);
 query.get("520ca0bbe4b07e8e0e847e31", {
@@ -192,7 +191,7 @@ query.get("520ca0bbe4b07e8e0e847e31", {
 
 为了获得AV.Object的属性值, 应该使用get方法.
 
-```
+```javascript
 var score = gameScore.get("score");
 var playerName = gameScore.get("playerName");
 var cheatMode = gameScore.get("cheatMode");
@@ -202,7 +201,7 @@ var cheatMode = gameScore.get("cheatMode");
 
 更新一个对象也是非常简单的。首先需要获取到要更新的 `AV.Object` 对象，然后进行修改值后保存数据。例如：
 
-```
+```javascript
 // Create the object.
 var GameScore = AV.Object.extend("GameScore");
 var gameScore = new GameScore();
@@ -230,12 +229,12 @@ LeanCloud自动查找哪些数据被改动了,所以只有"dirty"的字段会被
 
 如果想更新成功后，获取更新后的最新的对象属性，请设置`fetchWhenSave`:
 
-```
-     //假设gamescore是已经存在的对象
-    gameScore.fetchWhenSave(true);
-    gameScore.set("cheatMode", true);
-    gameScore.set("score", 1338);
-    gameScore.save();
+```javascript
+//假设gamescore是已经存在的对象
+gameScore.fetchWhenSave(true);
+gameScore.set("cheatMode", true);
+gameScore.set("score", 1338);
+gameScore.save();
 ```
 
 这个方法在对象被并发修改的时候特别有用，可以得到更新后对象的最新状态。例如维护一个计数器的场景，每次save后得到最新的计数。
@@ -245,7 +244,7 @@ LeanCloud自动查找哪些数据被改动了,所以只有"dirty"的字段会被
 许多应用都需要维持一些计数器数据 -- 譬如用来跟踪游戏分数、金币甚至道具的数目等等。
 LeanCloud提供了便捷的方式来对任何数字字段进行原子性的增加或者减少:
 
-```
+```javascript
 gameScore.increment("score");
 gameScore.save();
 ```
@@ -263,7 +262,7 @@ gameScore.save();
 
 比如,我们想在数组"skills"中加入项目:
 
-```
+```javascript
 gameScore.addUnique("skills", "flying");
 gameScore.addUnique("skills", "kungfu");
 gameScore.save();
@@ -273,7 +272,7 @@ gameScore.save();
 
 为了在LeanCloud中删除一个对象:
 
-```
+```javascript
 myObject.destroy({
   success: function(myObject) {
     // The object was deleted from the LeanCloud.
@@ -287,7 +286,7 @@ myObject.destroy({
 
 你可以使用unset方法在一个对象中删除一个字段.
 
-```
+```javascript
 // After this, the playerName field will be empty
 myObject.unset("playerName");
 
@@ -297,7 +296,7 @@ myObject.save();
 
 批量删除一批对象可以这样：
 
-```
+```javascript
 AV.Object.destroyAll(objects);
 ```
 
@@ -315,7 +314,7 @@ AV.Object.destroyAll(objects);
 比如,每一个Comment都对应了一个Post.创建一个有一个Comment的Post,
 你可以这样写:
 
-```
+```javascript
 // Declare the types.
 var Post = AV.Object.extend("Post");
 var Comment = AV.Object.extend("Comment");
@@ -341,14 +340,14 @@ LeanCloud内部会自动处理，调用Comment的save方法就可以同时保存
 如果是现有对象想要关联到新对象，你同样可以通过**只用它们的objectId**来连接彼此。
 请注意，不能直接像上面的例子那样将现有对象设置进去，而是必须new一个新对象并只设置id属性：
 
-```
+```javascript
 var post = AV.Object.createWithoutData("Post", "520c7e1ae4b0a3ac9ebe326a");
 myComment.set("parent", post);
 ```
 
 或者：
 
-```
+```javascript
 var post = new Post();
 post.id = '520c7e1ae4b0a3ac9ebe326a';
 myComment.set("parent", post);
@@ -357,7 +356,7 @@ myComment.set("parent", post);
 默认情况下,当获取一个对象时,关联的AV.Object不会被获取到,这些对象的值不
 能访问,除非像下面这样获取它们：
 
-```
+```javascript
 var post = fetchedComment.get("parent");
 post.fetch({
   success: function(post) {
@@ -374,7 +373,7 @@ AV.Relation比数组可以更好地扩展到更多对象。例如,一个User可�
 在这种情况下,你可以把一个用户喜欢的所有Post存为一个Relation,
 为了将一个Post加入一个User的like列表,你可以:
 
-```
+```javascript
 var user = AV.User.current();
 var relation = user.relation("likes");
 relation.add(post);
@@ -383,14 +382,14 @@ user.save();
 
 你可以从一个AV.Relation中删除一个post:
 
-```
+```javascript
 relation.remove(post);
 user.save();
 ```
 
 你可以在用save方法保存前多次调用add和remove方法:
 
-```
+```javascript
 relation.remove(post1);
 relation.remove(post2);
 user.save();
@@ -398,7 +397,7 @@ user.save();
 
 你还可以传入一个AV.Object数组来做add和remove:
 
-```
+```javascript
 relation.add([post1, post2, post3]);
 user.save();
 ```
@@ -406,7 +405,7 @@ user.save();
 默认情况下，relation关联的对象并不会被下载，你可以通过使用query方法返回的AV.Query
 对象来获取AV.Object的列表，例如：
 
-```
+```javascript
 relation.query().find({
   success: function(list) {
     // list contains the posts that the current user likes.
@@ -416,7 +415,7 @@ relation.query().find({
 
 如果你仅仅要一个Post的子集,你可以在AV.Query中加入更多的条件:
 
-```
+```javascript
 var query = relation.query();
 query.equalTo("title", "I'm Hungry");
 query.find({
@@ -432,7 +431,7 @@ AV.Relation的行为很像一个AV.Object数组,所以任何
 
 如果你知道post，想反向查询user，可以通过`AV.Relation.reverseQuery`方法：
 
-```
+```javascript
 var query = AV.Relation.reverseQuery('_User', 'likes', post);
 query.find({
   success:function(users) {
@@ -451,7 +450,7 @@ JavaScript的Date和null类型.
 
 一些例子:
 
-```
+```javascript
 var number = 42;
 var string = "the number is " + number;
 var date = new Date();
@@ -484,7 +483,7 @@ AV.Objects的大小不应该超过128KB.
 回一个满足条件的AV.Object数组.比如说,为了获取特定用户的分数,可
 以使用equalTo方法来添加查询条件：
 
-```
+```javascript
 var GameScore = AV.Object.extend("GameScore");
 var query = new AV.Query(GameScore);
 query.equalTo("playerName", "Dan Stemkoski");
@@ -508,14 +507,14 @@ query.find({
 有几种方式来设置查询条件。
 你可以用notEqual方法和一个特定的值来过滤不符合要求的对象:
 
-```
+```javascript
 query.notEqualTo("playerName", "Michael Yabuti");
 ```
 
 你可以给定更多的条件,只有满足所有条件的对象才会作为结果返回.换句话说,
 就像是AND查询.
 
-```
+```javascript
 query.notEqualTo("playerName", "Michael Yabuti");
 query.greaterThan("playerAge", 18);
 ```
@@ -524,13 +523,13 @@ query.greaterThan("playerAge", 18);
 何1到1000之间的数值都是合法的，在 0 到 1000 范围之外的都强制转成默认的 100。
 .
 
-```
+```javascript
 query.limit(10); // limit to at most 10 results
 ```
 
 如果你只想要一个结果,一个更加方便的方法可能是使用first,而不是find方法.
 
-```
+```javascript
 var GameScore = AV.Object.extend("GameScore");
 var query = new AV.Query(GameScore);
 query.equalTo("playerEmail", "dstemkoski@example.com");
@@ -546,13 +545,13 @@ query.first({
 
 你可以用skip跳过前面的结果,这可能对于分页很有用.
 
-```
+```javascript
 query.skip(10); // skip the first 10 results
 ```
 
 对于可以排序的类型,比如number和string,你可以控制返回结果的顺序:
 
-```
+```javascript
 // Sorts the results in ascending order by the score field
 query.ascending("score");
 
@@ -562,7 +561,7 @@ query.descending("score");
 
 对于可以排序的类型,你同样可以在查询中进行比较.
 
-```
+```javascript
 // Restricts to wins < 50
 query.lessThan("wins", 50);
 
@@ -580,7 +579,7 @@ query.greaterThanOrEqualTo("wins", 50);
 提供一个数组就可以了.这样通常可以用单个的查询来获取多个结果.比如
 你想获取某几个玩家的分数:
 
-```
+```javascript
 // Finds scores from any of Jonathan, Dario, or Shawn
 query.containedIn("playerName",
                   ["Jonathan Walsh", "Dario Wunsch", "Shawn Simon"]);
@@ -591,7 +590,7 @@ query.containedIn("playerName",
 如果你想要查询含有某一特定属性的对象,你可以使用exists.相对地,如果你想获
 取没有这一特定属性的对象,你可以使用doesNotExist.
 
-```
+```javascript
 // Finds objects that have the score set
 query.exists("score");
 
@@ -604,7 +603,7 @@ query.doesNotExist("score");
 的家乡信息,你可以构造一个查询来查找某地的运动队有赢的记录的用户.查询应该看
 起来像下面这样:
 
-```
+```javascript
 var Team = AV.Object.extend("Team");
 var teamQuery = new AV.Query(Team);
 teamQuery.greaterThan("winPct", 0.5);
@@ -619,7 +618,7 @@ userQuery.find({
 
 相对地,可以使用doesNotMatchKeyInQuery来获取属性不在子查询结果中的对象.比如为了获得用户的家乡队输了的情况:
 
-```
+```javascript
 var losingUserQuery = new AV.Query(AV.User);
 losingUserQuery.doesNotMatchKeyInQuery("hometown", "city", teamQuery);
 losingUserQuery.find({
@@ -633,7 +632,7 @@ losingUserQuery.find({
 playername字段的文档(包括build-in的字段,objectId,createdAt,
 updatedAt):
 
-```
+```javascript
 var GameScore = AV.Object.extend("GameScore");
 var query = new AV.Query(GameScore);
 query.select("score", "playerName");
@@ -644,7 +643,7 @@ query.find().then(function(results) {
 
 剩下的字段可以之后用返回的对象的fetch方法来获取:
 
-```
+```javascript
 query.first().then(function(result) {
   // only the selected fields of the object will now be available here.
   return result.fetch();
@@ -657,14 +656,14 @@ query.first().then(function(result) {
 
 对于value是数组的情况,你可以这样查询数组中的值有2的情况的对象:
 
-```
+```javascript
 // Find objects where the array in arrayKey contains 2.
 query.equalTo("arrayKey", 2);
 ```
 
 你同样可以用下面的方式找到同时包含元素2,3,4的数组:
 
-```
+```javascript
 // Find objects where the array in arrayKey contains all of the elements 2, 3, and 4.
 query.containsAll("arrayKey", [2, 3, 4]);
 ```
@@ -674,7 +673,7 @@ query.containsAll("arrayKey", [2, 3, 4]);
 使用startWith来限制属性值以一个特定的字符串开头，这和MySQL的LIKE操作
 符很像,因为有索引所以对于大的数据集这个操作也是很高效的.
 
-```
+```javascript
 // Finds barbecue sauces that start with "Big Daddy's".
 var query = new AV.Query(BarbecueSauce);
 query.startsWith("name", "Big Daddy's");
@@ -687,7 +686,7 @@ query.startsWith("name", "Big Daddy's");
 样.举个例子,如果每一个Comment在它的post字段都有一个Post对象,你可以通过
 如下的方式来获取一个Post的comment:
 
-```
+```javascript
 // Assume AV.Object myPost was previously created.
 var query = new AV.Query(Comment);
 query.equalTo("post", myPost);
@@ -703,7 +702,7 @@ matchesQuery操作.注意默认的结果条数限制100和最大limit 1000也同
 所以对于大的数据集你可能需要小心构建你的查询,否则可能出现意料之外的状
 况。例如，为了找到post中有图片的comment,你可以:
 
-```
+```javascript
 var Post = AV.Object.extend("Post");
 var Comment = AV.Object.extend("Comment");
 var innerQuery = new AV.Query(Post);
@@ -720,7 +719,7 @@ query.find({
 如果你想要获取某字段中包含的子对象不满足指定查询的结果,你可以使用
 doesNotMatchQuery.例如，为了找到针对不含图片的post的comment,你可以这样:
 
-```
+```javascript
 var Post = AV.Object.extend("Post");
 var Comment = AV.Object.extend("Comment");
 var innerQuery = new AV.Query(Post);
@@ -736,7 +735,7 @@ query.find({
 
 你可以同样用objectId来做关系查询
 
-```
+```javascript
 var post = new Post();
 post.id = "520c7e1ae4b0a3ac9ebe326a";
 query.equalTo("post", post);
@@ -745,7 +744,7 @@ query.equalTo("post", post);
 在某些情况下,你可能希望查询结果中包含多个相关联的其他数据类型.你可以使用include方
 法.比如:假设你想获得最新的10个comment,你可能想同时获取它们相关的post数据:
 
-```
+```javascript
 var query = new AV.Query(Comment);
 
 // Retrieve the most recent ones
@@ -772,7 +771,7 @@ query.find({
 你同样可以用点操作符来做多级查询,如果你想同时找到comment的post和相应post
 的author,你可以这样做:
 
-```
+```javascript
 query.include(["post.author"]);
 ```
 
@@ -784,7 +783,7 @@ AV.Query的helper函数例如first和get.
 如果你只是想查询满足一个query的结果集到底有多少对象,但是你不需要得到它们,你
 可以使用count来取代find. 比如,为了获得某个玩家到底玩过多少局游戏:
 
-```
+```javascript
 var GameScore = AV.Object.extend("GameScore");
 var query = new AV.Query(GameScore);
 query.equalTo("playerName", "Sean Plott");
@@ -809,7 +808,7 @@ query.count({
 查询,这样得到的结果是所有查询的并集。比如你想要找的玩家或者是有很多或者很
 少的胜利的时候,你可以这样:
 
-```
+```javascript
 var lotsOfWins = new AV.Query("Player");
 lotsOfWins.greaterThan("wins", 150);
 
@@ -835,7 +834,7 @@ mainQuery.find({
 
 如果你想将查询出来的对象都删除，或者删除符合查询条件的所有对象，可以调用`destroyAll`方法：
 
-```
+```javascript
 query.destroyAll({
    success: function(){
       //delete all objects by this query successfully.
@@ -850,7 +849,7 @@ query.destroyAll({
 
 从 0.4.3 版本开始，我们允许使用类 SQL 语法的 CQL 查询语言来查询 LeanCloud 应用内的数据，例如：
 
-```
+```javascript
 AV.Query.doCloudQuery('select * from GameScore', {
   success: function(result){
     //results 是查询返回的结果，AV.Object 列表
@@ -888,7 +887,7 @@ CQL 语法请参考 [CQL 详细指南](./cql_guide.html)。
 
 针对查询条件，我们推荐使用占位符的 CQL 语句来提升性能，占位符对应的值按照顺序组合起来作为第二个参数 `pvalues` 数组传入：
 
-```
+```javascript
 //查询分数大于 50 的记录数并返回前10条。
 AV.Query.doCloudQuery('select count(*),* from GameScore where score>? limit ?',[50,10],
  {
@@ -918,7 +917,7 @@ Promise.使用Promise，你的代码可以比原来的嵌套callback的方法看
 每一个Promise都有一个叫then的方法,这个方法接受一对callback.第一个
 callback在promise被解决的时候调用,第二个会在promise被拒绝的时候调用.
 
-```
+```javascript
 obj.save().then(function(obj) {
   // the object was saved successfully.
 }, function(error) {
@@ -932,7 +931,7 @@ Promise比较神奇，可以代替多层嵌套方式来解决发送异步请求�
 如果一个Promise的回调会返回一个Promise，那么第二个then里的callback在第一个then
 的callback没有解决前是不会解决的。
 
-```
+```javascript
 var query = new AV.Query("Student");
 query.descending("gpa");
 query.find().then(function(students) {
@@ -960,7 +959,7 @@ eroor或者可以通过返回一个新的Promise的方式来处理它.你可以�
 promise有点像异常,而error callback则像是一个catch来处理这个异常或者抛
 出异常.
 
-```
+```javascript
 var query = new AV.Query("Student");
 query.descending("gpa");
 query.find().then(function(students) {
@@ -997,7 +996,7 @@ query.find().then(function(students) {
 的场景下,你可能需要创建自己的promise.
 在创建了Promise之后,你需要调用resolve或者reject来触发它的callback.
 
-```
+```javascript
 var successful = new AV.Promise();
 successful.resolve("The good result.");
 
@@ -1007,7 +1006,7 @@ failed.reject("An error message.");
 
 如果你在创建promise的时候就知道它的结果,下面有两个很方便的方法可以使用:
 
-```
+```javascript
 var successful = AV.Promise.as("The good result.");
 
 var failed = AV.Promise.error("An error message.");
@@ -1018,7 +1017,7 @@ var failed = AV.Promise.error("An error message.");
 在你想要某一行数据做一系列的任务的时候，Promise链是很方便的,每一个任务都等着前
 一个任务结束.比如,假设你想要删除你的blog上的所有comment.
 
-```
+```javascript
 var query = new AV.Query("Comments");
 query.equalTo("post", 123);
 
@@ -1047,7 +1046,7 @@ query.find().then(function(results) {
 成功执行.你可以在callback的参数部分检查每一个promise的结果.并
 行地进行操作会比顺序进行更快,但是也会消耗更多的系统资源和带宽.
 
-```
+```javascript
 var query = new AV.Query("Comments");
 query.equalTo("post", 123);
 
@@ -1071,7 +1070,7 @@ query.find().then(function(results) {
 有了上面这些工具以后,就很容易创建你自己的异步方法来返回promise了,举例
 说,你可以创建一个有promise版本的setTimeout.
 
-```
+```javascript
 var delay = function(millis) {
   var promise = new AV.Promise();
   setTimeout(function() {
@@ -1091,7 +1090,7 @@ delay(100).then(function() {
 Backbone.Collection是兼容的,有相同的特性和功能,你可以通过用一个模型类
 或者一个特定的AV.Query来创建一个新的子类.
 
-```
+```javascript
 // A Collection containing all instances of TestObject.
 var TestCollection = AV.Collection.extend({
   model: TestObject
@@ -1116,7 +1115,7 @@ var collection = query.collection();
 
 使用fetch方法来获取一个collection里的所有元素:
 
-```
+```javascript
 var collection = new TestCollection();
 collection.fetch({
   success: function(collection) {
@@ -1134,7 +1133,7 @@ collection.fetch({
 
 你可以设定一个comparator来对collection中的元素进行排序:
 
-```
+```javascript
 var collection = new TestCollection();
 collection.comparator = function(object) {
   return object.get("temperature");
@@ -1145,7 +1144,7 @@ collection.comparator = function(object) {
 
 Collection是可变的,你可以访问所有元素,增加或者删除元素.
 
-```
+```javascript
 var collection = new TestCollection();
 
 collection.add([
@@ -1182,14 +1181,14 @@ AV.Object存太大或者太难处理的问题.最常见的用例就是存储图�
 开始使用AV.File是很容易的.有很多种不同的方式来新建一个file.第一个是
 base64编码的字符串表示:
 
-```
+```javascript
 var base64 = "V29ya2luZyBhdCBQYXJzZSBpcyBncmVhdCE=";
 var file = new AV.File("myfile.txt", { base64: base64 });
 ```
 
 另外,也可以用一个byte数组来新建一个文件.
 
-```
+```javascript
 var bytes = [ 0xBE, 0xEF, 0xCA, 0xFE ];
 var file = new AV.File("myfile.txt", bytes);
 ```
@@ -1198,13 +1197,13 @@ var file = new AV.File("myfile.txt", bytes);
 现代的浏览器中这很容易,只需要创建一个file input tag来允许用户选择他们磁盘
 上的文件就可以了.
 
-```
+```javascript
 <input type="file" id="profilePhotoFileUpload">
 ```
 
 然后,在一个处理click或其他的函数里,获取对那个文件的一个引用:
 
-```
+```javascript
 var fileUploadControl = $("#profilePhotoFileUpload")[0];
 if (fileUploadControl.files.length > 0) {
   var file = fileUploadControl.files[0];
@@ -1224,7 +1223,7 @@ if (fileUploadControl.files.length > 0) {
 
 如果您是在Node.js里使用我们的SDK，从`0.3.1`版本开始，我们也让AV.File的构造函数接收[Buffer](http://nodejs.org/api/buffer.html)作为文件存储：
 
-```
+```javascript
 var file = new AV.File('test.txt', new Buffer('hello world'));
 ```
 
@@ -1232,7 +1231,7 @@ var file = new AV.File('test.txt', new Buffer('hello world'));
 
 从`0.3.2`版本开始，我们还支持保存一个现有存储在其他服务上的URL的文件对象：
 
-```
+```javascript
 var file = AV.File.withURL('test.jpg', 'https://leancloud.cn/docs/images/permission.png');
 file.save();
 ```
@@ -1240,7 +1239,7 @@ file.save();
 下面你应该向LeanCloud 上传你的文件了.就像AV.Object一样,有很多不同的
 save方法,你可以按你想用的callback和error处理的方式来使用它们.
 
-```
+```javascript
 avFile.save().then(function() {
   // The file has been saved to AV.
 }, function(error) {
@@ -1251,7 +1250,7 @@ avFile.save().then(function() {
 最后,在保存完成之后,你可以将一个AV.File和一个AV.Object关联起来,
 就像别的数据一样.
 
-```
+```javascript
 var jobApplication = new AV.Object("JobApplication");
 jobApplication.set("applicantName", "Joe Smith");
 jobApplication.set("applicantResumeFile", file);
@@ -1264,7 +1263,7 @@ jobApplication.save();
 的问题,最好你可以让浏览器代替你做这项事情.通常,这意味着在DOM中渲染这个
 文件的url,下面就是我们如何用jquery将一个图片文件插入页面之中:
 
-```
+```javascript
 var profilePhoto = profile.get("photoFile");
 $("profileImg")[0].src = profilePhoto.url();
 ```
@@ -1272,7 +1271,7 @@ $("profileImg")[0].src = profilePhoto.url();
 如果你想在云代码中处理一个文件的数据,你可以用我们的http网络库来获
 取这个文件.
 
-```
+```javascript
 AV.Cloud.httpRequest({ url: profilePhoto.url() }).then(function(response) {
   // The file contents are in response.buffer.
 });
@@ -1282,7 +1281,7 @@ AV.Cloud.httpRequest({ url: profilePhoto.url() }).then(function(response) {
 
 你还可以在上传文件之前设置文件的元信息，例如：
 
-```
+```javascript
 file.metaData().mimeType = 'text/plain';
 ```
 
@@ -1290,14 +1289,14 @@ file.metaData().mimeType = 'text/plain';
 
 默认会保存`size`和`ownerId`两个元信息，分别表示文件大小和文件上传者的object id:
 
-```
+```javascript
 var size = file.size();
 var ownerId = file.ownerId();
 ```
 
 `0.3.1`版本开始，我们增强了metaData方法，它同时是getter和setter方法:
 
-```
+```javascript
 //获取所有元信息组成的JSON对象
 var metadata = file.metaData();
 //设置format元信息
@@ -1310,7 +1309,7 @@ var format = file.metaData('format');
 
 如果保存的文件是图片，还可以通过`thumbnailURL`方法获得缩略图的URL：
 
-```
+```javascript
 //获得宽度为100像素，高度200像素的缩略图
 var url = file.thumbnailURL(100, 200);
 ```
@@ -1321,7 +1320,7 @@ var url = file.thumbnailURL(100, 200);
 
 使用`destroy`方法来删除文件：
 
-```
+```javascript
 file.destroy().then(function(){
   //删除成功
 }, function(error){
@@ -1359,7 +1358,7 @@ AV.User有一些与AV.Object不一样的字段:
 通常你的app第一件要做的事情就是让用户进行注册,下面的代码展示了怎样进行
 通常的注册过程:
 
-```
+```javascript
 var user = new AV.User();
 user.set("username", "my name");
 user.set("password", "my pass");
@@ -1400,7 +1399,7 @@ username或者email已经被其他用户所使用了.你应该清楚地反馈给
 在你要求你的用户注册之后,当然应该让他们在以后用自己的账户登录进来.你可
 以使用logIn方法来进行登陆.
 
-```
+```javascript
 AV.User.logIn("myname", "mypass", {
   success: function(user) {
     // Do stuff after successful login.
@@ -1437,34 +1436,34 @@ AV.User的email被设定或者修改后,emailVerfied会被设定为false.LeanClo
 
 如果用户注册提供了 `mobilePhoneNumber`属性，并且你希望验证用户手机号码的真实性，你可能希望发送一条短信，并且让用户输入短信中的验证码来确认手机号码的真实性：
 
-```
-	        var user = new AV.User();
-			user.set("username", "dennis");
-			user.set("password", "123456");
-			user.setMobilePhoneNumber('186xxxxxxxx');
-	        user.signUp(null, ……)
+```javascript
+var user = new AV.User();
+user.set("username", "dennis");
+user.set("password", "123456");
+user.setMobilePhoneNumber('186xxxxxxxx');
+user.signUp(null, ……)
 ```
 
 为了发送短信，你需要在应用设置的应用选项里启用：`验证注册用户手机号码`。
 
 如果用户注册没有收到短信，你可以通过`requestMobilePhoneVerify`方法强制重新发送：
 
-```
-	AV.User.requestMobilePhoneVerify('186xxxxxxxx').then(function(){
-		//发送成功
-	}, function(err){
-	   //发送失败
-	});
+```javascript
+AV.User.requestMobilePhoneVerify('186xxxxxxxx').then(function(){
+	//发送成功
+}, function(err){
+   //发送失败
+});
 ```
 
 当用户收到验证短信后，会有 6 位数字的验证码，让用户输入，并调用`verifyMobilePhone`来确认是否正确：
 
-```
-	AV.User.verifyMobilePhone('6位数字验证码').then(function(){
-		//验证成功
-	}, function(err){
-	   //验证失败
-	});
+```javascript
+AV.User.verifyMobilePhone('6位数字验证码').then(function(){
+  //验证成功
+}, function(err){
+  //验证失败
+});
 ```
 
 验证成功后，用户的`mobilePhoneVerified`属性变为true，并且调用云代码的`AV.Cloud.onVerifed('sms', function)`方法。
@@ -1474,28 +1473,29 @@ AV.User的email被设定或者修改后,emailVerfied会被设定为false.LeanClo
 
 当用户有填写`mobilePhoneNumber`的时候，可以使用手机和密码登录：
 
-```
+```javascript
 AV.User.logInWithMobilePhone('186xxxxxxxx', password).then(function(user){
-   //登录成功
+  //登录成功
 }, function(err){
-   //登录失败
+  //登录失败
 });
 ```
 
 如果你在应用设置的应用选项里启用`允许用户使用手机短信登录 （需要先启用 验证注册用户手机号码）`，并且用户通过了手机号码认证，那么可以通过请求发送短信验证码来登录：
 
-```
+```javascript
 //请求登录验证码
- AV.User.requestLoginSmsCode('186xxxxxxxx').then(function(){
-		//发送成功
-	}, function(err){
-	   //发送失败
-	});
+AV.User.requestLoginSmsCode('186xxxxxxxx').then(function(){
+  //发送成功
+}, function(err){
+  //发送失败
+});
+
 //用户收到6位登录验证码后，输入验证码登录
 AV.User.logInWithMobilePhoneSmsCode('186xxxxxxxx', '6位登录验证码数字').then(function(user){
-   //登录成功
+  //登录成功
 }, function(err){
-   //登录失败
+  //登录失败
 });
 ```
 
@@ -1508,18 +1508,18 @@ AV.User.logInWithMobilePhoneSmsCode('186xxxxxxxx', '6位登录验证码数字').
 无论你使用任何注册或者登录方法,用户都会在localStorage中储存,你可以把缓
 存作为一个session对待,并且自动假设用户已经登录了.
 
-```
+```javascript
 var currentUser = AV.User.current();
 if (currentUser) {
-    // do stuff with the user
+  // do stuff with the user
 } else {
-    // show the signup or login page
+  // show the signup or login page
 }
 ```
 
 你可以通过logout来清除掉当前的用户:
 
-```
+```javascript
 AV.User.logOut();
 
 var currentUser = AV.User.current();  // this will now be null
@@ -1536,7 +1536,7 @@ AV.User类默认就是受保护的,在AV.User中保存的数据只能被那个�
 
 下面的代码展示了上面说的安全策略:
 
-```
+```javascript
 var user = AV.User.logIn("my_username", "my_password", {
   success: function(user) {
     user.set("username", "my_new_username");  // attempt to change username
@@ -1579,7 +1579,7 @@ AV.ACL(user)生成一个AV.ACL来限定user的访问.一个对象的ACL会在对
 保存的时候被存储起来,就像其他的属性一样.这样,为了创建一个当前user私有
 的一个note:
 
-```
+```javascript
 var Note = AV.Object.extend("Note");
 var privateNote = new Note();
 privateNote.set("content", "This note is private!");
@@ -1595,7 +1595,7 @@ privateNote.save();
 法独立的向AV.ACL中添加权限.比如,假设你有一条消息想要发送给一个组里
 的多个用户,他们中的每一个都有读和写的权限:
 
-```
+```javascript
 var Message = AV.Object.extend("Message");
 var groupMessage = new Message();
 var groupACL = new AV.ACL();
@@ -1614,7 +1614,7 @@ groupMessage.save();
 setPublicWriteAccess就可以了.这样允许了在一个消息板上发评论的模式.比如,我
 们要创建一个post只能被它的作者修改,但是可以被所有人读取:
 
-```
+```javascript
 var publicPost = new Post();
 var postACL = new AV.ACL(AV.User.current());
 postACL.setPublicReadAccess(true);
@@ -1633,7 +1633,7 @@ AV.Error.OBJECT_NOT_FOUND的错误码,为了安全起见,这样防止了客户�
 
 为了能让用户重设密码,应该要求用户提供他们的email地址,然后这样调用:
 
-```
+```javascript
 AV.User.requestPasswordReset("email@example.com", {
   success: function() {
     // Password reset request was sent successfully
@@ -1666,7 +1666,7 @@ app的名字.
 
 为了查询用户,你可以简单的创建一个AV.Query针对AV.Users:
 
-```
+```javascript
 var query = new AV.Query(AV.User);
 query.equalTo(gender, "female");  // find all the women
 query.find({
@@ -1681,7 +1681,7 @@ query.find({
 关联一个AV.User的对象可以很快就见效.比如说,假设你有一个blog
 程序,为了保存一个用户的新post还有读取他们所有的post.
 
-```
+```javascript
 var user = AV.User.current();
 
 // Make a new post
@@ -1716,12 +1716,12 @@ post.save(null, {
 
 发送验证码通过：
 
-```
-	AV.Cloud.requestSmsCode('186xxxxxxxx').then(function(){
-	    //发送成功
-	}, function(err){
-		//发送失败
-	});
+```javascript
+AV.Cloud.requestSmsCode('186xxxxxxxx').then(function(){
+  //发送成功
+}, function(err){
+  //发送失败
+});
 ```
 
 你还可以定制发送的内容，设置下列选项：
@@ -1730,51 +1730,51 @@ post.save(null, {
 * op 进行的操作字符串，例如`付费`。
 * ttl 以分钟为单位的过期时间。
 
-```
-	AV.Cloud.requestSmsCode({
-	   mobilePhoneNumber: '186xxxxxxxx',
-	   name: 'PP打车',
-	   op: '付费',
-	   ttl: 5
-	}).then(function(){
-	    //发送成功
-	}, function(err){
-		//发送失败
-	});
+```javascript
+AV.Cloud.requestSmsCode({
+  mobilePhoneNumber: '186xxxxxxxx',
+  name: 'PP打车',
+  op: '付费',
+  ttl: 5
+}).then(function(){
+  //发送成功
+}, function(err){
+  //发送失败
+});
 ```
 
 如果您在应用设置里创建了短信模板，并且通过了管理员审核，那就可以发送模板短信，假设模板名称为 `test`，模板内容为
 
-<pre ng-non-bindable ><code> 
+<pre ng-non-bindable ><code>
 欢迎您使用 {{name}} 服务，我们将在 {{date}} 举办庆祝活动，欢迎参加。
 </code></pre>
 
 其中`name` 和 `date` 都是可替换的模板变量，那么可以通过下列方式来发送这条模板短信：
 
-```
-	AV.Cloud.requestSmsCode({
-	   mobilePhoneNumber: '186xxxxxxxx',
-	   template: "test"
-	   name: 'PP打车',
-	   date: '2014 年 10 月 22 号',
-	   ttl: 5
-	}).then(function(){
-	    //发送成功
-	}, function(err){
-		//发送失败
-	});
+```javascript
+AV.Cloud.requestSmsCode({
+  mobilePhoneNumber: '186xxxxxxxx',
+  template: "test"
+  name: 'PP打车',
+  date: '2014 年 10 月 22 号',
+  ttl: 5
+}).then(function(){
+  //发送成功
+}, function(err){
+  //发送失败
+});
 ```
 
 `template` 指定模板名称，`mobilePhoneNumber` 是接收短信的手机号码，其他变量都将作为模板变量渲染。发送的短信内容将渲染为 `欢迎您使用 pp打车 服务，我们将在 2014 年 10 月 22 号 举办庆祝活动，欢迎参加。`。
 
 在用户收到验证码并输入后，通过下列代码来验证是否正确：
 
-```
-   AV.Cloud.verifySmsCode('6位数字验证码').then(function(){
-	    //验证成功
-	}, function(err){
-		//验证失败
-	});
+```javascript
+AV.Cloud.verifySmsCode('6位数字验证码').then(function(){
+  //验证成功
+}, function(err){
+  //验证失败
+});
 ```
 
 ##角色
@@ -1817,7 +1817,7 @@ AV.Role一个写权限,这个用户有可能会在这个权限中加入另一个
 
 为了创建一个新的AV.Role,你应该如下写:
 
-```
+```javascript
 // By specifying no write privileges for the ACL, we can ensure the role cannot be altered.
 var roleACL = new AV.ACL();
 roleACL.setPublicReadAccess(true);
@@ -1828,7 +1828,7 @@ role.save();
 你可以通过增加"user"和"roles"关系的成员来在AV.Role中加入用户或者子
 角色:
 
-```
+```javascript
 var role = new AV.Role(roleName, roleACL);
 for (var i = 0; i < usersToAddToRole.length; i++) {
   role.getUsers().add(usersToAddToRole[i]);
@@ -1849,7 +1849,7 @@ role.save();
 
 将一个读或者写的权限授予一个角色是很直观的.你可以使用Rarse.Role:
 
-```
+```javascript
 var moderators = /* Query for some AV.Role */;
 var wallPost = new AV.Object("WallPost");
 var postACL = new AV.ACL();
@@ -1860,7 +1860,7 @@ wallPost.save();
 
 你可以不需要查找这个Role,直接把名字提供给ACL:
 
-```
+```javascript
 var wallPost = new AV.Object("WallPost");
 var postACL = new AV.ACL();
 postACL.setRoleWriteAccess("Moderators", true);
@@ -1880,7 +1880,7 @@ wallPost.save();
 的内容是合适的.任何一个"版主"有的权限"管理员"都应该有.为了启用这种关系,你
 应该使"管理员"成为"版主"的一个子角色.
 
-```
+```javascript
 var administrators = /* Your "Administrators" role */;
 var moderators = /* Your "Moderators" role */;
 moderators.getRoles().add(administrators);
@@ -1892,7 +1892,7 @@ moderators.save();
 云代码 函数应该用AV.Cloud.run函数来进行调用,比如,调用云代码中的
 函数"hello"应该这样:
 
-```
+```javascript
 AV.Cloud.run('hello', {}, {
   success: function(result) {
     // result is 'Hello world!'
@@ -1908,11 +1908,11 @@ AV.Cloud.run('hello', {}, {
 
 通过JavaScript SDK也可以向移动设备发送推送消息，一个简单例子推送给所有订阅了`public`频道的设备：
 
-```
+```javascript
 AV.Push.send({
   channels: [ "Public" ],
   data: {
-     alert: "Public message"
+    alert: "Public message"
   }
 });
 ```
@@ -1920,24 +1920,24 @@ AV.Push.send({
 
 如果希望按照某个 `_Installation` 表的查询条件来推送，例如推送给某个 `installationId` 的 Android 设备，可以传入一个 `AV.Query` 对象作为 `where` 条件：
 
-```
+```javascript
 var query = new AV.Query("_Installation");
 query.equalTo("installationId", installationId);
 AV.Push.send({
   where: query,
   data: {
-     alert: "Public message"
+    alert: "Public message"
   }
 });
 ```
 
 此外，如果你觉得 AV.Query 太繁琐，也可以写一句 [CQL](./cql_guide.html) 来搞定：
 
-```
+```javascript
 AV.Push.send({
   cql: "select * from _Installation where installationId='设备id'",
   data: {
-     alert: "Public message"
+    alert: "Public message"
   }
 });
 ```
@@ -1957,13 +1957,13 @@ LeanCloud允许你能够将真实世界的经度和纬度坐标放入对象之�
 为了将一个对象联系到一个点上,你需要先创建一个AV.GeoPoint.举例来说,
 为了创建一个地理位置在纬度40度,经度在-30度的点:
 
-```
+```javascript
 var point = new AV.GeoPoint({latitude: 40.0, longitude: -30.0});
 ```
 
 这个点接着就在对象中被指定了:
 
-```
+```javascript
 placeObject.set("location", point);
 ```
 
@@ -1975,15 +1975,19 @@ placeObject.set("location", point);
 象离一个点最近就好了.这样可以通过在AV.Query中加入一个near来做查询,
 为了获得离用户最近的10个地点列表,可以这样:
 
-```
+```javascript
 // User's location
 var userGeoPoint = userObject.get("location");
+
 // Create a query for places
 var query = new AV.Query(PlaceObject);
+
 // Interested in locations near user.
 query.near("location", userGeoPoint);
+
 // Limit what could be a lot of points.
 query.limit(10);
+
 // Final list of objects
 query.find({
   success: function(placesObjects) {
@@ -2000,7 +2004,7 @@ withinRadians.
 同样,查询在特定地域的Object是可以的,为了找到用矩形表示的一块地域中的对
 象,加入withinGeoBox来在AV.Query中加入约束.
 
-```
+```javascript
 var southwestOfSF = new AV.GeoPoint(37.708813, -122.526398);
 var northeastOfSF = new AV.GeoPoint(37.822802, -122.373962);
 
@@ -2043,7 +2047,7 @@ AV.Collection都可以用Backbone.Model和Backbone.Collection加上一点点
 2. 将所有的Backbone.Model都替换成AV.Object.这样做的时候,url和
    urlRoot应该用恰当的className替换,这些对象映射为LeanCloud的类
 
-```
+```javascript
 var BackboneTodo = Backbone.Model.extend({
   urlRoot: "/todos"
 });
@@ -2057,7 +2061,7 @@ var AVOSCloudTodo = AV.Object.extend({
    AV.Object类作为model.你应该同时指定query所以collection知道怎样获
    取对象
 
-```
+```javascript
 var AVOSCloudTodoCollection = AV.Collection.extend({
   model: AVOSCloudTodo
 });
@@ -2091,7 +2095,7 @@ error会在任何一种在与LeanCloud的网络连接发生错误的时候调用
 objectId. LeanCloud会返回一个错误,所以这里就是我们怎样在你的callback
 里处理错误.
 
-```
+```javascript
 var query = new AV.Query(Note);
 query.get("aBcDeFgH", {
   success: function(results) {
@@ -2111,7 +2115,7 @@ query.get("aBcDeFgH", {
 查询在无法连接到LeanCloud的时候同样有可能失败.下面是同样的
 callback但是有一些其他的代码来处理这种情况:
 
-```
+```javascript
 var query = new AV.Query(Note);
 query.get("thisObjectIdDoesntExist", {
   success: function(results) {
