@@ -140,7 +140,7 @@ app_id:peer_id:watch_peer_ids:timestamp:nonce
 
 使用蟒蛇(Python)大法的签名范例：
 
-```
+```python
 import hmac, hashlib
 
 ### 签名函数 hmac-sha1 hex dump
@@ -183,18 +183,18 @@ app_id:peer_id:watch_peer_ids:timestamp:nonce:su
 
 和其他的LeanCloud服务一样，实时聊天系统的初始化也是在Application的onCreate方法中进行的：
 
-```
- public class MyApplication extends Application{
- 
-     public void onCreate(){ 
-         AVOSCloud.initialize(this,"{{appId}}","{{appKey}}");
-     }
+```java
+public class MyApplication extends Application{
+
+    public void onCreate(){
+        AVOSCloud.initialize(this,"{{appId}}","{{appKey}}");
+    }
 }
 ```
 
 并且在AndroidManifest.xml中间声明：
 
-```
+```xml
 <manifest ...
 
  <application
@@ -210,25 +210,25 @@ app_id:peer_id:watch_peer_ids:timestamp:nonce:su
 在每一个用户系统中间，用户一定有一个唯一表示的符号来标识他们与别人的区别，比如：userId、email、手机号码或者我们提供的 AVUser 的 objectId；同时这个符号也需要能够通过某种方式（登录）而正确获取。
 由于考虑到很多开发者在接入实时通信系统时，可能已经有现成的用户系统，所以我们在设计实时通信模块的时候，并没有强制将用户系统的登录状态与实时通信的登录状态绑定到一起，而是通过一种更为开放的方式去控制实时通信的登录状态。当一个用户需要登录实时通信模块的时候，我们需要:
 
-```
-   AVUser.logInInBackground("用户名","password",new LogInCallback<AVUser>(){
-      @Override
-      public void done(AVUser user, AVException e){
-            //此处的selfId就是之前提到的用户的唯一标识符 Peer ID,
-            //应该替换成你现有用户系统中的唯一标识符，这里以我们提供的的用户系统为例            
-            String selfId = user.getObjectId();
-            Session session = SessionManager.getInstance(selfId);
-            List<String> yourFriends = new List<String>();
-            .... //add your friends' peerIds 
-            session.open(yourFriends);
-      }
-   });
+```java
+AVUser.logInInBackground("用户名","password",new LogInCallback<AVUser>(){
+   @Override
+   public void done(AVUser user, AVException e){
+         //此处的selfId就是之前提到的用户的唯一标识符 Peer ID,
+         //应该替换成你现有用户系统中的唯一标识符，这里以我们提供的的用户系统为例
+         String selfId = user.getObjectId();
+         Session session = SessionManager.getInstance(selfId);
+         List<String> yourFriends = new List<String>();
+         .... //add your friends' peerIds
+         session.open(yourFriends);
+   }
+});
 ```
 
 这样你就向服务器发起了一个实时通信的登录请求。但是至今为止还不能发送消息，因为实时通信的所有请求都是异步的，只有当你接收到异步请求对应的成功回调时，你才能进行下一步操作。
 要接收异步请求对应的回调，你需要实现继承 AVMessageReceiver 的自定义 Receiver，并且注册到AndroidManifest.xml。
 
-```
+```java
 public class ChatDemoMessageReceiver extends AVMessageReceiver{
   ...实现抽象方法,比如：
   @Override
@@ -240,13 +240,13 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
 
 并且在AndroidManifest.xml中间声明:
 
-```
-        <receiver android:name=".ChatDemoMessageReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="com.avoscloud.session.action" />
-            </intent-filter>
-        </receiver>
+```xml
+<receiver android:name=".ChatDemoMessageReceiver" >
+    <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="com.avoscloud.session.action" />
+    </intent-filter>
+</receiver>
 ```
 至此，就完成了用户的登录环节。
 不管你接下来的操作是单聊还是群聊，你都需要实现之前的所有步骤才能进行下一步的操作。
@@ -260,9 +260,9 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
 
 正如上文提到了，实时聊天系统在发送消息前需要保证发送的对象是被watch过的。对于已有的好友列表，你可以如上文提到的方法，在登录实时通信系统的时候放在参数中间；对于新的好友，你可以通过如下代码进行添加：
 
-```
-  Session session = SessionManager.getInstance(selfId);
-  session.watch(Arrays.asList("friend1","friend2"));
+```java
+Session session = SessionManager.getInstance(selfId);
+session.watch(Arrays.asList("friend1","friend2"));
 ```
 
 其中 friend1、friend2 是其他用户的 peer id，下面提到的 firend id 与此类似。
@@ -270,7 +270,7 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
 之后添加是否成功则可以通过Receiver中的回调的方式来获悉：
 
 
-```
+```java
 public class ChatDemoMessageReceiver extends AVMessageReceiver{
 
   @Override
@@ -282,33 +282,33 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
 
 在任何一个时候你也可以通过以下代码来判断是否已经 watch 过某个用户：
 
-```
-  Session session = SessionManager.getInstance(selfId);
-  boolean watched = session.isWatching("friend1");
+```java
+Session session = SessionManager.getInstance(selfId);
+boolean watched = session.isWatching("friend1");
 ```
 
 ####发送消息
 
 在用户成功登录实时消息系统以后，用户就可以进行消息的发送接收等。
 
-```
-   Session session = SessionManager.getInstance(selfId);
-   AVMessage msg = new AVMessage();
-   msg.setMessage("这是一个普通的消息");
-   //friendId是指目标用户的 peer id，也就是想接收这条消息的用户。
-   msg.setToPeerIds(Arrays.asList(friendId));   
-   session.sendMessage(msg);
+```java
+Session session = SessionManager.getInstance(selfId);
+AVMessage msg = new AVMessage();
+msg.setMessage("这是一个普通的消息");
+//friendId是指目标用户的 peer id，也就是想接收这条消息的用户。
+msg.setToPeerIds(Arrays.asList(friendId));
+session.sendMessage(msg);
 ```
 
 正如上文提到的，实时通信中所有的操作都是异步操作，发送消息也是一样，针对于消息发送的结果，我们需要在之前提到的Receiver中实现对应的方法 `onMessageSent` 或者 `onMessageFailure`：
 
-```
+```java
 public class ChatDemoMessageReceiver extends AVMessageReceiver{
 
   @Override
   public void onMessageSent(Context context, Session session, AVMessage msg) {
     //这个时间是来自服务器端的时间，这样即便是多台设备中间也不会出现时间的混乱
-     System.out.println("消息发送成功了，发送成功时间是"+msg.getTimestamp());  
+     System.out.println("消息发送成功了，发送成功时间是"+msg.getTimestamp());
   }
 
   @Override
@@ -323,19 +323,19 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
 
 有些应用可能会有指定消息是否是只有用户在线才能接收，我们在系统中间也进行了支持。将消息设置为 `transient`，那么消息只会发送给在线用户，如果用户不在线，也不会作为离线消息存储，而是直接丢弃。
 
-```
-   Session session = SessionManager.getInstance(selfId);
-   AVMessage transientMsg = new AVMessage();
-   transientMsg.setMessage("这是一个 transient 消息，只有对方当时在线才能收到");
-   transientMsg.setTransient(true);
-   transientMsg.setToPeerIds(Arrays.asList(friendId));
-   session.sendMessage(transientMsg);
+```java
+Session session = SessionManager.getInstance(selfId);
+AVMessage transientMsg = new AVMessage();
+transientMsg.setMessage("这是一个 transient 消息，只有对方当时在线才能收到");
+transientMsg.setTransient(true);
+transientMsg.setToPeerIds(Arrays.asList(friendId));
+session.sendMessage(transientMsg);
 
-   AVMessage msg = new AVMessage();
-   msg.setMessage("这是一个普通消息，对方在线立即收到，如果对方当时不在线，将作为离线消息存储。");
-   msg.setTransient(false);//如果不设置，默认是false
-   msg.setToPeerIds(Arrays.asList(friendId));
-   session.sendMessage(msg);
+AVMessage msg = new AVMessage();
+msg.setMessage("这是一个普通消息，对方在线立即收到，如果对方当时不在线，将作为离线消息存储。");
+msg.setTransient(false);//如果不设置，默认是false
+msg.setToPeerIds(Arrays.asList(friendId));
+session.sendMessage(msg);
 ```
 
 默认消息都是普通消息，而非在线消息。
@@ -344,25 +344,25 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
 
 由于离线消息的存在，消息的发送成功与真正对方收到消息，可能在时间上存在一定的先后消息。应用可能想明确知道消息是否送达目标用户，我们也通过消息回执的形式来支持这样的操作：
 
-```
-   Session session = Session.getInstance(selfId);
-   AVMessage msg = new AVMessage();
-   msg.setMessage("这是一个带有消息回执的消息");
-   //设置消息回执为 true
-   msg.setRequestReceipt(true);
-   msg.setToPeerIds(Arrays.asList(friendId));
+```java
+Session session = Session.getInstance(selfId);
+AVMessage msg = new AVMessage();
+msg.setMessage("这是一个带有消息回执的消息");
+//设置消息回执为 true
+msg.setRequestReceipt(true);
+msg.setToPeerIds(Arrays.asList(friendId));
 ```
 
 针对消息回执，我们会产生额外的回调：
 
-```
+```java
 public class ChatDemoMessageReceiver extends AVMessageReceiver{
 
   @Override
   public void onMessageDelivered(Context context, Session session, AVMessage msg) {
     //消息真正到达用户了
     System.out.println(msg.getMessage() + "delivered at " + msg.getReceiptTimestamp());
-  } 
+  }
 }
 ```
 
@@ -372,12 +372,12 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
 
 实时聊天系统已经不在是多年以前的聊天室，用户往往会通过更多更丰富的多媒体内容来进行有效的交互，比如：图片，短视频，语音，地理位置等等。开发者可以通过将AVMessage中的message当做一个相对复杂的数据结构的形势来实现这样的消息内容。比如我们使用 JSON 数据作为消息内容传输
 
-```
-    //示范一个简单的带图片的消息{"type":"file","content":"https://cn.avoscloud.com/images/static/partner-iw.png"}
-    HashMap<String, Object> params = new HashMap<String, Object>();
-    params.put("type", "file");
-    params.put("content", "https://cn.avoscloud.com/images/static/partner-iw.png");
-    AVMessage msg = new AVMessage(JSON.toJSONString(params));    
+```java
+//示范一个简单的带图片的消息{"type":"file","content":"https://cn.avoscloud.com/images/static/partner-iw.png"}
+HashMap<String, Object> params = new HashMap<String, Object>();
+params.put("type", "file");
+params.put("content", "https://cn.avoscloud.com/images/static/partner-iw.png");
+AVMessage msg = new AVMessage(JSON.toJSONString(params));
 ```
 
 您也可以采用其他序列化方案，只要中间格式是文本即可。
@@ -386,7 +386,7 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
 
 一个客户端在实时通信系统中间不仅仅会扮演简单的发送者的概念，同时也会需要扮演接收者的角色。和之前的所有回调一样，消息的接收也是通过继承的Receiver来接收的：
 
-```
+```java
 public class ChatDemoMessageReceiver extends AVMessageReceiver{
 
   @Override
@@ -401,15 +401,15 @@ public class ChatDemoMessageReceiver extends AVMessageReceiver{
 #### 创建群组
 当你想要创建一个群组的时候，你可以通过以下代码来创建一个新的群组：
 
-```
-   Session session = SessionManager.getInstance(selfId);
-   Group group = session.getGroup();
-   group.join();
+```java
+Session session = SessionManager.getInstance(selfId);
+Group group = session.getGroup();
+group.join();
 ```
 
 正如上文所说的，所有的请求都是异步的，群组的创建和加入也需要通过Receiver的回调来获取成功的结果。但是群组需要一个额外的 Receiver——`AVGroupMessageReceiver`：
 
-```
+```java
 public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
     @Override
     public void onJoined(Context context, Group group){
@@ -419,13 +419,13 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 ```
 同时你需要在 `AndroidManifest.xml` 中间注册这个Receiver:
 
-```
-        <receiver android:name=".DemoGroupMessageReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="com.avoscloud.group.action" />
-            </intent-filter>
-        </receiver>
+```xml
+<receiver android:name=".DemoGroupMessageReceiver" >
+    <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="com.avoscloud.group.action" />
+    </intent-filter>
+</receiver>
 ```
 
 #### 加入群组
@@ -433,11 +433,11 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 
 所有应用内的群组都被放在了 AVOSRealtimeGroups 表中。你可以通过 AVQuery 获取 AVOSRealtimeGroups 对象对应的 objectId 作为 groupId:
 
-```
-   //通过 AVQuery 查找到群组的 objectId 作为 groupId
-   Session session = SessionManager.getInstance(selfId);
-   Group group = session.getGroup(groupId);
-   group.join();
+```java
+//通过 AVQuery 查找到群组的 objectId 作为 groupId
+Session session = SessionManager.getInstance(selfId);
+Group group = session.getGroup(groupId);
+group.join();
 ```
 对于之前已经加入过的群组，只要没有显式调用过quit()，**并不需要在重新上线以后反复 join**。只要在`session.open` 以后，就能收到来自群组的消息。
 
@@ -447,18 +447,18 @@ AVQuery 查询参考 [Android 指南](./android_guide.html#查询)。
 
 群组的消息发送几乎与单聊的消息发送相同，只是发送的调用对象不再是 session 而是 group:
 
-```
-  Session session = SessionManager.getInstance(selfId);
-  Group group = session.getGroup(groupId);
-  AVMessage message = new AVMessage();
-  message.setMessage("这是一段群消息示范");
-  group.sendMessage(message);
+```java
+Session session = SessionManager.getInstance(selfId);
+Group group = session.getGroup(groupId);
+AVMessage message = new AVMessage();
+message.setMessage("这是一段群消息示范");
+group.sendMessage(message);
 ```
 
 和单聊的发送消息一样，发送是否成功需要在Receiver中间加入对应的回调：
 
 
-```
+```java
 public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 
  @Override
@@ -479,7 +479,7 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 
 和单聊时一样，接收消息也是通过Receiver来获取的：
 
-```
+```java
 public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 
  @Override
@@ -496,7 +496,7 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 ##### 查询群成员
 不管用户是需要邀请更多用户进入群组还是想要剔除部分用户，都需要知道当前群组内已经有哪些用户了。开发者可以通过下面的代码来实现群组内成员列表的查询：
 
-```
+```java
     Session session = Session.getInstance(selfId);
     Group group = session.getGroup(groupId);
     group.getMembersInBackground(new GroupMemberQueryCallback(){
@@ -511,15 +511,15 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 
 当你进入一个群组以后，你可以邀请一些你的好友进入这个群组，进行进一步的讨论：
 
-```
-    Session session = Session.getInstance(selfId);
-    Group group = session.getGroup(groupId);
-    group.inviteMember(Arrays.asList("friend1","friend2","friend3"....));
+```java
+Session session = Session.getInstance(selfId);
+Group group = session.getGroup(groupId);
+group.inviteMember(Arrays.asList("friend1","friend2","friend3"....));
 ```
 
 而邀请是否成功的回调，同样也在对应的Receiver中获取：
 
-```
+```java
 public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 
   @Override
@@ -540,15 +540,15 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 
 除了能够邀请成员以外，群组成员也可以剔除现在在群组内的用户：
 
-```
-    Session session = Session.getInstance(selfId);
-    Group group = session.getGroup(groupId);
-    group.kickMember(Arrays.asList("friend1","friend2","friend3"....));
+```java
+Session session = Session.getInstance(selfId);
+Group group = session.getGroup(groupId);
+group.kickMember(Arrays.asList("friend1","friend2","friend3"....));
 ```
 
 与邀请对应的，剔除对应回调代码也在Receiver中，对应如下:
 
-```
+```java
 public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 
   @Override
@@ -568,15 +568,15 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 #### 退出群组
 退出群组的代码也相对比较简单:
 
-```
-    Session session = Session.getInstance(selfId);
-    Group group = session.getGroup(groupId);
-    group.quit(); 
+```java
+Session session = Session.getInstance(selfId);
+Group group = session.getGroup(groupId);
+group.quit();
 ```
 
 如果你想要监听是否真正成功退组，你可以在Receiver中进行检测：
 
-```
+```java
 public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 
   @Override
@@ -599,19 +599,19 @@ public class DemoGroupMessageReceiver extends AVGroupMessageReceiver{
 2. 在LeanCloud中你的项目对应的网页控制台的`设置`->`应用选项`->`聊天推送`中打开`聊天服务签名认证`
 3. 在 SDK 中间继承 SignatureFactory 抽象类
 
-```
+```java
 public class KeepAliveSignatureFactory implements SignatureFactory {
  @Override
  public Signature createSignature(String peerId, List<String> watchIds) {
    Map<String,Object> params = new HashMap<String,Object>();
    params.put("self_id",peerId);
    params.put("watch_ids",watchIds);
-   
+
    try{
      Object result =  AVCloud.callFunction("sign",params);
      if(result instanceof Map){
        Map<String,Object> serverSignature = (Map<String,Object>) result;
-       Signature signature = new Signature();     
+       Signature signature = new Signature();
        signature.setSignature((String)serverSignature.get("signature"));
        signature.setTimestamp((Long)serverSignature.get("timestamp"));
        signature.setNonce((String)serverSignature.get("nonce"));
@@ -630,12 +630,12 @@ public class KeepAliveSignatureFactory implements SignatureFactory {
    params.put("group_id",groupId);
    params.put("group_peer_ids",targetPeerIds);
    params.put("action",action);
-   
+
    try{
      Object result = AVCloud.callFunction("group_sign",params);
      if(result instanceof Map){
         Map<String,Object> serverSignature = (Map<String,Object>) result;
-        Signature signature = new Signature();     
+        Signature signature = new Signature();
         signature.setSignature((String)serverSignature.get("signature"));
         signature.setTimestamp((Long)serverSignature.get("timestamp"));
         signature.setNonce((String)serverSignature.get("nonce"));
@@ -650,10 +650,10 @@ public class KeepAliveSignatureFactory implements SignatureFactory {
 
 最后， 在Session第一次打开时，设置SignatureFactory:
 
-```
-   Session session = SessionManager.getInstance(selfId);
-   session.setSignatureFactory(new KeepAliveSignatureFactory());
-   session.open();
+```java
+Session session = SessionManager.getInstance(selfId);
+session.setSignatureFactory(new KeepAliveSignatureFactory());
+session.open();
 ```
 
 ###聊天记录查询
@@ -661,30 +661,30 @@ public class KeepAliveSignatureFactory implements SignatureFactory {
 聊天记录的查询的基本方法跟 AVQuery 类似但是略有不同。
 针对 Session 的聊天记录和聊天室 Group 的聊天记录查询略有不同，但是基本都是一样：
 
-```
- //查询 Session 里的聊天记录
- SessionManager sm = SessionManager.getInstance(selfId);
- AVHistroyMessageQuery sessionHistoryQuery = sm.getHistroyMessageQuery();
- sessionHistoryQuery.setLimit(1000);//设置查询结果大小
- //查询 unix 时间戳 1413184345686 之后的消息，单位毫秒
- sessionHistoryQuery.setTimestamp(1413184345686);
- sessionHistoryQuery.findInBackground(new HistoryMessageCallback() {
+```java
+//查询 Session 里的聊天记录
+SessionManager sm = SessionManager.getInstance(selfId);
+AVHistroyMessageQuery sessionHistoryQuery = sm.getHistroyMessageQuery();
+sessionHistoryQuery.setLimit(1000);//设置查询结果大小
+//查询 unix 时间戳 1413184345686 之后的消息，单位毫秒
+sessionHistoryQuery.setTimestamp(1413184345686);
+sessionHistoryQuery.findInBackground(new HistoryMessageCallback() {
 
+  @Override
+  public void done(List<AVHistoryMessage> messages, AVException error) {
+         //messages 即是历史消息记录
+  }
+});
+
+//查询群组里的聊天记录
+Group group = sm.getGroup("140a534fd092809500e6d651e73400c7");
+//获取AVHistoryMessageQuery对象来查询聊天室的聊天记录
+AVHistroyMessageQuery groupHistoryQuery = group.getHistoryMessageQuery();
+groupHistoryQuery.findInBackground(new HistoryMessageCallback(){
     @Override
-    public void done(List<AVHistoryMessage> messages, AVException error) {
-           //messages 即是历史消息记录
-    }
-  });
-  
-  //查询群组里的聊天记录
-  Group group = sm.getGroup("140a534fd092809500e6d651e73400c7");
-  //获取AVHistoryMessageQuery对象来查询聊天室的聊天记录
-  AVHistroyMessageQuery groupHistoryQuery = group.getHistoryMessageQuery();
-  groupHistoryQuery.findInBackground(new HistoryMessageCallback(){
-      @Override
-      public void done(List<AVHistoryMessage> messages,AVException error){
-        // messages 就是群组聊天记录
-  });
+    public void done(List<AVHistoryMessage> messages,AVException error){
+      // messages 就是群组聊天记录
+});
 ```
 
 从实用角度，**我们推荐您对聊天记录做本地缓存，每次实时去查询聊天记录是更为低效的方式**
@@ -711,7 +711,7 @@ public class KeepAliveSignatureFactory implements SignatureFactory {
 
 session 成功打开
 
-```
+```objc
 - (void)sessionOpened:(AVSession *)session;
 ```
 
@@ -719,7 +719,7 @@ session 成功打开
 
 已经打开的 session 由于网络原因、或者应用转入后台，因而进入暂停状态。此时无法成功地发送消息。
 
-```
+```objc
 - (void)sessionPaused:(AVSession *)session;
 ```
 
@@ -727,7 +727,7 @@ session 成功打开
 
 之前暂停的 session 重新恢复连接
 
-```
+```objc
 - (void)sessionResumed:(AVSession *)session;
 ```
 
@@ -735,7 +735,7 @@ session 成功打开
 
 收到别人发送给你的消息
 
-```
+```objc
 - (void)session:(AVSession *)session didReceiveMessage:(AVMessage *)message;
 ```
 
@@ -743,7 +743,7 @@ session 成功打开
 
 服务器确认之前发送的消息已发出
 
-```
+```objc
 - (void)session:(AVSession *)session messageSendFinished:(AVMessage *)message;
 ```
 
@@ -751,7 +751,7 @@ session 成功打开
 
 这些消息发出后没有及时收到服务器确认，客户端会启动重连流程，这些消息被认为发送失败。**注意：此时连接处在断开状态，不能立即重发，您可以缓存消息等 sessionResumed 的时候重新发送**。
 
-```
+```objc
 - (void)session:(AVSession *)session messageSendFailed:(AVMessage *)message error:(NSError *)error;
 ```
 
@@ -759,7 +759,7 @@ session 成功打开
 
 你关注(watch)的用户状态改变了
 
-```
+```objc
 - (void)session:(AVSession *)session didReceiveStatus:(AVPeerStatus)status peerIds:(NSArray *)peerIds;
 ```
 
@@ -767,7 +767,7 @@ session 成功打开
 
 所有 `AVSession` 中操作失败会触发此回调
 
-```
+```objc
 - (void)sessionFailed:(AVSession *)session error:(NSError *)error;
 ```
 
@@ -775,7 +775,7 @@ session 成功打开
 
 通过下列代码开始一次会话：
 
-```
+```objc
 AVSession *session = [[AVSession alloc] init];
 session.sessionDelegate = self;
 NSString *selfId = [self getMyUserId];
@@ -790,19 +790,19 @@ open 结果在 `sessionOpened` 回调里处理。
 
 如果使用了签名认证，你需要实现 `AVSignatureDelegate`，并在调用 `[session open]`之前为 session 设置 `signatureDelegate`：
 
-```
+```objc
 session.signatureDlegate = self;
 ```
 
 需要说明的是，你需要为 AVSignatureDelegate 实现的方法是：
 
-```
+```objc
 - (AVSignature *)signatureForPeerWithPeerId:(NSString *)peerId watchedPeerIds:(NSArray *)watchedPeerIds action:(NSString *)action;
 ```
 
 你需要做的就是按照前文所述的签名算法实现签名，其中 `AVSignature` 声明如下：
 
-```
+```objc
 @interface AVSignature : NSObject
 
 @property (nonatomic, retain) NSString *signature;
@@ -824,7 +824,7 @@ session.signatureDlegate = self;
 
 在发送消息前，你需要 watch 用户(Super peer 除外)
 
-```
+```objc
 /*!
  *  增量关注一组 peerIds
  *  @param peerIds peer id 数组
@@ -845,7 +845,7 @@ watch 的结果在 `AVSessionDelegate`的 `session:didReceiveStatus:peerIds` 方
 
 使用如下方法构造一个AVMessage对象，注意：toPeerId必须是已经关注(watch)了的，否则发送消息时将无法送达。
 
-```
+```objc
 /*!
  *  构造一个发送给 toPeerId 的message对象
  *  @param session 服务器会话
@@ -860,7 +860,7 @@ watch 的结果在 `AVSessionDelegate`的 `session:didReceiveStatus:peerIds` 方
 
 调用如下方法发送消息。
 
-```
+```objc
 /*!
  *  发送消息
  *  @param message 消息对象
@@ -896,7 +896,7 @@ iOS SDK从v2.6.1开始提供聊天室功能。客户端对一个聊天室对象�
 由于整个实时通信功能都是建立在Session的基础上，所以您要加入一个聊天室也需要建立在一个已经打开的Session上。
 当您已经打开一个Session以后，可以通过一下操作来加入一个Group
 
-```
+```objc
     //新建并加入一个聊天室
     [AVGroup createGroupWithSession:session groupDelegate:self callback:^(AVGroup *group, NSError *error) {
         if (!error) {
@@ -916,7 +916,7 @@ iOS SDK从v2.6.1开始提供聊天室功能。客户端对一个聊天室对象�
 #### 查询聊天室组员
 在应用管理的数据中心的 `AVOSRealtimeGroups` 表中，记录所有聊天室基本信息。当你知道一个聊天室的groupId的时候，您就可以通过AVObject接口来查看这个聊天室的组员情况。
 
-```
+```objc
     AVObject *groupObject = [AVObject objectWithoutDataWithClassName:@"AVOSRealtimeGroups" objectId:groupId];
     [groupObject fetch];
     NSArray *groupMembers = [groupObject objectForKey:@"m"];
@@ -927,7 +927,7 @@ iOS SDK从v2.6.1开始提供聊天室功能。客户端对一个聊天室对象�
 #### 管理聊天室组员
 在查询到聊天室组员以后，您可以邀请一些您的朋友加入，或者踢出一些"可怕"的组员。
 
-```
+```objc
     [group invitePeerIds:@[@"peerId1",@"peerId2",@"peerId3"]];
     [group kickPeerIds:@[@"peerId1",@"peerId2",@"peerId3"]];
 ```
@@ -940,7 +940,7 @@ iOS SDK从v2.6.1开始提供聊天室功能。客户端对一个聊天室对象�
 
 通过如下代码您就可以向对应的聊天室发送代码:
 
-```
+```objc
     AVMessage *message = [AVMessage messageForGroup:group payload:@"hello world"];
     [group sendMessage:message];
 ```
@@ -950,7 +950,7 @@ iOS SDK从v2.6.1开始提供聊天室功能。客户端对一个聊天室对象�
 
 在群组功能中，我们对**加群**，**邀请**和**踢出群**这三个动作也允许加入签名，他的签名格式是：
 
-```
+```objc
 app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
 ```
 
@@ -963,7 +963,7 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
 
 你需要为 AVSignatureDelegate 实现的方法是：
 
-```
+```objc
 - (AVSignature *)signatureForGroupWithPeerId:(NSString *)peerId groupId:(NSString *)groupId groupPeerIds:(NSArray *)groupPeerIds action:(NSString *)action
 ```
 
@@ -972,7 +972,7 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
 
 #### 通用查询
 
-```
+```objc
 + (instancetype)query;
 + (instancetype)queryWithTimestamp:(int64_t)timestamp limit:(int)limit;
 ```
@@ -981,7 +981,7 @@ app_id:peer_id:group_id:group_peer_ids:timestamp:nonce:action
 
 #### 查询指定ConversationId的记录
 
-```
+```objc
 + (instancetype)queryWithConversationId:(NSString *)conversationId;
 + (instancetype)queryWithConversationId:(NSString *)conversationId timestamp:(int64_t)timestamp limit:(int)limit;
 ```
@@ -990,21 +990,21 @@ conversationId的含义参考 [构建对话 ID](./rest_api.html#构建对话-id)
 
 #### 查询来自指定peerId的记录
 
-```
+```objc
 + (instancetype)queryWithFromPeerId:(NSString *)fromPeerId;
 + (instancetype)queryWithFromPeerId:(NSString *)fromPeerId timestamp:(int64_t)timestamp limit:(int)limit;
 ```
 
 #### 查询两个peerId之间的记录
 
-```
+```objc
 + (instancetype)queryWithFirstPeerId:(NSString *)firstPeerId secondPeerId:(NSString *)secondPeerId;
 + (instancetype)queryWithFirstPeerId:(NSString *)firstPeerId secondPeerId:(NSString *)secondPeerId timestamp:(int64_t)timestamp limit:(int)limit;
 ```
 
 #### 查询指定群组的记录
 
-```
+```objc
 + (instancetype)queryWithGroupId:(NSString *)groupId;
 + (instancetype)queryWithGroupId:(NSString *)groupId timestamp:(int64_t)timestamp limit:(int)limit;
 ```
@@ -1012,7 +1012,7 @@ conversationId的含义参考 [构建对话 ID](./rest_api.html#构建对话-id)
 #### 实例
 查询早于timestamp的 MyPeerId 和 TheOtherPeerId 之间的10条聊天记录
 
-```
+```objc
     AVHistoryMessageQuery *query = [AVHistoryMessageQuery queryWithFirstPeerId:@"MyPeerId" secondPeerId:@"TheOtherPeerId" timestamp:timestamp limit:10];
     [query findInBackgroundWithCallback:^(NSArray *objects, NSError *error) {
         if(!error) {
@@ -1025,7 +1025,7 @@ conversationId的含义参考 [构建对话 ID](./rest_api.html#构建对话-id)
 
 查询群组 MyGroupId 的所有聊天记录
 
-```
+```objc
     AVHistoryMessageQuery *query = [AVHistoryMessageQuery queryWithGroupId:@"MyGroupId"];;
     [query findInBackgroundWithCallback:^(NSArray *objects, NSError *error) {
         if(!error) {
@@ -1058,14 +1058,14 @@ conversationId的含义参考 [构建对话 ID](./rest_api.html#构建对话-id)
 
 以上逻辑是一个最基本的聊天系统应该有的逻辑交互，在 LeanCloud 中，实现以上步骤需要如下代码：
 
-```
+```javascript
   AVSession session = new AVSession("UserA");//Step1
   session.Open("UserB");//Step2
   session.SendMessage("Hello,B!", "UserB", true);//Step3
 ```
 这是UserA需要做的事情，UserB 想要实现接受的话需要如下几步：
 
-```
+```javascript
   AVSession session = new AVSession("UserB");Step4
   session.Open("UserA");//Step5
   session.SetListener(new SampleAVSessionListener()
@@ -1082,7 +1082,7 @@ conversationId的含义参考 [构建对话 ID](./rest_api.html#构建对话-id)
 ```
 附上`SampleAVSessionListener`的代码，开发者可以讲如下代码拷贝到 Visual Studio 中：
 
-```
+```javascript
  public class SampleAVSessionListener : IAVSessionListener
  {
         public SessionOpen OnSessionOpen { get; set; }//AVSession打开时执行的代理。
@@ -1125,14 +1125,11 @@ conversationId的含义参考 [构建对话 ID](./rest_api.html#构建对话-id)
 ### 实现签名（可选）
 签名作为安全认证的一部分，阅读下面的内容之前请确保您已经阅读过本文之前所介绍[权限和认证](https://cn.avoscloud.com/docs/realtime.html#权限和认证)。
 
-假如开发者在控制台勾选了
+假如开发者在控制台勾选了「聊天服务签名认证」：
 
-```
-聊天服务签名认证
-```
 那么在调用 `AVSession.Open` 的**之前**，必须显式的设置签名方法实现的类，如下代码：
 
-```
+```javascript
 session.SignatureFactory = new SampleSignatureFactory();
 ```
 其中 `SampleSignatureFactory` 是一个实现了 `ISignatureFactory` 接口的一个类，这个类的名字以及功能完全由开发者自己定义，本文给出的只是一个与云代码相结合进行签名的简单的实例，所以想通过本文的实例代码一次性联调顺利的话，开发者必须把[权限和认证](https://cn.avoscloud.com/docs/realtime.html#权限和认证)中的[云代码](https://cn.avoscloud.com/docs/cloud_code_guide.html)上的
@@ -1140,16 +1137,16 @@ session.SignatureFactory = new SampleSignatureFactory();
 
 下面给出 `SampleSignatureFactory` 的实例代码为：
 
-```
+```javascript
 public class SampleSignatureFactory : ISignatureFactory
     {
         public Task<Signature> CreateSignature(string peerId, IList<string> watchIds)
         {
             var data = new Dictionary<string, object>();
-            
+
             data.Add("self_id", peerId);//当前用户的 PeerId 作为self id 作为签名的参数。
             data.Add("watch_ids", watchIds);//关注的 Peer 作为签名的参数。
-            
+
             //调用云代码进行签名。
             return AVCloud.CallFunctionAsync<IDictionary<string, object>>("sign", data).ContinueWith<Signature>(t =>
             {
@@ -1161,7 +1158,7 @@ public class SampleSignatureFactory : ISignatureFactory
                 signature.Timestamp = (long)result["timestamp"];
                 return signature;//拼装成一个 Signature 对象
             });
-            
+
             //以上这段代码，开发者无需手动调用，只要开发者对一个 AVSession 设置了 SignatureFactory，SDK 会在Open Session 的时候主动调用这个方法进行签名。
         }
 
@@ -1176,11 +1173,9 @@ public class SampleSignatureFactory : ISignatureFactory
 
 另外，关于签名的重要细节有以下几点：
 
-```
 * 服务端进行签名是为了避免一些恶意的操作
 * 签名也有控制好友关系的作用。假如应用本身有好友系统，不是好友不能相互之间通信，比如A想 Watch B，但是 B 并不是 A 的好友（类似QQ，微信），此时在业务需求的情况下，只要服务端返回一个错误的签名，LeanCloud 的服务端就不会在服务端为A和B建立聊天的长连接，A 发送的信息就不会送到给 B，这样也是为了帮助开发者实现轻量的垃圾消息规避，当然我们本身的服务是没有这种好友系统的，因为这是应用本身的业务需求。
 * 签名方法所存放的服务端最好要做好访问认证，比如我们云代码在访问的时候必须在 Https 请求头包含AppId 以及AppKey，这样才能避免一旦服务器地址被暴露，恶意的被其他人利用去做签名，对应用本身的聊天系统产生脏数据以及恶意广告的散发。
-```
 
 签名是认证的一种方式，这种方式有助于开发者去自由掌控自己的系统又不会付出过多的代码做一些跟业务逻辑本身无关的事情，LeanCloud 一直致力于减少应用开发者在服务端的工作量，并且希望开发者能够对应用开发的整体流程有着自己独到的把控，这样的应用才是高质量的。
 

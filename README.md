@@ -2,8 +2,6 @@
 
 LeanCloud 开发者文档
 
-
-
 ## 说明
 
 这个项目是 LeanCloud [文档](http://leancloud.cn/docs/)上的所有文档的 Markdown 格式的源码，最终将渲染成你在网站上看到的 [HTML 文档](http://leancloud.cn/docs/)。
@@ -20,5 +18,4 @@ LeanCloud 开发者文档
 
 ## 书写注意事项
 
-由于文档会采用 angular 渲染，当文档中需要显示 `{{content}}` 这种格式时，外面需要加上 `<span ng-non-bindable> </span>` ，以不被 angular 渲染。
-
+由于文档会采用 Angular 渲染，当文档中需要显示 `{{content}}` 这种格式时，外面需要加上 `<span ng-non-bindable></span>`，以不被 Angular 渲染。
