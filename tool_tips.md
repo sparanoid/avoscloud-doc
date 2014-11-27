@@ -14,7 +14,7 @@
 * 您可以使用 [API 在线测试工具](https://leancloud.cn/apionline/) 在线测试我们提供的开放 [REST API](https://leancloud.cn/docs/rest_api.html)。
 * 我们的用户帐户系统都自动做了密码加密存储，基于 SHA-512 加密算法，使用随机生成的 salt 加密。
 * 我们提供短信服务，您可以使用短息服务发送手机验证码、手机登陆验证码等。具体参考各 SDK 开发指南。
-* 我们提供了 iOS、Android、WindowsPhone、JavaScript、Unity3D 等平台的 SDK，进入 [SDK 下载页面](https://leancloud.cn/docs/sdk_down.html)。
+* 我们提供了 iOS、Android、Windows Phone、JavaScript、Unity3D 等平台的 SDK，进入 [SDK 下载页面](https://leancloud.cn/docs/sdk_down.html)。
 * 如果您想做一个形如微博的 Feed 系统，也许您可以尝试使用我们的 [事件流系统](https://leancloud.cn/docs/status_system.html)。
 * 我们提供简易的 [SNS 组件](https://leancloud.cn/docs/sns.html)，用于第三方登陆和分享。
 * [Android 应用代码混淆注意事项](https://leancloud.cn/docs/android_guide.html#代码混淆)。
@@ -64,7 +64,7 @@
 
 ## 推送
 
-* 我们提供 iOS、Android 和 WindowsPhone 平台的消息推送服务，请参考各 SDK 开发指南和[消息推送开发指南文档](https://leancloud.cn/docs/push_guide.html)。
+* 我们提供 iOS、Android 和 Windows Phone 平台的消息推送服务，请参考各 SDK 开发指南和[消息推送开发指南文档](https://leancloud.cn/docs/push_guide.html)。
 * 您可以为 `AVInstallation` 添加自定义的业务属性，也可以使用频道订阅功能，来实现各种复杂推送。
 * iOS 推送必须在应用设置的**推送设置**里上传推送证书，证书生成参考[ iOS 推送证书设置指南](https://leancloud.cn/docs/ios_push_cert.html)。
 * 可以通过 AVAnalytics 的 trackAppOpened 方法跟踪推送消息的应用打开情况。
