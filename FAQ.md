@@ -153,7 +153,7 @@ REST API 文档使用 curl 作为示范，其中 `--data-urlencode` 表示要对
 
 推荐使用淘宝提供的 Gem 源，访问 [http://ruby.taobao.org/](http://ruby.taobao.org/)。
 
-```
+```sh
 $ gem sources --remove https://rubygems.org/
 $ gem sources -a http://ruby.taobao.org/
 $ gem sources -l

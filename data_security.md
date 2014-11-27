@@ -110,7 +110,6 @@ name,age,address,account,createdAt
 张三,33,北京,300.0,2014-05-07T19:45:50.701Z
 李四,25,苏州,400.03,2014-05-08T15:45:20.701Z
 王五,21,上海,1000.5,2012-04-22T09:21:35.701Z
-
 ```
 
 导入的relation数据，比JSON简单一些，第一列对应JSON的`owningId`，也就是要导入的 Class 的存在对象的 objectId，第二列对应`relatedId`，对应关联 Class 的objectId。例如：
