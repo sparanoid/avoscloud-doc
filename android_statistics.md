@@ -30,29 +30,27 @@
 * `android.permission.WRITE_EXTERNAL_STORAGE` , 用于保存离线报告的缓存数据。
 
 以下为示例部分
-```
-
-    <manifest ……>
-        <application ……>
-            ……
-            <activity ……/>
-        </application>
-        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-        <uses-permission android:name="android.permission.INTERNET"/>
-        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-        <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-        <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    </manifest>
-
+```xml
+<manifest ……>
+    <application ……>
+        ……
+        <activity ……/>
+    </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+</manifest>
 ```
 
 如果您想指定您的发布渠道，请在AndroidManifest.xml中加入如下内容。
 
-```
-    <application  ...>
-        ...
-        <meta-data android:name="Channel ID" android:value="LeanCloud"/>
-    </application>
+```xml
+<application  ...>
+    ...
+    <meta-data android:name="Channel ID" android:value="LeanCloud"/>
+</application>
 ```
 
 您可以根据您的实际发布渠道，修改上述的android:value中对应的值，比如将LeanCloud改为Your Channel，重新打包后发布。(请不要修改android:name="Channel ID"字段，以免影响使用)
@@ -60,11 +58,11 @@
 由于很多用户反映在部分第三方发布平台中间，不允许出现meta-data中间的key出现空格字符，我们在2.6.8以后，增加了一个等效的key:`leancloud`。
 以下代码也可以用于指定渠道了，但是请不要反复定义
 
-```
-    <application  ...>
-        ...
-        <meta-data android:name="leancloud" android:value="LeanCloud"/>
-    </application>
+```xml
+<application  ...>
+    ...
+    <meta-data android:name="leancloud" android:value="LeanCloud"/>
+</application>
 ```
 
 ## 添加使用代码
@@ -75,9 +73,8 @@
 经过我们的一系列更新升级, 使用最新的SDK您不需要任何代码上的操作就可以使用统计的基本功能，统计功能为默认打开
 
 
-```
+```java
 import com.avos.avoscloud.*;
-
 
 public class YourApp extends Application{
 
@@ -95,16 +92,16 @@ public class YourApp extends Application{
 
 在需要的Activity中调用统计SDK。 在每个Activity的onResume和onPause方法中调用相应的统计方法，传入的参数为当前context（比如当前的Activity）的引用。 这里请不要将全局的Application Context传入。如示例所示
 
-```
-    protected void onPause() {
-        super.onPause();
-        AVAnalytics.onPause(this);
-    }
+```java
+protected void onPause() {
+    super.onPause();
+    AVAnalytics.onPause(this);
+}
 
-    protected void onResume() {
-        super.onResume();
-        AVAnalytics.onResume(this);
-    }
+protected void onResume() {
+    super.onResume();
+    AVAnalytics.onResume(this);
+}
 ```
 
 
@@ -112,13 +109,13 @@ public class YourApp extends Application{
 
 当用户两次使用之间间隔超过30秒时，将被认为是两个的独立的session，例如用户回到home，或进入其他程序，经过一段时间后再返回之前的应用。 我们也提供了新的接口来自定义这个时间间隔，您只要调用：
 
-```
+```java
 AVAnalytics.setSessionContinueMillis(long mills);
 ```
 
 传入适当的参数，就可以控制session重新启动时间，注意参数是以毫秒为单位的。 例如，如果您认为在60秒之内返回应用可视为同一次启动，超过60秒返回当前应用可视为一次新的启动，那么请写成
 
-```
+```java
 AVAnalytics.setSessionContinueMillis(60 * 1000);
 ```
 
@@ -126,7 +123,7 @@ AVAnalytics.setSessionContinueMillis(60 * 1000);
 
 Android 3.0引入了Fragment, 使用Fragment，您可以在一个activity中展示多个用户界面，也可根据您的需要，为不同的设备适配界面。从1.4.2开始，LeanCloud SDK增加了对于Fragment统计的支持。您可以使用以下代码统计Fragment页面
 
-```
+```java
 public class MyListFragment extends ListFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -164,7 +161,7 @@ public class MyListFragment extends ListFragment {
 
 在您希望发送事件报告的代码段，调用如下方法就可以向服务器发送事件记录
 
-```
+```java
 AVAnalytics.onEvent(Context context, String eventName);
 ```
 
@@ -172,7 +169,7 @@ AVAnalytics.onEvent(Context context, String eventName);
 
 比如，在玩拍应用程序里一条微视频被转发定义为事件"Forward"。那么在点击转发的函数里调用
 
-```
+```java
 AVAnalytics.onEvent(this, "Forward")
 ```
 
@@ -181,7 +178,7 @@ AVAnalytics.onEvent(this, "Forward")
 
 ### 多标签事件
 
-```
+```java
 AVAnalytics.onEvent(Context context, String eventName, String  tag);
 ```
 
@@ -193,7 +190,7 @@ AVAnalytics.onEvent(Context context, String eventName, String  tag);
 事件累计
 在应用程序中某些自定义事件可能会被频繁触发，例如用户点击某个按钮。开发者可以在程序中维护一个计数器，这样某个事件被多次触发但只需要生成一个消息，这个消息中包括该事件被触发的次数。为了支持这个功能，我们提供了重载的接口：
 
-```
+```java
 AVAnalytics.onEvent(Context context, String eventName, int count);
 AVAnalytics.onEvent(Context context, String eventName, String label, int count)
 ```
@@ -227,23 +224,26 @@ AVAnalytics.onEvent(Context context, String eventName, String label, int count)
 * key必须跟您在控制台配置的参数一致，大小写敏感。
 * 由于统计参数更新时一个后台更新，您可能在直接调用`AVAnalytics.getConfigParams(this.getContext(), "key")`时遇到返回值为null的情况。您可以通过设置AVOnlineConfigureListener和强制调用updateOnlineConfig来保证自定义配置的获取。
 
-```
-            AVAnalytics.setOnlineConfigureListener(new AVOnlineConfigureListener() {
-              @Override
-              public void onDataReceived(JSONObject data) {
+```java
+AVAnalytics.setOnlineConfigureListener(new AVOnlineConfigureListener() {
+  @Override
+  public void onDataReceived(JSONObject data) {
 
-                   AVAnalytics.getConfigParams(getContext(), "key");
-              }
-             });
-            AVAnalytics.updateOnlineConfig(getContext());
+       AVAnalytics.getConfigParams(getContext(), "key");
+  }
+ });
+AVAnalytics.updateOnlineConfig(getContext());
 ```
+
 * 由于统计参数在客户端会有定时更新的策略，所以AVOnlineConfigureListener在客户端会发生多次调用的情况，请在OnDataReceived方法中不要放入太多函数副作用。
 
 ##　开发选项
 
 如果您不准备区分开发AppKey与生产环境AppKey,但是又不想开发时期的统计数据会影响产品上线后的统计数据，您可以使用
-```
+
+```java
 AVAnalytics.setAnalyticsEnabled(false);
 AVOSCloud.initialize(context,appId,appKey);
 ```
+
 在开发阶段关闭统计的功能。
