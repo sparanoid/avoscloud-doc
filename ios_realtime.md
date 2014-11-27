@@ -119,10 +119,10 @@ session.signatureDlegate = self;
 ```objc
 @interface AVSignature : NSObject
 
-@property (nonatomic, retain) NSString *signature;
-@property (nonatomic, assign) long timestamp;
-@property (nonatomic, retain) NSString *nonce;
-@property (nonatomic, retain) NSArray *signedPeerIds;
+@property (nonatomic, strong) NSString *signature;
+@property (nonatomic) int64_t timestamp;
+@property (nonatomic, strong) NSString *nonce;
+@property (nonatomic, strong) NSArray *signedPeerIds;
 
 @end
 ```
@@ -143,17 +143,19 @@ session.signatureDlegate = self;
  *  增量关注一组 peerIds
  *  @param peerIds peer id 数组
  */
-- (void)watchPeerIds:(NSArray *)peerIds;
+- (void)watchPeerIds:(NSArray *)peerIds;  //同步调用，会阻塞当前线程
+- (void)watchPeerIds:(NSArray *)peerIds callback:(AVBooleanResultBlock)callback;
 
 /*!
  *  取消关注一组 peerIds
  *  @param peerIds peer id 数组
  */
-- (void)unwatchPeerIds:(NSArray *)peerIds;
+- (void)unwatchPeerIds:(NSArray *)peerIds;  //同步调用，会阻塞当前线程
+- (void)unwatchPeerIds:(NSArray *)peerIds callback:(AVBooleanResultBlock)callback;
 
 ```
 
-watch 的结果在 `AVSessionDelegate`的 `session:didReceiveStatus:peerIds` 方法处理。
+watch 和 unwatch 的结果在 callback 中处理。
 
 ## 发送消息
 
@@ -188,9 +190,16 @@ watch 的结果在 `AVSessionDelegate`的 `session:didReceiveStatus:peerIds` 方
  *         如果设置为 NO, 则该条消息会设法通过各种途径发到 peer 客户端，比如即时通信、推送、离线消息等。
  */
 - (void)sendMessage:(AVMessage *)message transient:(BOOL)transient;
+
+/*!
+ *  发送消息
+ *  @param message 消息对象
+ *  @param requestReceipt 是否需要回执。
+ */
+- (void)sendMessage:(AVMessage *)message requestReceipt:(BOOL)requestReceipt;
 ```
 
-服务器端确认收到消息后，你会收到`session:messageSendFinished:`事件。
+服务器端确认收到消息后，你会收到`session:messageSendFinished:`事件，如果需要回执，消息到达对方后会收到`session:messageArrived:`事件。
 
 ## 聊天室功能
 
