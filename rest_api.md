@@ -2399,8 +2399,8 @@ curl -X GET \
   <tr><td>end</td><td>结束日期(yyyyMMdd)</td></tr>
   <tr><td>metrics</td><td>统计数据项</td></tr>
   <tr><td>platform</td><td>应用平台：iOS, Android，可选，默认是全部</td></tr>
-  <tr><td>appversion</td><td>选择应用版本，可选，默认是全部</td></tr>
-  <tr><td>channel</td><td>选择发布渠道，可选，默认是全部</td></tr>
+  <tr><td>appversion</td><td>选择应用版本，可选，默认是全部。一次取多个版本数据请用 , 分隔，如：1.0,2.0,2.5</td></tr>
+  <tr><td>channel</td><td>选择发布渠道，可选，默认是全部。一次取多个渠道数据请用 , 分隔，如：Xiaomi,Meizu</td></tr>
 </table>
 
 metrics参数可选项解释：
