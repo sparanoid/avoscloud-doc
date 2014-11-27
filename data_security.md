@@ -59,7 +59,7 @@ JSON格式要求是一个符合我们REST格式的JSON对象数组，或者一�
 
 一个包含普通对象的文件看来像这样：
 
-```
+```json
 { "results": [
   {
     "score": 1337,
@@ -76,7 +76,7 @@ JSON格式要求是一个符合我们REST格式的JSON对象数组，或者一�
 
 关联Relation数据的导入，需要填写导入的class名称，导入后的字段名称，关联的class名称等信息，才能完整导入，示范的relation数据类似：
 
-```
+```json
 { "results": [
 {
   "owningId": "dMEbKFJiQo",
@@ -104,7 +104,7 @@ JSON格式要求是一个符合我们REST格式的JSON对象数组，或者一�
 
 例如：
 
-```
+```csv
 string,int,string,double,date
 name,age,address,account,createdAt
 张三,33,北京,300.0,2014-05-07T19:45:50.701Z
@@ -115,7 +115,7 @@ name,age,address,account,createdAt
 
 导入的relation数据，比JSON简单一些，第一列对应JSON的`owningId`，也就是要导入的 Class 的存在对象的 objectId，第二列对应`relatedId`，对应关联 Class 的objectId。例如：
 
-```
+```csv
 dMEbKFJiQo,19rUj9I0cy
 mQtjuMF5xk,xPVrHL0W4n
 ```
