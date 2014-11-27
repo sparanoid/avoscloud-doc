@@ -27,7 +27,7 @@ AVUserFeedbackAgent *agent = [AVUserFeedbackAgent sharedInstance];
 ### 自定义用户反馈界面
 当然，也可以使用 `AVUserFeedbackAgent` 提供的另外两个 API 来完成用户反馈的功能。
 
-```
+```objc
 - (void)syncFeedbackThreadsWithBlock:(NSString *)title contact:(NSString *)contact block:(AVArrayResultBlock)block;
 
 - (void)postFeedbackThread:(NSString *)content block:(AVIdResultBlock)block;
