@@ -8,7 +8,7 @@
 
 首先，你需要安装 [Node.js](http://nodejs.org/) 环境以及 [npm](https://npmjs.org/) 包管理工具，在 ubuntu 上的 terminal（终端）可以简单地执行
 
-```
+```sh
 sudo apt-get install nodejs
 ```
 
@@ -16,13 +16,13 @@ sudo apt-get install nodejs
 
 在 Mac OSX 上，可以通过 [MacPort](http://www.macports.org/) 或者 [Homebrew](http://brew.sh/) 安装，terminal（终端）执行下列命令：
 
-```
+```sh
 sudo port install nodejs
 ```
 
 或者
 
-```
+```sh
 brew install nodejs
 ```
 
@@ -30,7 +30,7 @@ brew install nodejs
 
 接下来，通过执行下列命令安装 avoscloud 命令行工具：
 
-```
+```sh
 sudo npm install -g avoscloud-code
 ```
 
@@ -38,20 +38,20 @@ sudo npm install -g avoscloud-code
 
 我们更推荐从 [cnpm](http://cnpmjs.org/) 仓库安装，速度理论上更快，请执行下列两个命令：
 
-```
+```sh
 sudo npm install -g cnpm --registry=http://r.cnpmjs.org
 sudo cnpm install -g avoscloud-code
 ```
 
 如果从 npm 安装失败，也可以直接从 Github 源码安装：
 
-```
+```sh
 sudo npm install -g  git+https://github.com/avoscloud/avoscloud-code-command
 ```
 
 安装成功之后，直接在 terminal（终端）运行 `avoscloud -h`，输出帮助信息：
 
-```
+```sh
 $ avoscloud -h
 Usage: avoscloud [选项] <命令>
 
@@ -87,7 +87,7 @@ Usage: avoscloud [选项] <命令>
 可以通过 `-V` 选项查看版本：
 
 
-```
+```sh
 $ avoscloud -V
 0.5.0
 ```
@@ -98,7 +98,7 @@ $ avoscloud -V
 
 下载 [avoscloud_completion.sh](https://raw.githubusercontent.com/leancloud/avoscloud-code-command/master/avoscloud_completion.sh) 保存到某个目录，例如通常保存为 `~/.leancloud_completion.sh`，然后在 `.bashrc` 或者 `.bash_profile` 文件中添加：
 
-```
+```sh
 source ~/.leancloud_completion.sh
 ```
 
@@ -111,7 +111,7 @@ source ~/.leancloud_completion.sh
 
 在安装命令行工具后，除了从网站的云代码菜单下载新应用项目框架之外，你也可以通过 `new` 命令来创建一个新的云代码项目：
 
-```
+```sh
 $ avoscloud new
 ```
 
@@ -124,7 +124,7 @@ $ avoscloud new
 
 输入正确后，会自动创建一个新的云代码项目框架：
 
-```
+```sh
 Creating project...
   new_app/
   new_app/README.md
@@ -157,7 +157,7 @@ avoscloud 命令还支持代码的热加载，修改代码后无需重新启动�
 
 在你开发和本地测试云代码项目通过后，你可以直接将本地源码推送到 LeanCloud 云代码平台运行，只要执行 `deploy` 命令：
 
-```
+```sh
 $ avoscloud deploy
 ```
 
@@ -165,7 +165,7 @@ $ avoscloud deploy
 
 如果部署成功，会打印部署后的状态：
 
-```
+```sh
 [INFO]: Cloud Code Project Home Directory: /Users/dennis/programming/avos/new_app/
 Compress cloud code files...
 Wrote compressed file /var/folders/90/xwqqy61d6lg6v8ztpbfhwb5c0000gp/T/1412920453227.tar.gz ...
@@ -183,17 +183,17 @@ Production commit log  : 'Uploaded at 2014-10-09 16:56:06'
 
 默认部署日志是 `Updated at YYYY-MM-DD HH:mm:ss` 的时间戳日志，你可以通过 `-o` 选项来提供更详细的部署日志：
 
-```
+```sh
 $ avoscloud deploy -o '测试本地推送部署'
 ```
 
-部署之后，你可以通过 curl 命令，或者访问你设置的 dev.xxxx.avosapps.com 的二级域名测试你的云代码。
+部署之后，你可以通过 curl 命令，或者访问你设置的 `xxxx.avosapps.com` 的二级域名对应的专用测试域名 `dev.xxx.avosapps.com` 测试你的云代码。
 
 ### Git仓库部署
 
 如果你的代码是保存在某个 Git 仓库，例如 [Github](https://github.com) 上，你也可以请求 LeanCloud 平台从 Git 仓库获取源码并自动部署，这个操作可以在云代码的部署菜单里完成，也可以在本地执行 `deploy` 命令和 `-g` 选项配合完成：
 
-```
+```sh
 $ avoscloud -g deploy
 ```
 
@@ -205,13 +205,13 @@ $ avoscloud -g deploy
 
 开发环境如果测试没有问题，你希望将开发环境的云代码切换到生产环境，你可以使用开发者平台的云代码部署菜单做发布，也可以直接运行 `publish` 命令：
 
-```
+```sh
 $ avoscloud publish
 ```
 
 就会将开发环境的云代码发布到生产环境。
 
-```
+```sh
 [INFO]: Cloud Code Project Home Directory: /Users/dennis/programming/avos/new_app/
 [INFO]: Current App: origin <app id>
 Publishing cloud code to production...
@@ -228,7 +228,7 @@ Production commit log  : 'Uploaded at 2014-10-10 13:54:26'
 
 可以通过 `status` 命令查询当前生产环境和开发环境的部署状态：
 
-```
+```sh
 $ avoscloud status
 [INFO]: Cloud Code Project Home Directory: /Users/dennis/programming/avos/new_app/
 [INFO]: Current App: origin <app id>
@@ -243,7 +243,7 @@ Production commit log  : 'Uploaded at 2014-10-10 13:54:26'
 
 通过 `undeploy` 命令，可以将云代码彻底从 LeanCloud 平台移除（包括代码、版本信息、提交日志等）：
 
-```
+```sh
 $ avoscloud undeploy
 ```
 
@@ -253,7 +253,7 @@ $ avoscloud undeploy
 
 使用 `logs` 命令可以查询云代码最新日志：
 
-```
+```sh
 $ avoscloud logs
 [INFO]: Cloud Code Project Home Directory: /Users/dennis/programming/avos/new_app/
 [INFO]: Current App: origin 7104en0u071tcb5d1tr2juxa499ouvdn1gm5szq47nqzt06q
@@ -270,13 +270,13 @@ $ avoscloud logs
 
 可以通过 `-n` 选项设定返回的日志数目，例如返回最近的 100 条
 
-```
+```sh
 $ avoscloud -n 100 logs
 ```
 
 也可以加上 `-t` 选项来自动滚动更新日志，类似`tailf`命令的效果：
 
-```
+```sh
 $ avoscloud -t logs
 ```
 
@@ -291,21 +291,21 @@ $ avoscloud -t logs
 
 使用 `avoscloud app list` 可以查看当前应用列表，默认情况下应该显示 `config/global.json` 里设定的应用：
 
-```
+```sh
 $ avoscloud app list
   origin <config/global.json 里的 applicationId>
 ```
 
 执行 `avoscloud app` 查看当前应用，因为目前没有明确指定，会告诉你：
 
-```
+```sh
 $ avoscloud app
 You are not in a app.Please checkout <app>
 ```
 
 我们明确切换到 `origin` 应用试试：
 
-```
+```sh
 $ avoscloud checkout origin
 Switced to app origin
 $ avoscloud app
@@ -318,7 +318,7 @@ $ avoscloud app
 
 如果你想将 new_app 发布到其他 LeanCloud 应用，你可以通过 `add` 命令来添加一个应用：
 
-```
+```sh
 $ avoscloud add other_app <other app 的应用 id>
 ```
 
@@ -326,13 +326,13 @@ $ avoscloud add other_app <other app 的应用 id>
 
 添加成功将打印：
 
-```
+```sh
 Added a new app: other_app -- <应用 id>
 ```
 
 通过 `app list` 命令将看到两个应用：
 
-```
+```sh
 $ avoscloud app list
 * origin    7104en0u071tcb5d1tr2juxa499ouvdn1gm5szq47nqzt06q
   other_app 1qdney6b5qg2i69t79yq941krrwdu3glt0ot69re6w7xv6lf
@@ -344,7 +344,7 @@ $ avoscloud app list
 
 从当前应用切换到另一个应用，可以使用 `checkout <应用名称>`:
 
-```
+```sh
 $ avoscloud checkout other_app
 Switced to app other_app
 ```
@@ -353,14 +353,14 @@ Switced to app other_app
 
 通过 `app` 命令可以看到当前应用已经是 `other_app`:
 
-```
+```sh
 $ avoscloud app
 * other_app <应用 id>
 ```
 
 如果你想在不切换应用的情况下去部署云代码到其他应用，也可以通过 `-p` 选项来指定，例如:
 
-```
+```sh
 $ avoscloud deploy -p other_app
 ```
 
@@ -370,14 +370,14 @@ $ avoscloud deploy -p other_app
 
 同样，你可以删除一个应用，使用  `rm` 命令：
 
-```
+```sh
 $ avoscloud rm other_app
 Removed app: other_app
 ```
 
 通过 `app list` 确认已经删除：
 
-```
+```sh
 $ avoscloud app list
   origin 7104en0u071tcb5d1tr2juxa499ouvdn1gm5szq47nqzt06q
 ```
@@ -386,7 +386,7 @@ $ avoscloud app list
 
 如果你有一些文件希望上传到 LeanCloud 平台上，可以通过 `upload` 命令，既可以上传单个文件，也可以批量上传一个目录下（包括子目录）下的所有文件。
 
-```
+```sh
 $ avoscloud upload public/index.html
 Uploads /Users/dennis/programming/avos/new_app/public/index.html successfully at: http://ac-7104en0u.qiniudn.com/f9e13e69-10a2-1742-5e5a-8e71de75b9fc.html
 ```
@@ -395,7 +395,7 @@ Uploads /Users/dennis/programming/avos/new_app/public/index.html successfully at
 
 上传 images 目录下的所有文件：
 
-```
+```sh
 avoscloud upload images/
 ```
 
@@ -403,7 +403,7 @@ avoscloud upload images/
 
 为了方便开发阶段查询资料或者文档，可以使用 `search` 命令：
 
-```
+```sh
 $ avoscloud search AVObject
 ```
 
@@ -411,14 +411,13 @@ $ avoscloud search AVObject
 
 也可以查询多个关键字，空格隔开即可：
 
-```
+```sh
 $ avoscloud search 云代码 命令行
 ```
 
 
 ## 贡献
 
-`avoscloud-code` 本身是开源，基于 [GNU LGPL](https://www.gnu.org/licenses/lgpl.html) 协议，源码托管在 Github: [https://github.com/avoscloud/avoscloud-code-command](https://github.com/avoscloud/avoscloud-code-command)
+`avoscloud-code` 本身是开源，基于 [GNU LGPL](https://www.gnu.org/licenses/lgpl.html) 协议，源码托管在 Github: [https://github.com/leancloud/avoscloud-code-command](https://github.com/leancloud/avoscloud-code-command)
 
 欢迎大家贡献。
-

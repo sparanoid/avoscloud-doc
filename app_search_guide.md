@@ -33,7 +33,7 @@
 为了能够使用户直接从搜索结果打开您的应用，开发者需要使您的应用支持外部调用，我们使用 AppURL 来指向一个可以在应用里展现的 Class 数据，格式如下：
 
 ```
-	{URL Scheme}://{ URL Host}/{ Resource Path}
+{URL Scheme}://{ URL Host}/{ Resource Path}
 ```
 
 在组件菜单里，我们添加了一个新菜单——`应用内搜索`，截图如下：
@@ -60,14 +60,14 @@
 ```
 https://leancloud.cn/1.1/go/{your uri scheme}/
 ```
- 查看到您的 App URL 应用设置信息。
 
- 例如我们的todo应用就是:
+查看到您的 App URL 应用设置信息。
 
- ```
- https://leancloud.cn/1.1/go/com.avoscloud.todo
- ```
+例如我们的todo应用就是:
 
+```
+https://leancloud.cn/1.1/go/com.avoscloud.todo
+```
 
 #### 为 Class 启用搜索
 
@@ -85,7 +85,7 @@ https://leancloud.cn/1.1/go/{your uri scheme}/
 * 选择开放的列 -- 您可以选择哪些字段将加入索引引擎，这些字段将可以被外部用户看到（前提是 ACL 允许）。请慎重选择开放的字段。默认情况下，`objectId,createdAt,updatedAt`三个字段将无条件加入开放字段列表。
 * 数据模板 -- 设置这个 Class 的数据展现模板，当外部调用无法打开应用（通常是用户没有安装应用）的时候，将渲染这个模板并展现给用户，默认的模板的只是渲染一些下载链接，您可以自定义这个模板的样式，比如加入您的应用 Logo， 添加 CSS 等。
 
-数据模板的语法支持[ handlebars 模板](http://handlebarsjs.com/)语法，支持的变量（使用两个大括号包起来`{{{var}}}`）包括：
+数据模板的语法支持[ handlebars 模板](http://handlebarsjs.com/)语法，支持的变量（使用两个大括号包起来 <code ng-non-bindable>{{{var}}}</code>）包括：
 
 * app_uri 字符串 --  打开应用的URL，就是前面提到的`{URL Scheme} : // { URL Host} / { Resource Path}`。
 * applinks 对象 -- 应用内搜索配置对象，包括这些属性：`app_name,android_phone_link,android_pad_link,iphone_link,ipad_link`等，也就是应用名称，和各种平台应用的下载链接。
@@ -94,44 +94,46 @@ https://leancloud.cn/1.1/go/{your uri scheme}/
 
 以我们的 Todo Demo 为例，我们启用了 Todo 的应用内搜索功能，选择了开放字段`content`，设定数据模板（消除了css）为：
 
+<div ng-non-bindable>
 
-```
-	<div class="wrap">
-  		<div class="section section-open">
-   		 <div class="section-inner">
-			 <p>Todo Content:  {{object.content}} </p>
-   		 </div>
-  		</div>
-	<div class="section section-open">
-	  <div class="section-inner">
-		<p>已安装 {{applinks.app_name}}？您可以:</p>
-		<p><a href='{{app_uri}}' class="btn">直接打开应用</a></p>
-	  </div>
-	</div>
-   <div class="section section-download">
-	<div class="section-inner">
-	  <p>或者下载应用:</p>
-	  <div>
-		{{#if applinks.iphone_link}}
-		  <p><a href='{{applinks.iphone_link}}'>iPhone 应用</a></p>
-		{{/if}}
-
-		{{#if applinks.ipad_link}}
-		  <p><a href='{{applinks.ipad_link}}'>iPad 应用</a></p>
-		{{/if}}
-
-		{{#if applinks.android_phone_link}}
-		  <p><a href='{{applinks.android_phone_link}}'>Android 手机应用</a></p>
-		{{/if}}
-
-		{{#if applinks.android_pad_link}}
-		  <p><a href='{{applinks.android_pad_link}}'>Android 平板应用</a></p>
-		{{/if}}
-	  </div>
-	</div>
+```html
+<div class="wrap">
+  <div class="section section-open">
+    <div class="section-inner">
+      <p>Todo Content:  {{object.content}} </p>
+    </div>
   </div>
+  <div class="section section-open">
+    <div class="section-inner">
+      <p>已安装 {{applinks.app_name}}？您可以:</p>
+      <p><a href='{{app_uri}}' class="btn">直接打开应用</a></p>
+    </div>
+  </div>
+  <div class="section section-download">
+    <div class="section-inner">
+      <p>或者下载应用:</p>
+      <div >
+      {{#if applinks.iphone_link}}
+        <p><a href='{{applinks.iphone_link}}'>iPhone 应用</a></p>
+      {{/if}}
+
+      {{#if applinks.ipad_link}}
+        <p><a href='{{applinks.ipad_link}}'>iPad 应用</a></p>
+      {{/if}}
+
+      {{#if applinks.android_phone_link}}
+        <p><a href='{{applinks.android_phone_link}}'>Android 手机应用</a></p>
+      {{/if}}
+
+      {{#if applinks.android_pad_link}}
+        <p><a href='{{applinks.android_pad_link}}'>Android 平板应用</a></p>
+      {{/if}}
+    </div>
+  </div>
+</div>
 ```
 
+</div>
 在 LeanCloud 索引完成数据后，您应当可以通过下列URL访问到一条数据，如果在安装了 Todo Demo 应用的移动设备上访问下面这个URL，应该会打开应用展现这条 Todo 的内容:
 
 ```
@@ -152,18 +154,18 @@ https://leancloud.cn/1.1/go/com.avoscloud.todo/classes/Todo/5371f3a9e4b02f7aee2c
 
 在 Android 里，我们可以通过为 Activity 注册 `intent-filter` 来实现。以我们的 Todo Demo 为例，我们想在 `CreateTodo` 这个 Activity 里面展现搜索出来的某一条 Todo 内容，在`AndroidManifest.xml`注册`intent-filter`配置如下
 
-```
-		<activity android:name="com.avos.demo.CreateTodo" >
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<!-- 处理以"com.avoscloud.todo://avoscloud/classes/Todo/"开头的 URI -->
-				<data android:scheme="com.avoscloud.todo" />
-				<data android:host="avoscloud" />
-				<data android:pathPrefix="/classes/Todo/" />
-			</intent-filter>
-		</activity>
+```xml
+<activity android:name="com.avos.demo.CreateTodo" >
+	<intent-filter>
+		<action android:name="android.intent.action.VIEW" />
+		<category android:name="android.intent.category.DEFAULT" />
+		<category android:name="android.intent.category.BROWSABLE" />
+		<!-- 处理以"com.avoscloud.todo://avoscloud/classes/Todo/"开头的 URI -->
+		<data android:scheme="com.avoscloud.todo" />
+		<data android:host="avoscloud" />
+		<data android:pathPrefix="/classes/Todo/" />
+	</intent-filter>
+</activity>
 ```
 
 其中:
@@ -176,7 +178,7 @@ https://leancloud.cn/1.1/go/com.avoscloud.todo/classes/Todo/5371f3a9e4b02f7aee2c
 接下来在 `CreateTodo` Activity的`onCreate`方法里我们接收这个 action 并获取 URL 展现数据：
 
 
-```
+```java
    Intent intent = getIntent();
 	// 通过搜索结果打开
 	if (intent.getAction() == Intent.ACTION_VIEW) {
@@ -208,13 +210,13 @@ https://leancloud.cn/1.1/go/com.avoscloud.todo/classes/Todo/5371f3a9e4b02f7aee2c
 
 我们通过 adb 的 am 命令来测试配置是否有效，如果能够正常地调用`CreateTodo`页面，那证明配置正确：
 
-```
+```sh
 adb shell am start -W -a "android.intent.action.VIEW" -d "yourUri" yourPackageName
 ```
 
 在 Todo 例子里就是：
 
-```
+```sh
 adb shell am start -W -a "android.intent.action.VIEW"  \
   -d "com.avoscloud.todo://avoscloud/classes/Todo/5371f3a9e4b02f7aee2c9a18" \
   com.avos.demo
@@ -234,7 +236,7 @@ adb shell am start -W -a "android.intent.action.VIEW"  \
 
 注册完了 URL Scheme，你还需要实现 [application method openURL](http://developer.apple.com/library/ios/#DOCUMENTATION/UIKit/Reference/UIApplication_Class/Reference/Reference.html#jumpTo_37) 。对于 TodoDemo，应该按照如下方法实现。
 
-```
+```objc
 /*
  * 与 Android 类似，这里的url.path 应该是 “com.avoscloud.todo://avoscloud/classes/Todo/5371f3a9e4b02f7aee2c9a18”
  */
@@ -269,32 +271,30 @@ adb shell am start -W -a "android.intent.action.VIEW"  \
 
 打开AndroidManifest.xml文件，在里面添加需要用到的activity和需要的权限:
 
-```
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-		<application...>
-		   <activity
-			  android:name="com.avos.avoscloud.search.SearchActivity">
-		   </activity>
-		</application>
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<application...>
+	   <activity
+		  android:name="com.avos.avoscloud.search.SearchActivity">
+	   </activity>
+	</application>
 ```
 *注：由于一些UI的原因，应用内搜索的最低API level要求是12，如您需要更低的版本支持，请参照文档中的高级定制部分进行开发。*
 
 ###### 添加代码实现基础的应用内搜索功能
 
-```
-
-  AVSearchQuery searchQuery = new AVSearchQuery("keyword");
-  SearchActivity.setHighLightStyle("<font color='#E68A00'>");//通过这个方法，您可以像指定html tag一样设定搜索匹配字符的高亮风格
-  searchQuery.search();//即可打开一个显式搜索结果的Activity
-
+```java
+AVSearchQuery searchQuery = new AVSearchQuery("keyword");
+SearchActivity.setHighLightStyle("<font color='#E68A00'>");//通过这个方法，您可以像指定html tag一样设定搜索匹配字符的高亮风格
+searchQuery.search();//即可打开一个显式搜索结果的Activity
 ```
 
 ###### 结果排序
 
 `AVSearchQuery`支持排序，通过`orderByAscending`和`orderByDescending`传入要排序的字段，就可以实现按照升序或者降序排序搜索结果。多字段排序，通过`addAscendingOrder`和`addDescendingOrder`来添加多个排序字段。大体上，这块 API 调用跟 `AVQuery`是类似的：
 
-```
+```java
 AVSearchQuery searchQuery = new AVSearchQuery("keyword");
 searchQuery.orderByAscending("score"); //根据score字段升序排序。
 ```
@@ -303,7 +303,7 @@ searchQuery.orderByAscending("score"); //根据score字段升序排序。
 
 根据地理信息位置排序：
 
-```
+```java
 AVSearchSortBuilder builder = AVSearchSortBuilder.newBuilder();
 builder.whereNear("location",new AVGeoPoint(30,30));
 searchQuery.setSortBuilder(builder);
@@ -311,7 +311,7 @@ searchQuery.setSortBuilder(builder);
 
 根据数组内的最高值来排序，并且如果文档里没有这个值就放到最后：
 
-```
+```java
 builder.orderByDescending("scores","max","last");
 searchQuery.setSortBuilder(builder);
 ```
@@ -323,7 +323,7 @@ searchQuery.setSortBuilder(builder);
 
 由于每个应用的数据、UI展现要求都有很大的差别，所以单一的搜索组件界面仅仅能够满足较为简单的要求，所以我们将数据接口开放出来以便您能够方便的定制属于您自己的应用内搜索结果页面。
 
-```
+```java
 	  AVSearchQuery search = new AVSearchQuery("test-query");
 	  search.setLimit(100);
 	  search.findInBackgroud(new FindCallback<AVObject>() {
@@ -359,19 +359,19 @@ searchQuery.setSortBuilder(builder);
 
 ###### 基础搜索
 传入最简单的字符串查询
-```
-   AVSearchQuery query = new AVSearchQuery("basic-query");//搜索包含basic-query的值
+```java
+AVSearchQuery query = new AVSearchQuery("basic-query");//搜索包含basic-query的值
 ```
 ###### 字段搜索
 您也可以通过指定某个特定字段的值或者值域区间
-```
-  query.setQuery("status:active");//搜索status字段包含active
-  query.setQuery("title:(quick brown)");//搜索status包含quick或者brown
-  query.setQuery("age:>=10");//搜索年龄大于等于10的数据
-  query.setQuery("age:(>=10 AND < 20)");//搜索年龄在[10,20)区间内的数据
+```java
+query.setQuery("status:active");//搜索status字段包含active
+query.setQuery("title:(quick brown)");//搜索status包含quick或者brown
+query.setQuery("age:>=10");//搜索年龄大于等于10的数据
+query.setQuery("age:(>=10 AND < 20)");//搜索年龄在[10,20)区间内的数据
 ```
 ###### 模糊搜索
-```
+```java
   query.setQuery("qu?c*k");//此处?代表一个字符，*代表0个或者多个字符。类似正则表达式通配符
 ```
 
@@ -382,29 +382,29 @@ searchQuery.setSortBuilder(builder);
 ##### 添加代码获取搜索结果
 你可以参照如下代码构造 AVSearchQuery 并获取搜索结果。
 
-```
-    AVSearchQuery *searchQuery = [AVSearchQuery searchWithQueryString:@"test-query"];
-    searchQuery.className = @"className";
-    searchQuery.highlights = @"field1,field2";
-    searchQuery.limit = 10;
-    searchQuery.cachePolicy = kAVCachePolicyCacheElseNetwork;
-    searchQuery.maxCacheAge = 60;
-    searchQuery.fields = @[@"field1", @"field2"];
-    [searchQuery findInBackground:^(NSArray *objects, NSError *error) {
-   		for (AVObject *object in objects) {
-            NSString *appUrl = [object objectForKey:@"_app_url"];
-            NSString *deeplink = [object objectForKey:@"_deeplink"];
-            NSString *hightlight = [object objectForKey:@"_highlight"];
-            // other fields
-            // code is here
-        }
-    }];
+```objc
+AVSearchQuery *searchQuery = [AVSearchQuery searchWithQueryString:@"test-query"];
+searchQuery.className = @"className";
+searchQuery.highlights = @"field1,field2";
+searchQuery.limit = 10;
+searchQuery.cachePolicy = kAVCachePolicyCacheElseNetwork;
+searchQuery.maxCacheAge = 60;
+searchQuery.fields = @[@"field1", @"field2"];
+[searchQuery findInBackground:^(NSArray *objects, NSError *error) {
+	for (AVObject *object in objects) {
+        NSString *appUrl = [object objectForKey:@"_app_url"];
+        NSString *deeplink = [object objectForKey:@"_deeplink"];
+        NSString *hightlight = [object objectForKey:@"_highlight"];
+        // other fields
+        // code is here
+    }
+}];
 ```
 有关查询语法，可以参考上文 Android 部分的介绍。
 
 对于分页，这里需要特别做出说明。因为每次请求都有 limit 限制，所以一次请求可能并不能获取到所有满足条件的记录。你可以多次调用同一个`AVSearchQuery` 的 `findObjects` 或者 `findInBackground` 获取余下的记录。另外，`hits` 属性用于标示所有满足查询条件的记录数。
 
-```
+```objc
 /*!
  *  符合查询条件的记录条数，由 SDK 自动修改。
  */
@@ -418,5 +418,128 @@ searchQuery.setSortBuilder(builder);
 @property (nonatomic, retain) NSString *sid;
 
 ```
+
+
+## 搜索 API
+
+
+我们提供一个 `/1.1/search/select` 来做应用内搜索，前提是您参考前面的文档，启用了应用内搜索。
+
+假设你对 GameScore 类启用了应用内搜索，您就可以尝试传入关键字来搜索，比如查询关键字`dennis`，限定返回结果 200 个，并且按照`score`降序排序：
+
+```sh
+curl -X GET \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  "https://leancloud.cn/1.1/search/select?q=dennis&limit=200&clazz=GameScore&order=-score"
+```
+
+返回类似：
+
+```json
+{
+results: [
+  {
+    _app_url: "http://stg.pass.com//1/go/com.avoscloud/classes/GameScore/51e3a334e4b0b3eb44adbe1a",
+    _deeplink: "com.avoscloud.appSearchTest://avoscloud/classes/GameScore/51e3a334e4b0b3eb44adbe1a"
+    updatedAt: "2011-08-20T02:06:57.931Z",
+    playerName: "Sean Plott",
+    objectId: "51e3a334e4b0b3eb44adbe1a",
+    createdAt: "2011-08-20T02:06:57.931Z",
+    cheatMode: false,
+    score: 1337
+  },
+  ……
+],
+sid: "cXVlcnlUaGVuRmV0Y2g7Mzs0NDpWX0NFUmFjY1JtMnpaRDFrNUlBcTNnOzQzOlZfQ0VSYWNjUm0yelpEMWs1SUFxM2c7NDU6Vl9DRVJhY2NSbTJ6WkQxazVJQXEzZzswOw=="
+}
+```
+
+查询的参数支持：
+
+* limit 返回集合大小，默认100，最大1000
+* sid: 第一次查询结果中返回的 sid 值，用于分页，对应于elasticsearch中的scoll id，可选
+* q: 查询文本，支持类似google的搜索语法，必须
+* fields: 逗号隔开的字段列表，可选，查询的字段列表
+* highlights: 高亮字段，可以是通配符 `*`，也可以是字段列表逗号隔开的字符串，可选。如果加入，返回结果会多出_highlight属性，表示高亮的搜索结果内容，关键字用`em`标签括起来。
+* clazz: 类名，可选，如果没有指定，则搜索所有启用了应用内搜索的 class
+* order: 排序字段，形如`-score,createdAt`逗号隔开的字段，负号表示倒序，可以多个字段组合排序，可选。
+* sort: 复杂排序字段，例如地理位置信息排序，见下文描述。
+
+返回结果属性介绍：
+
+* results 符合查询条件的结果文档。
+* hits  符合查询条件的文档总数
+* sid 标记本次查询结果，下次查询继续传入这个 sid 用于查找后续的数据，用来支持翻页查询。
+
+
+返回结果 results 列表里是一个一个的对象，字段是你在应用内搜索设置里启用的字段列表，并且有两个特殊字段：
+
+* `_app_url`: 应用内搜索结果在网站上的链接。
+* `_deeplink`: 应用内搜索的程序调用 URL，也就是 deeplink。
+
+
+最外层的`sid`用来标记本次查询结果，下次查询继续传入这个 sid 将翻页查找后 200 条数据：
+
+```sh
+curl -X GET \
+  -H "X-AVOSCloud-Application-Id: {{appid}}" \
+  -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+  "https://leancloud.cn/1.1/search/select?q=dennis&limit=200&clazz=GameScore&order=-score&sid=cXVlcnlUaGVuRmV0Y2g7Mzs0NDpWX0NFUmFjY1JtMnpaRDFrNUlBcTNnOzQzOlZfQ0VSYWNjUm0yelpEMWs1SUFxM2c7NDU6Vl9DRVJhY2NSbTJ6WkQxazVJQXEzZzswOw"
+```
+直到返回结果为空。
+
+
+### 复杂排序
+
+
+假设你要排序的字段是一个数组，比如分数数组`scores`，你想根据平均分来倒序排序，并且没有分数的排最后，那么可以传入：
+
+```sh
+ --data-urlencode 'sort={"scores":{"order":"desc","mode":"avg","missing":"_last"}}'
+```
+
+也就是 `sort` 可以是一个 JSON 数据结构：
+
+```json
+{"scores":{"order":"desc","mode":"avg","missing":"_last"}}
+```
+排序的字段作为key，字段可以设定下列选项：
+
+* order  `asc`表示升序，`desc`表示降序
+* mode 如果该字段是多值属性或者数组，那么可以选择按照最小值(`min`)、最大值(`max`)、总和(`sum`)或者平均值(`sum`)来排序。
+* missing 决定缺失该字段的文档排序在开始还是最后，可以选择`_last`或者`_first`，或者指定一个默认值。
+
+多个字段排序就类似：
+
+```json
+{
+ "scores":{"order":"desc","mode":"avg","missing":"_last"},
+ "updatedAt": {"order":"asc"}
+ }
+```
+
+
+### 地理位置信息查询
+
+
+如果 class 里某个列是 `GeoPoint`类型，那么可以根据这个字段的地理位置远近来排序，例如假设字段 `location` 保存的是 `GeoPoint`类型，那么查询 `[-70, 40]` 附近的玩家可以通过设定 sort 为：
+
+```json
+{
+  "_geo_distance" : {
+                "location" : [-70, 40],
+                "order" : "asc",
+                "unit" : "km",
+                "mode" : "min",
+   }
+}
+```
+
+`order` 和  `mode` 含义跟上述复杂排序里的一致，`unit`用来指定距离单位，例如`km`表示千米，`m`表示米，`cm`表示厘米等。
+
+
+
+
 
 
