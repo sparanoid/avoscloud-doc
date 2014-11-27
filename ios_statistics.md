@@ -40,18 +40,17 @@ pod 'AVOSCloud'
 您可以统计每个View停留时长，请确保配对使用
 
 ```objc
-  - (void)viewWillAppear:(BOOL)animated
-  {
-  	[super viewWillAppear:animated];
-    [AVAnalytics beginLogPageView:@"PageOne"];
-  }
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+  [AVAnalytics beginLogPageView:@"PageOne"];
+}
 
 
-  - (void)viewWillDisappear:(BOOL)animated {
-     [super viewWillDisappear:animated];
-     [AVAnalytics endLogPageView:@"PageOne"];
-  }
-
+- (void)viewWillDisappear:(BOOL)animated {
+   [super viewWillDisappear:animated];
+   [AVAnalytics endLogPageView:@"PageOne"];
+}
 ```
 
 如果您想自己传递时长，我们也提供了方法。 单位为秒.
@@ -117,12 +116,12 @@ pod 'AVOSCloud'
 
 例如您在360发布,需要统计360渠道:
 ```objc
-    [AVAnalytics startWithReportPolicy:AV_BATCH channelId:@"360"];
+[AVAnalytics startWithReportPolicy:AV_BATCH channelId:@"360"];
 ```
 
 例如您在小米发布,需要统计同步推渠道:
 ```objc
-    [AVAnalytics startWithReportPolicy:AV_BATCH channelId:@"xiaomi"];
+[AVAnalytics startWithReportPolicy:AV_BATCH channelId:@"xiaomi"];
 ```
 
 ### 获取在线参数
@@ -144,6 +143,6 @@ pod 'AVOSCloud'
 从2.5.5 LeanCloud SDK开始，您可以添加如下代码禁止统计功能（默认启用统计功能），这样可以避免测试数据污染线上数据。
 
 ```objc
-	[AVAnalytics setAnalyticsEnabled:NO];
+[AVAnalytics setAnalyticsEnabled:NO];
 ```
 
