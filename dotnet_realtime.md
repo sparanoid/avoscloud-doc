@@ -1,5 +1,10 @@
 # Windows Phone 8.0 SDK
 
+## 简介
+
+在阅读本开发指南之前，请先阅读下[《实时通信开发指南》](./realtime.html)，了解实时通信的基本概念和模型。
+
+
 ## 安装
 为了支持实时聊天，我们依赖了一个开源的第三方的 WebSocket 的库，所以推荐开发者从[Nuget](https://www.nuget.org/packages/AVOSCloud.Phone/1.2.3.1-beta)上下载我们的 SDK。
 
