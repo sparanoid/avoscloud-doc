@@ -617,6 +617,24 @@ AV.Cloud.onVerified('sms', function(request, response) {
 ```
 函数的第一个参数是验证类型：短信验证为`sms`，邮箱验证为`email`。另外，数据库中相关的验证字段，如`emailVerified`不需要修改，我们已经为你更新完成。
 
+### 在用户注册成功之后
+在用户注册成功之后如果你想做一些事情可以定义以下函数：
+
+```javascript
+AV.Cloud.afterSave("_User", function(request) {
+  console.log(request.object);
+  request.object.set("from","LeanCloud");
+  request.object.save(null,{success:function(user)
+    {
+      console.log("ok!");
+    },error:function(user,error)
+    {
+      console.log("error",error);
+    }
+    });
+});
+```
+
 ## 定时任务
 
 很多时候可能你想做一些定期任务，比如半夜清理过期数据，或者每周一给所有用户发送推送消息等等，我们提供了定时任务给您，让您可以在云代码中运行这样的任务。
