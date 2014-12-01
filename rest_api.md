@@ -1313,7 +1313,7 @@ curl -X POST \
 用户收到验证码后，调用`PUT /1.1/resetPasswordBySmsCode/:code`来设置新的密码：
 
 ```sh
-curl -X POST \
+curl -X PUT \
   -H "X-AVOSCloud-Application-Id: {{appid}}" \
   -H "X-AVOSCloud-Application-Key: {{appkey}}" \
   -H "Content-Type: application/json" \
