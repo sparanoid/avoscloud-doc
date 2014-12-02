@@ -461,10 +461,10 @@ AV.Cloud.define("averageStars", function(request, response) {
 Cloud函数可以被各种客户端SDK调用，也可以通过REST API调用，例如，使用一部电影的名称去调用`averageStars`函数：
 
 ```sh
-curl -X POST -H "Content-Type: application/json; charset=utf-8"   \
-       -H "X-AVOSCloud-Application-Id: {{appid}}"          \
-       -H "X-AVOSCloud-Application-Key: {{appkey}}"        \
-       -H "X-AVOSCloud-Application-Production: 0"  -d '{}' \
+curl -X POST -H "Content-Type: application/json; charset=utf-8" \
+       -H "X-AVOSCloud-Application-Id: {{appid}}" \
+       -H "X-AVOSCloud-Application-Key: {{appkey}}" \
+       -H "X-AVOSCloud-Application-Production: 0" \
        -d '{"movie":"The Matrix"}' \
 https://leancloud.cn/1.1/functions/averageStars
 ```
@@ -473,7 +473,7 @@ https://leancloud.cn/1.1/functions/averageStars
 
 * request - 包装了请求信息的请求对象，下列这些字段将被设置到request对象内:
  * params - 客户端发送的参数对象
- * user - `AV.User`对象，发起调用的用户，如果没有登录，则不会设置此对象。
+ * user - `AV.User` 对象，发起调用的用户，如果没有登录，则不会设置此对象。如果通过 REST API 调用时模拟用户登录，需要增加一个头信息 `X-AVOSCloud-Session-Token: <sessionToken>`，该 `sessionToken` 在用户登录或注册时服务端会返回。
 * response - 应答对象，包含两个函数：
  * success - 这个函数可以接收一个额外的参数，表示返回给客户端的结果数据。这个参数对象可以是任意的JSON对象或数组，并且可以包含`AV.Object`对象。
  * error - 如果这个方法被调用，则表示发生了一个错误。它也接收一个额外的参数来传递给客户端，提供有意义的错误信息。
