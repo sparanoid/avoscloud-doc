@@ -60,6 +60,11 @@
 * 信息 - `Invalid channel name. A channel name is either an empty string (the broadcast channel) or contains only a-zA-Z0-9_ characters and starts with a letter.`
 * 含义 - 推送订阅的频道无效，频道名称必须不是空字符串，只能包含英文字母、数字以及下划线，并且只能以英文字母开头。
 
+## 113
+
+* 信息 - `Key is required.`
+* 含义 - Class 中的某个字段设定成必须，保存的对象缺少该字段。
+
 ## 114
 
 * 信息 - `Invalid device token.`
@@ -249,6 +254,11 @@
 
 * 信息 - `Forbidden to xxx by class permissions`
 * 含义 - 操作被禁止，因为[class权限限制](https://leancloud.cn/docs/data_security.html#class-%E7%BA%A7%E5%88%AB%E7%9A%84%E6%9D%83%E9%99%90)。
+
+## 502
+
+* 信息 - `"Server is in maintance.`
+* 含义 - 服务器维护中。
 
 ## 503
 
