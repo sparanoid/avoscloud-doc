@@ -198,14 +198,14 @@ app_id:peer_id:watch_peer_ids:timestamp:nonce:su
 
 ![image](images/leanchat.png)
 
-LeanChat 用到了大多数实时通信组件的提供的接口与功能，通过阅读它的源码，相信您可以很快学会使用通信组件。当然，首要的是能编译运行 LeanChat，Readme 上都有说明，仍然遇到问题的话请[联系我们](https://ticket.avosapps.com)。
+LeanChat 用到了大多数实时通信组件的提供的接口与功能，通过阅读它的源码，相信您可以很快学会使用通信组件。当然，首要的是能编译运行 LeanChat，项目Readme 上都有说明，仍然遇到问题的话请[联系我们](https://ticket.avosapps.com)。
 
 代码实现上有两点比较重要，
 
 * `Msg` 对象，它代表一个具体的消息对象，`Msg`对象可转换成 `Json`文本，发送给对方，对方接收到后转换成 `Msg` 对象。可参考 [Msg.java](https://github.com/leancloud/leanchat-android/blob/master/src/com/avoscloud/chat/entity/Msg.java)。
 * `messages` 表，用来保存消息，字段基本和 `Msg`对象的成员一一对应。可参考 [DBMsg.java](https://github.com/leancloud/leanchat-android/blob/master/src/com/avoscloud/chat/db/DBMsg.java)。
 
-除了上述源码，Android 源码，推荐阅读 [MsgReceiver.java](https://github.com/leancloud/leanchat-android/blob/master/src/com/avoscloud/chat/service/receiver/MsgReceiver.java)与 [ChatService.java](https://github.com/leancloud/leanchat-android/blob/master/src/com/avoscloud/chat/service/ChatService.java)。iOS 源码，推荐阅读 [CDSessionManager.m](https://github.com/leancloud/leanchat-ios/blob/master/AVOSChatDemo/service/CDSessionManager.m)与 [CDDatabaseService.m](https://github.com/leancloud/leanchat-ios/blob/master/AVOSChatDemo/service/CDDatabaseService.m)。
+除了上述代码，Android 项目中，推荐阅读 [MsgReceiver.java](https://github.com/leancloud/leanchat-android/blob/master/src/com/avoscloud/chat/service/receiver/MsgReceiver.java)与 [ChatService.java](https://github.com/leancloud/leanchat-android/blob/master/src/com/avoscloud/chat/service/ChatService.java)。iOS 项目中，推荐阅读 [CDSessionManager.m](https://github.com/leancloud/leanchat-ios/blob/master/AVOSChatDemo/service/CDSessionManager.m)与 [CDDatabaseService.m](https://github.com/leancloud/leanchat-ios/blob/master/AVOSChatDemo/service/CDDatabaseService.m)。
 
 
 至于其它技术细节，请参考 [项目wiki](https://github.com/leancloud/leanchat-android/wiki) 。
