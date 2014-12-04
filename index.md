@@ -109,7 +109,7 @@
           <li><a href="unity_statistics.html">Unity3D 统计 SDK 指南</a></li>
           <li><a href="dotnet_guide.html">.NET指南</a></li>
           <li><a href="dotnet_realtime.html">Windows Phone 8.0 实时通信指南</a></li>
-          <li><a href="api/wp/Help/index.html">.NET SDK API</a>
+          <!-- <li><a href="api/wp/Help/index.html">.NET SDK API</a> -->
         </ul>
       </div>
     </div>
