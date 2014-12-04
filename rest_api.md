@@ -358,7 +358,85 @@ REST API可以让您用任何可以发送HTTP请求的设备来与AVOS Cloud进�
 
 用户验证是通过HTTP header来进行的, __X-AVOSCloud-Application-Id__ 头标明正在运行的是哪个App程序, 而 __X-AVOSCloud-Application-Key__ 头用来授权鉴定endpoint.在下面的例子中,您的app的key被包含在命令中,您可以使用下拉框来显示其他app的示例代码.
 
-对于Javascript使用,AVOS Cloud支持跨域资源共享,所以您可以将这些header同XMLHttpRequest一同使用.
+对于Javascript使用,LeanCloud 支持跨域资源共享,所以您可以将这些header同XMLHttpRequest一同使用.
+### 浏览器跨域解决方案
+对于跨域操作，我们定义了如下的数据格式来支持用 `POST` 的方法实现 `GET`，`PUT`，`DELETE`的操作。
+
+#### GET
+
+```
+  curl -i -X POST \
+  -H "Content-Type: text/plain" \
+  -d '{"_method":"GET","_ApplicationId":"byqcj4i48dlzprdnsi26b7890u8oo5vkavrub91bxayybcny","_ApplicationKey":"n0p2l19kz3lfdy0k5143im1rmg8ti0bm5udbv1958o7ukbd3"}' \
+  https://leancloud.cn/1.1/classes/GameScore/5480017de4b0e7ccfacfebbe
+```
+对应的输出：
+
+```
+HTTP/1.1 200 OK
+Server: nginx
+Date: Thu, 04 Dec 2014 06:34:34 GMT
+Content-Type: application/json;charset=utf-8
+Content-Length: 174
+Connection: keep-alive
+Last-Modified: Thu, 04 Dec 2014 06:34:08.498 GMT
+Cache-Control: no-cache,no-store
+Pragma: no-cache
+Strict-Transport-Security: max-age=31536000
+
+{"objectId":"5480017de4b0e7ccfacfebbe","updatedAt":"2014-12-04T06:34:08.498Z","createdAt":"2014-12-04T06:34:08.498Z","cheatMode":false,"playerName":"Sean Plott","score":1337}
+```
+
+#### PUT
+
+```
+curl -i -X POST \
+  -H "Content-Type: text/plain" \
+  -d '{"_method":"PUT","_ApplicationId":"byqcj4i48dlzprdnsi26b7890u8oo5vkavrub91bxayybcny","_ApplicationKey":"n0p2l19kz3lfdy0k5143im1rmg8ti0bm5udbv1958o7ukbd3","score":9999}' \
+  https://leancloud.cn/1.1/classes/GameScore/5480017de4b0e7ccfacfebbe
+``` 
+对应的输出：
+
+```
+HTTP/1.1 200 OK
+Server: nginx
+Date: Thu, 04 Dec 2014 06:40:38 GMT
+Content-Type: application/json;charset=utf-8
+Content-Length: 78
+Connection: keep-alive
+Cache-Control: no-cache,no-store
+Pragma: no-cache
+Strict-Transport-Security: max-age=31536000
+
+{"updatedAt":"2014-12-04T06:40:38.310Z","objectId":"5480017de4b0e7ccfacfebbe"}
+```
+
+#### DELETE
+
+```
+curl -i -X POST \
+  -H "Content-Type: text/plain" \
+  -d '{"_method":"DELETE","_ApplicationId":"byqcj4i48dlzprdnsi26b7890u8oo5vkavrub91bxayybcny","_ApplicationKey":"n0p2l19kz3lfdy0k5143im1rmg8ti0bm5udbv1958o7ukbd3"}' \
+  https://leancloud.cn/1.1/classes/GameScore/5480017de4b0e7ccfacfebbe
+```
+
+对应的输出是：
+
+```
+HTTP/1.1 200 OK
+Server: nginx
+Date: Thu, 04 Dec 2014 06:15:10 GMT
+Content-Type: application/json;charset=utf-8
+Content-Length: 2
+Connection: keep-alive
+Cache-Control: no-cache,no-store
+Pragma: no-cache
+Strict-Transport-Security: max-age=31536000
+
+{}
+```
+
+总之，就是利用POST传递的参数，把 `_method` ，`AppId` 以及 `AppKey` 传递给服务端，服务端会自动把这些请求翻译成指定的方法，这样可以使得 Unity3D 以及 Javascript 等平台（或者语言）可以绕开一些限制。
 
 #### 更安全的鉴权方式
 
