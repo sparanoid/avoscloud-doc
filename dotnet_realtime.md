@@ -149,14 +149,14 @@ group.Join((sj, ej) =>
     {
         Dispatcher.BeginInvoke(() =>
         {
-            if (ea.JoinedPeerIds[0] == "Mary")//因为 OnMembersJoined 事件会响应当前 Peer 加入，然后再响应 Mary 加入，因为对于一个 AVGroup，创建者在创建之后是自动加入改组  
+            if (ea.JoinedPeerIds[0] == "Mary")//OnMembersJoined 事件会响应两次，第一次为响应当前的 Peer （此时就是这个Peter） 加入，然后再响应 Mary 加入，因为对于一个 AVGroup，创建者在创建之后是自动加入该组。
             {
                 MessageBox.Show("Mary joined!");
-                group.SendMessage("Hello, Mary!", (ss, es) =>
+                group.SendMessage("Hello, Mary!", (ss, es) =>//当 Mary 加入之后就发送消息给她。
                 {
                     Dispatcher.BeginInvoke(() =>
                     {
-                        MessageBox.Show("Message sent!");
+                        MessageBox.Show("Message sent!");//这是响应消息发送（OnMessageSent ）完毕之后的事件。
                     });
                 }, null);
             }
@@ -165,6 +165,102 @@ group.Join((sj, ej) =>
     });
 });
 ```
+
+创建成功的群组会被存放在 `AVOSRealtimeGroups` 这张表里，开发者可以登录到控制台进行查看。
+
+### 加入群组
+
+```
+AVGroup avGroup = App.session.GetGroup("54753e1ee4b0b41b21e0e76e");//这个 54753e1ee4b0b41b21e0e76e 可以是查询出来的结果，这里只为做演示，具体的值应该是开发者创建成功的 AVGroup 的 objectId
+avGroup.SendMessage("Hi,I'am Perter!",
+    (ss, es) =>
+    {
+        Dispatcher.BeginInvoke(() =>
+            {
+                MessageBox.Show("sent！");//这是响应消息发送（OnMessageSent ）完毕之后的事件。
+            });
+    }, (sr,er)=>
+    {
+        Dispatcher.BeginInvoke(() =>
+        {
+            MessageBox.Show(er.Message.Message + " received！");//收到了消息就会触发 OnGroupMessageRecevied 事件。
+        });
+    });
+```
+
+### 发送消息
+发送消息调用下面2个方法即可实现发消息：
+
+```
+public void SendMessage(AVMessage message, 
+            EventHandler<AVGroupMessageSentEventArgs> onGroupMessageSent,
+            EventHandler<AVGroupMessageReceivedEventArgs> onGroupMessageRecevied);
+
+public void SendMessage(string msg,
+            EventHandler<AVGroupMessageSentEventArgs> onGroupMessageSent,
+             EventHandler<AVGroupMessageReceivedEventArgs> onGroupMessageRecevied);
+```
+
+### 接受消息
+接受消息只要订阅的事件：
+
+```
+public event EventHandler<AVGroupMessageReceivedEventArgs> OnMessage;
+```
+就可以监听发送到该组的消息。
+
+### 群成员管理
+群组聊天目前的权限管理是开放给开发者自己去掌控和维护的，服务端只认证签名，假如开发者的应用开启了签名服务，如果没有开启签名认证，所有关于群成员的管理操作都被认为是有效的。
+
+#### 加入成员
+
+```
+IList<string> peerIds = new List<string>() { "Mary","Alex" };
+avGroup.AddMembers(peerIds, (sm, em) => 
+{
+    Dispatcher.BeginInvoke(() =>
+    {
+        MessageBox.Show(em.JoinedPeerIds[0]+" joined this group!");//有组员加入时的事件响应。
+    });
+});
+```
+#### 删除组员
+也就是俗称的“踢人”，如下：
+
+```
+IList<string> peerIds = new List<string>() { "Neal" };
+group.RemoveMembers(peerIds, (sr, er) => 
+{
+    Dispatcher.BeginInvoke(() =>
+    {
+        MessageBox.Show("Neal has been kicked by");
+    });
+});
+```
+相应的，如果 Neal 在某一个地方登陆，他将会收到一个事件响应：
+
+```
+ public event EventHandler<EventArgs> OnLeft;
+```
+所以某一个 Peer 被别人剔除出组，产生的影响如下：
+其他组员会收到 `OnMembersLeft` 的事件响应，而被剔除的 Peer 本身会收到 `OnLeft` 事件的响应。
+
+### 退出群组
+主动退出群组代码如下：
+
+```
+App.session = new AVSession("Neal");
+AVGroup nealGroup = App.session.GetGroup("54753e1ee4b0b41b21e0e76e");
+nealGroup.Quit((sq, eq) => 
+{
+    Dispatcher.BeginInvoke(() => 
+    {
+        MessageBox.Show("you have left from group:" + ((AVGroup)sq).GroupId);
+    });
+});
+```
+以上是简写，实际上真正实现回调的事件 `OnLeft`。
+
 
 ## 实现签名（可选）
 
